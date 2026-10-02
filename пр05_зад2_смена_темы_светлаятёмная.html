@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР05 • Зад.2 • Смена темы (светлая/тёмная)</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns"><button class="btn" onclick="location.href='пр05_зад1_счётчик_1_1.html'" >← Пред.</button><button class="btn" onclick="location.href='пр05_зад3_валидация_формы_имя_и_email.html'" >След. →</button></div>
+</div>
+<span class="pr-tag">ПР05</span>
+<h1>ПР05 • Зад.2 • Смена темы (светлая/тёмная)</h1>
+<div class="desc">Кнопка переключает светлую/тёмную тему (background-color и color у body).</div>
+
+<div class="card">
+<button class="btn" onclick="toggleTheme()">Сменить тему 🌗</button>
+</div>
+<script>
+function toggleTheme(){
+ const b=document.body;
+ if(b.getAttribute('data-theme')==='dark'){
+   b.removeAttribute('data-theme');
+ } else {
+   b.setAttribute('data-theme','dark');
+ }
+}
+const style=document.createElement('style');
+style.textContent='body[data-theme="dark"]{background:#1a1a2e;color:#eee} body[data-theme="dark"] .card{background:#16213e;border-color:#324} body{transition:background .3s,color .3s}';
+document.head.appendChild(style);
+</script>
+
+<div class="navbtns" style="margin-top:22px"><button class="btn" onclick="location.href='пр05_зад1_счётчик_1_1.html'" >← Пред.</button><button class="btn" onclick="location.href='пр05_зад3_валидация_формы_имя_и_email.html'" >След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР05 · страница 10 из 23</footer>
+</div>
+</body>
+</html>
