@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР04 • Зад.4 • Практические: скидка, пароль, погода</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns"><button class="btn" onclick="location.href='пр04_зад3_функции_для_объектов_имена_фильтр_по_городу_самый_старший.html'" >← Пред.</button><button class="btn" onclick="location.href='пр05_зад1_счётчик_1_1.html'" >След. →</button></div>
+</div>
+<span class="pr-tag">ПР04</span>
+<h1>ПР04 • Зад.4 • Практические: скидка, пароль, погода</h1>
+<div class="desc">Реализуйте: <b>calculateDiscount(price, %)</b>, <b>isPasswordValid(pass)</b> (≥6 символов), <b>getWeatherDescription(temp)</b>.</div>
+
+<div class="card">
+<label>Цена:</label><input id="price" type="number" value="2000">
+<label>Скидка %:</label><input id="disc" type="number" value="10"><br>
+<label>Пароль:</label><input id="pass" value="abc123">
+<label>Температура:</label><input id="temp" type="number" value="25"><br>
+<button class="btn" onclick="runDisc()">calculateDiscount()</button>
+<button class="btn green" onclick="runPass()">isPasswordValid()</button>
+<button class="btn orange" onclick="runWeather()">getWeatherDescription()</button>
+</div>
+<div class="out" id="out">Нажмите кнопку.</div>
+<script>
+function calculateDiscount(p,d){return p-p*d/100;}
+function isPasswordValid(p){return p.length>=6;}
+function getWeatherDescription(t){if(t<0)return 'Холодно ❄️';if(t<20)return 'Прохладно 🌤️';if(t<30)return 'Тепло ☀️';return 'Жарко 🔥';}
+function num(id){return parseFloat(document.getElementById(id).value);}
+function runDisc(){document.getElementById('out').innerHTML='<span class="hl">calculateDiscount('+num('price')+', '+num('disc')+'%)</span> = <span class="ok">'+calculateDiscount(num('price'),num('disc'))+'</span>';}
+function runPass(){const p=document.getElementById('pass').value;document.getElementById('out').innerHTML='<span class="hl">isPasswordValid("'+p+'")</span> = '+(isPasswordValid(p)?'<span class="ok">true</span>':'<span class="err">false (пароль короче 6 символов)</span>');}
+function runWeather(){document.getElementById('out').innerHTML='<span class="hl">getWeatherDescription('+num('temp')+')</span> = <span class="ok">'+getWeatherDescription(num('temp'))+'</span>';}
+</script>
+
+<div class="navbtns" style="margin-top:22px"><button class="btn" onclick="location.href='пр04_зад3_функции_для_объектов_имена_фильтр_по_городу_самый_старший.html'" >← Пред.</button><button class="btn" onclick="location.href='пр05_зад1_счётчик_1_1.html'" >След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР04 · страница 8 из 23</footer>
+</div>
+</body>
+</html>
