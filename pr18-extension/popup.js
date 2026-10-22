@@ -171,7 +171,7 @@ async function showHello() {
   const next = data.clickCount + 1;
   await updateCount(next);
 
-  const result = await sendToTab({ type: 'toast', text: 'Привет, ' + name + '! 👋' });
+  const result = await sendToTab({ type: 'greeting', text: 'Привет, ' + name + '! 👋' });
   if (!result.ok) {
     setStatus('Нажатий: ' + next + '. Приветствие не показано: ' + (humanError(result.error) || 'обновите вкладку'), 'err');
     return;

@@ -6,9 +6,12 @@
   const BANNER_ID = '__ph-banner';
   const TOAST_HOST_ID = '__ph-toast-host';
   const PANEL_HOST_ID = '__ph-notes-host';
+  const WIDGET_HOST_ID = '__ph-widget-host';
+  const MODAL_HOST_ID = '__ph-modal-host';
   const HL_ATTR = 'data-ph-highlight';
 
   let panel = null;
+  let widget = null;
 
   const pageKey = () => location.origin + location.pathname + location.search;
 
@@ -263,7 +266,7 @@
   function createPanel() {
     const host = document.createElement('div');
     host.id = PANEL_HOST_ID;
-    host.style.cssText = 'all:initial;position:fixed;right:18px;bottom:18px;z-index:2147483647;';
+    host.style.cssText = 'all:initial;position:fixed;right:18px;bottom:76px;z-index:2147483647;';
 
     const shadow = host.attachShadow({ mode: 'open' });
     const style = document.createElement('style');
@@ -332,14 +335,164 @@
     return panel.visible;
   }
 
+  function showGreetingModal(text) {
+    const old = document.getElementById(MODAL_HOST_ID);
+    if (old) old.remove();
+
+    const host = document.createElement('div');
+    host.id = MODAL_HOST_ID;
+    host.style.cssText = 'all:initial;position:fixed;inset:0;z-index:2147483647;';
+    const shadow = host.attachShadow({ mode: 'open' });
+
+    const style = document.createElement('style');
+    style.textContent = [
+      '.overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;',
+      'align-items:center;justify-content:center;padding:20px;animation:ph-fade .15s ease both;}',
+      '.modal{background:#fff;border-radius:16px;padding:24px;max-width:340px;width:100%;',
+      'text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);',
+      'font:14px/1.5 "Segoe UI",Arial,sans-serif;color:#1f2937;animation:ph-pop .2s ease both;}',
+      '.modal h3{font-size:18px;color:#1a73e8;margin-bottom:10px;}',
+      '.modal p{font-size:16px;margin-bottom:18px;word-break:break-word;}',
+      '.modal button{border:none;background:#1a73e8;color:#fff;border-radius:8px;',
+      'padding:10px 22px;font:inherit;cursor:pointer;}',
+      '.modal button:hover{background:#0b5bc0;}',
+      '@keyframes ph-fade{from{opacity:0}to{opacity:1}}',
+      '@keyframes ph-pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}'
+    ].join('');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+
+    const title = document.createElement('h3');
+    title.textContent = 'Приветствие';
+    const body = document.createElement('p');
+    body.textContent = text;
+    const ok = document.createElement('button');
+    ok.textContent = 'Закрыть';
+
+    modal.appendChild(title);
+    modal.appendChild(body);
+    modal.appendChild(ok);
+    overlay.appendChild(modal);
+    shadow.appendChild(style);
+    shadow.appendChild(overlay);
+    document.documentElement.appendChild(host);
+
+    const close = () => {
+      host.remove();
+      document.removeEventListener('keydown', onKey);
+    };
+    const onKey = (event) => {
+      if (event.key === 'Escape') close();
+    };
+
+    ok.addEventListener('click', close);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) close();
+    });
+    document.addEventListener('keydown', onKey);
+  }
+
+  function updateWidget() {
+    if (!widget) return;
+    chrome.storage.local.get({ clickCount: 0, notes: {} }, (data) => {
+      if (!widget) return;
+      const list = (data.notes || {})[pageKey()] || [];
+      widget.clicks.textContent = data.clickCount || 0;
+      widget.notes.textContent = list.length;
+    });
+  }
+
+  function pageHello() {
+    chrome.storage.local.get({ greetingName: 'студент', clickCount: 0 }, (data) => {
+      const name = data.greetingName || 'студент';
+      chrome.storage.local.set({ clickCount: (data.clickCount || 0) + 1 });
+      showGreetingModal('Привет, ' + name + '! 👋');
+      updateWidget();
+    });
+  }
+
+  function createWidget() {
+    if (document.getElementById(WIDGET_HOST_ID)) return;
+
+    const host = document.createElement('div');
+    host.id = WIDGET_HOST_ID;
+    host.style.cssText = 'all:initial;position:fixed;right:18px;bottom:18px;z-index:2147483646;';
+    const shadow = host.attachShadow({ mode: 'open' });
+
+    const style = document.createElement('style');
+    style.textContent = [
+      '.bar{display:flex;gap:8px;align-items:center;font:13px/1 "Segoe UI",Arial,sans-serif;}',
+      'button,.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;',
+      'border-radius:999px;padding:9px 13px;box-shadow:0 6px 18px rgba(15,23,42,.18);',
+      'color:#1f2937;font:inherit;}',
+      'button{cursor:pointer;}',
+      'button:hover{background:#eef6ff;border-color:#93c5fd;}',
+      '.pill{background:#f8fafc;color:#475569;cursor:default;}',
+      'b{color:#1a73e8;}'
+    ].join('');
+
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+
+    const hello = document.createElement('button');
+    hello.title = 'Показать приветствие';
+    hello.textContent = '👋 Приветствие';
+
+    const clicksPill = document.createElement('span');
+    clicksPill.className = 'pill';
+    clicksPill.append('Клики: ');
+    const clicks = document.createElement('b');
+    clicksPill.appendChild(clicks);
+
+    const notes = document.createElement('button');
+    notes.title = 'Заметки к этой странице';
+    notes.append('📝 Заметки: ');
+    const notesCount = document.createElement('b');
+    notes.appendChild(notesCount);
+
+    bar.appendChild(hello);
+    bar.appendChild(clicksPill);
+    bar.appendChild(notes);
+    shadow.appendChild(style);
+    shadow.appendChild(bar);
+    document.documentElement.appendChild(host);
+
+    widget = { host, clicks, notes: notesCount };
+
+    hello.addEventListener('click', pageHello);
+    notes.addEventListener('click', () => toggleNotes());
+    updateWidget();
+  }
+
+  function initPageUi() {
+    createWidget();
+    updateWidget();
+
+    chrome.storage.local.get({ notes: {} }, (data) => {
+      const list = (data.notes || {})[pageKey()] || [];
+      if (list.length) {
+        setTimeout(() => showToast('Восстановлено заметок: ' + list.length), 700);
+      }
+    });
+  }
+
+  initPageUi();
+
   chrome.storage.local.get({ darkMode: false }, (data) => {
     if (data.darkMode) setDark(true, false);
   });
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
-    if (changes.notes && panel && panel.visible) {
-      renderPanelNotes();
+    if (changes.notes) {
+      if (panel && panel.visible) renderPanelNotes();
+      updateWidget();
+    }
+    if (changes.clickCount) {
+      updateWidget();
     }
     if (changes.darkMode) {
       setDark(!!changes.darkMode.newValue, false);
@@ -359,6 +512,10 @@
           break;
         case 'toast':
           showToast(String(message.text || ''));
+          sendResponse({ ok: true });
+          break;
+        case 'greeting':
+          showGreetingModal(String(message.text || 'Привет! 👋'));
           sendResponse({ ok: true });
           break;
         case 'setBg':
