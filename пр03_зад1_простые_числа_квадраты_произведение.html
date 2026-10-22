@@ -1,99 +1,226 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>ПР03 • Зад.1 • Простые числа, квадраты, произведение</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        h1 { color: #333; }
-        .result {
-            background: #fff;
-            padding: 15px;
-            margin: 10px 0;
-            border-left: 4px solid #4CAF50;
-            border-radius: 4px;
-        }
-        .label {
-            font-weight: bold;
-            color: #555;
-        }
-        .value {
-            color: #2196F3;
-            word-break: break-all;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР03 • Зад.1 • Простые числа, квадраты, произведение</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+</style>
 </head>
 <body>
-    <h1>ПР03 • Задание 1</h1>
-    <div id="output"></div>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns"><button class="btn" disabled>← Пред.</button><button class="btn" onclick="location.href='пр03_зад2_самое_длинноекороткое_слово_и_группировка_по_длине.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР03 • Зад.1</span>
+<h1>Простые числа, квадраты, произведение</h1>
+<div class="desc">Функции <code>getPrimes()</code>, <code>getSquares()</code> и <code>getProduct()</code> для массива чисел.
+<code>getProduct()</code> реализован через <code>reduce</code> с начальным значением 1; <code>isPrime()</code> корректно
+обрабатывает 0, 1, отрицательные и дробные числа.</div>
 
-    <script>
-        // Исходный массив
-        const numbers = [99, 7, 23, 45, 18, 31, 6, 2, 19, 8];
+<div class="card">
+  <h2>Исходный массив</h2>
+  <div class="row">
+    <input id="arr" value="12, 7, 23, 45, 18, 31, 6, 2, 19, 8" style="flex:1;min-width:260px">
+    <button class="btn" onclick="runAll()">Пересчитать</button>
+    <button class="btn gray" onclick="resetArr()">Сброс</button>
+  </div>
+  <p class="muted">Числа через запятую или пробел. Можно проверить крайние случаи: 1, 0, −5, 2.</p>
+</div>
 
-        // Вспомогательная функция: проверка, является ли число простым
-        function isPrime(num) {
-            if (num <= 1) return false;
-            if (num === 2) return true;
-            if (num % 2 === 0) return false;
-            for (let i = 3; i <= Math.sqrt(num); i += 2) {
-                if (num % i === 0) return false;
-            }
-            return true;
-        }
+<div class="card">
+  <h2>Результаты</h2>
+  <div id="result"></div>
+  <div class="out" id="out"></div>
+</div>
 
-        // 1. Только простые числа массива
-        function getPrimes(arr) {
-            return arr.filter(isPrime);
-        }
+<details><summary>Показать код решения</summary><pre class="code">function isPrime(num) {
+  if (!Number.isInteger(num) || num &lt; 2) return false;
+  if (num === 2) return true;
+  if (num % 2 === 0) return false;
+  for (let i = 3; i * i &lt;= num; i += 2) {
+    if (num % i === 0) return false;
+  }
+  return true;
+}
 
-        // 2. Квадраты всех чисел
-        function getSquares(arr) {
-            return arr.map(num => num * num);
-        }
+function getPrimes(arr) {
+  return arr.filter(isPrime);
+}
 
-        // 3. Произведение всех чисел через reduce
-        function getProduct(arr) {
-            return arr.reduce((acc, current) => acc * current, 1);
-        }
+function getSquares(arr) {
+  return arr.map(num =&gt; num * num);
+}
 
-        // Вычисляем результаты
-        const primes = getPrimes(numbers);
-        const squares = getSquares(numbers);
-        const product = getProduct(numbers);
+function getProduct(arr) {
+  return arr.reduce((acc, current) =&gt; acc * current, 1);
+}
 
-        // Вывод в консоль
-        console.log("Исходный массив:", numbers);
-        console.log("Простые числа:", primes);
-        console.log("Квадраты:", squares);
-        console.log("Произведение:", product);
+function parseArray(text) {
+  return text.split(/[,\s;]+/).filter(Boolean).map(Number).filter(n =&gt; Number.isFinite(n));
+}
 
-        // Вывод на страницу
-        const output = document.getElementById('output');
-        output.innerHTML = `
-            <div class="result">
-                <span class="label">Исходный массив:</span>
-                <span class="value">[${numbers.join(', ')}]</span>
-            </div>
-            <div class="result">
-                <span class="label">getPrimes() — простые числа:</span>
-                <span class="value">[${primes.join(', ')}]</span>
-            </div>
-            <div class="result">
-                <span class="label">getSquares() — квадраты:</span>
-                <span class="value">[${squares.join(', ')}]</span>
-            </div>
-            <div class="result">
-                <span class="label">getProduct() — произведение:</span>
-                <span class="value">${product}</span>
-            </div>
-        `;
-    </script>
+function fmt(list) {
+  return &#x27;[&#x27; + list.join(&#x27;, &#x27;) + &#x27;]&#x27;;
+}
+
+function runAll() {
+  const numbers = parseArray($(&#x27;arr&#x27;).value);
+  if (numbers.length === 0) {
+    $(&#x27;result&#x27;).innerHTML = &#x27;&#x27;;
+    out(&#x27;&lt;span class=&quot;err&quot;&gt;Введите хотя бы одно число&lt;/span&gt;&#x27;);
+    return;
+  }
+
+  const primes = getPrimes(numbers);
+  const squares = getSquares(numbers);
+  const product = getProduct(numbers);
+  const invalid = $(&#x27;arr&#x27;).value.split(/[,\s;]+/).filter(Boolean).length - numbers.length;
+
+  $(&#x27;result&#x27;).innerHTML = `
+    &lt;div class=&quot;item&quot;&gt;&lt;span&gt;Исходный массив&lt;/span&gt;&lt;b&gt;${fmt(numbers)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span&gt;getPrimes()&lt;/span&gt;&lt;b&gt;${fmt(primes)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span&gt;getSquares()&lt;/span&gt;&lt;b&gt;${fmt(squares)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span&gt;getProduct()&lt;/span&gt;&lt;b&gt;${product.toLocaleString(&#x27;ru-RU&#x27;)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span&gt;Проверка isPrime()&lt;/span&gt;&lt;b&gt;${numbers.map(n =&gt; n + &#x27; → &#x27; + isPrime(n)).join(&#x27;, &#x27;)}&lt;/b&gt;&lt;/div&gt;`;
+
+  out(`Простых чисел: &lt;span class=&quot;hl&quot;&gt;${primes.length}&lt;/span&gt; из ${numbers.length}
+Произведение через reduce с начальным значением 1: &lt;span class=&quot;ok&quot;&gt;${product.toLocaleString(&#x27;ru-RU&#x27;)}&lt;/span&gt;
+${invalid ? &#x27;&lt;span class=&quot;err&quot;&gt;Пропущено нечисловых значений: &#x27; + invalid + &#x27;&lt;/span&gt;&#x27; : &#x27;&#x27;}`);
+}
+
+function resetArr() {
+  $(&#x27;arr&#x27;).value = &#x27;12, 7, 23, 45, 18, 31, 6, 2, 19, 8&#x27;;
+  runAll();
+}
+
+runAll();</pre></details>
+<div class="navbtns" style="margin-top:22px"><button class="btn" disabled>← Пред.</button><button class="btn" onclick="location.href='пр03_зад2_самое_длинноекороткое_слово_и_группировка_по_длине.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР03 · страница 1 из 144</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+
+function isPrime(num) {
+  if (!Number.isInteger(num) || num < 2) return false;
+  if (num === 2) return true;
+  if (num % 2 === 0) return false;
+  for (let i = 3; i * i <= num; i += 2) {
+    if (num % i === 0) return false;
+  }
+  return true;
+}
+
+function getPrimes(arr) {
+  return arr.filter(isPrime);
+}
+
+function getSquares(arr) {
+  return arr.map(num => num * num);
+}
+
+function getProduct(arr) {
+  return arr.reduce((acc, current) => acc * current, 1);
+}
+
+function parseArray(text) {
+  return text.split(/[,\s;]+/).filter(Boolean).map(Number).filter(n => Number.isFinite(n));
+}
+
+function fmt(list) {
+  return '[' + list.join(', ') + ']';
+}
+
+function runAll() {
+  const numbers = parseArray($('arr').value);
+  if (numbers.length === 0) {
+    $('result').innerHTML = '';
+    out('<span class="err">Введите хотя бы одно число</span>');
+    return;
+  }
+
+  const primes = getPrimes(numbers);
+  const squares = getSquares(numbers);
+  const product = getProduct(numbers);
+  const invalid = $('arr').value.split(/[,\s;]+/).filter(Boolean).length - numbers.length;
+
+  $('result').innerHTML = `
+    <div class="item"><span>Исходный массив</span><b>${fmt(numbers)}</b></div>
+    <div class="item"><span>getPrimes()</span><b>${fmt(primes)}</b></div>
+    <div class="item"><span>getSquares()</span><b>${fmt(squares)}</b></div>
+    <div class="item"><span>getProduct()</span><b>${product.toLocaleString('ru-RU')}</b></div>
+    <div class="item"><span>Проверка isPrime()</span><b>${numbers.map(n => n + ' → ' + isPrime(n)).join(', ')}</b></div>`;
+
+  out(`Простых чисел: <span class="hl">${primes.length}</span> из ${numbers.length}
+Произведение через reduce с начальным значением 1: <span class="ok">${product.toLocaleString('ru-RU')}</span>
+${invalid ? '<span class="err">Пропущено нечисловых значений: ' + invalid + '</span>' : ''}`);
+}
+
+function resetArr() {
+  $('arr').value = '12, 7, 23, 45, 18, 31, 6, 2, 19, 8';
+  runAll();
+}
+
+runAll();
+
+</script>
 </body>
 </html>

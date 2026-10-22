@@ -2,216 +2,132 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>ПР18 • Зад.5 • Темный режим</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
-    min-height: 100vh;
-    padding: 30px 20px;
-    color: #1a1a2e;
-    transition: background 0.5s, color 0.5s;
-  }
-  body.dark-mode {
-    background: #1a1a1a;
-    color: #ffffff;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
-  .top-link:hover { text-decoration: underline; }
-  body.dark-mode .top-link { color: #6c8cff; }
-  .nav {
-    display: flex; justify-content: space-between; align-items: center;
-    margin: 14px 0 20px; padding: 10px 16px;
-    background: white; border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transition: background 0.5s;
-  }
-  body.dark-mode .nav {
-    background: #2a2a2a;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .nav a {
-    color: #4a6cf7; text-decoration: none; font-weight: 600;
-    padding: 6px 14px; border-radius: 6px;
-  }
-  .nav a:hover { background: #e8edf9; }
-  body.dark-mode .nav a { color: #6c8cff; }
-  body.dark-mode .nav a:hover { background: #3a3a3a; }
-  .badge {
-    display: inline-block; background: #4a6cf7; color: white;
-    padding: 4px 12px; border-radius: 12px; font-size: 13px;
-    margin-bottom: 12px;
-  }
-  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
-  .card {
-    background: white; border-radius: 14px; padding: 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
-    transition: background 0.5s;
-  }
-  body.dark-mode .card {
-    background: #2a2a2a;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  }
-  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
-  .task code {
-    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
-    font-family: 'Courier New', monospace; color: #d63384;
-  }
-  body.dark-mode .task code {
-    background: #3a3a3a;
-    color: #ff79c6;
-  }
-  .code-block {
-    background: #1a1a2e; color: #e0e0e0;
-    padding: 16px; border-radius: 8px;
-    font-family: 'Courier New', monospace; font-size: 13px;
-    line-height: 1.6; overflow-x: auto;
-    margin: 12px 0;
-  }
-  .code-block .keyword { color: #c792ea; }
-  .code-block .string { color: #c3e88d; }
-  .code-block .comment { color: #676e95; font-style: italic; }
-  .code-block .func { color: #82aaff; }
-  .preview {
-    background: #f8f9fc; border-radius: 8px; padding: 16px;
-    margin: 12px 0; text-align: center;
-    transition: background 0.5s;
-  }
-  body.dark-mode .preview {
-    background: #3a3a3a;
-  }
-  .toggle-btn {
-    padding: 14px 28px; border: none; border-radius: 8px;
-    font-size: 16px; font-weight: 600; cursor: pointer;
-    transition: all 0.3s;
-  }
-  .toggle-btn.light {
-    background: #1a1a2e; color: white;
-  }
-  .toggle-btn.dark {
-    background: #ffffff; color: #1a1a2e;
-    border: 2px solid #1a1a2e;
-  }
-  .toggle-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-  .storage-info {
-    background: #fff3cd; border: 1px solid #ffc107;
-    padding: 10px; border-radius: 6px; font-size: 13px;
-    margin-top: 12px;
-  }
-  body.dark-mode .storage-info {
-    background: #4a3f1a;
-    border-color: #ffc107;
-    color: #ffd700;
-  }
-  .status {
-    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
-    font-size: 13px; background: #f0f2f5; min-height: 40px;
-    transition: background 0.5s;
-  }
-  body.dark-mode .status {
-    background: #3a3a3a;
-    color: #e0e0e0;
-  }
-  .status.ok { background: #d4edda; color: #155724; }
-  body.dark-mode .status.ok { background: #1a4a1a; color: #4ade80; }
-  .footer {
-    text-align: center; font-size: 12px; color: #888;
-    margin-top: 20px; padding-top: 16px;
-    border-top: 1px solid #e0e5ec;
-  }
-  body.dark-mode .footer {
-    border-top-color: #3a3a3a;
-  }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР18 • Зад.5 • Тёмный режим</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр18_зад4_счетчик_кликов.html'">← Пред.</button><button class="btn" onclick="location.href='пр18_зад6_контент_скрипт.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР18 • Зад.5</span>
+<h1>Тёмный режим</h1>
+<div class="desc">Задание 5: переключатель тёмного режима. Меняет фон на #1a1a1a и цвет текста на белый, состояние сохраняется в storage (здесь — <code>localStorage</code>).</div>
 
-  <div class="nav">
-    <a href="пр18_зад4_счетчик_кликов.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">ПР18 • Зад.5</span>
-    <a href="пр18_зад6_контент_скрипт.html">След. →</a>
+<div class="card">
+  <h2>Popup расширения</h2>
+  <div class="row">
+    <label class="pill" id="toggle"><input type="checkbox" id="dark" onchange="applyDark()"> Включить тёмный режим</label>
   </div>
-
-  <span class="badge">ПР18</span>
-  <h1>ПР18 • Зад.5 • Темный режим</h1>
-
-  <div class="card">
-    <div class="task">
-      Создайте расширение, которое добавляет переключатель темного режима. При включении: фон → <code>#1a1a1a</code>, текст → белый. Состояние сохраняется в <code>browser.storage.local</code>.
-    </div>
-
-    <div class="code-block">
-<span class="keyword">const</span> actions = {
-  <span class="func">toggleDarkMode</span>: <span class="keyword">function</span>() {
-    <span class="keyword">const</span> isDark = document.body.dataset.dark === <span class="string">'true'</span>;
-    <span class="keyword">if</span> (isDark) {
-      document.body.style.backgroundColor = <span class="string">''</span>;
-      document.body.style.color = <span class="string">''</span>;
-      document.body.dataset.dark = <span class="string">'false'</span>;
-    } <span class="keyword">else</span> {
-      document.body.style.backgroundColor = <span class="string">'#1a1a1a'</span>;
-      document.body.style.color = <span class="string">'#ffffff'</span>;
-      document.body.dataset.dark = <span class="string">'true'</span>;
-    }
-  }
-};
-    </div>
-
-    <div class="preview">
-      <button class="toggle-btn light" id="toggle-btn">🌙 Включить темный режим</button>
-      <div class="storage-info">
-        💾 Состояние сохраняется в <code>localStorage</code> (имитация <code>browser.storage.local</code>)
-      </div>
-    </div>
-
-    <div class="status" id="status">Текущий режим: светлый</div>
-  </div>
-
-  <div class="nav">
-    <a href="пр18_зад4_счетчик_кликов.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">стр. 59 из 82</span>
-    <a href="пр18_зад6_контент_скрипт.html">След. →</a>
-  </div>
-
-  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 59 из 82</div>
+  <div class="out" id="out"></div>
 </div>
 
-<script>
-// Загрузка состояния из localStorage
-const isDark = localStorage.getItem('darkMode') === 'true';
-if (isDark) {
-  document.body.classList.add('dark-mode');
-  document.body.dataset.dark = 'true';
-  document.getElementById('toggle-btn').textContent = '☀️ Выключить темный режим';
-  document.getElementById('toggle-btn').className = 'toggle-btn dark';
-  document.getElementById('status').textContent = 'Текущий режим: темный';
+<div class="preview" id="page">
+  <h3>Демо-страница сайта</h3>
+  <p>Это обычная страница, на которую расширение применяет свои действия.</p>
+  <h4>Заголовок второго уровня</h4>
+  <p>Расширение работает через <code>chrome.scripting.executeScript</code> или контент-скрипт.</p>
+  <ul><li>Первый пункт списка</li><li>Второй пункт списка</li></ul>
+</div>
+
+<details><summary>Показать код решения</summary><pre class="code">const KEY = &#x27;pr18_darkMode&#x27;;
+
+function applyDark() {
+  const isDark = $(&#x27;dark&#x27;).checked;
+  const page = $(&#x27;page&#x27;);
+  page.dataset.dark = String(isDark);
+  page.style.backgroundColor = isDark ? &#x27;#1a1a1a&#x27; : &#x27;&#x27;;
+  page.style.color = isDark ? &#x27;#ffffff&#x27; : &#x27;&#x27;;
+  localStorage.setItem(KEY, isDark ? &#x27;true&#x27; : &#x27;false&#x27;);
+  out(`Тёмный режим: &lt;span class=&quot;hl&quot;&gt;${isDark ? &#x27;включён&#x27; : &#x27;выключен&#x27;}&lt;/span&gt;
+Сохранено в storage: ${isDark}`);
 }
 
-document.getElementById('toggle-btn').addEventListener('click', function() {
-  const isDark = document.body.dataset.dark === 'true';
-  
-  if (isDark) {
-    document.body.classList.remove('dark-mode');
-    document.body.dataset.dark = 'false';
-    this.textContent = '🌙 Включить темный режим';
-    this.className = 'toggle-btn light';
-    localStorage.setItem('darkMode', 'false');
-    document.getElementById('status').textContent = '✅ Темный режим выключен';
-  } else {
-    document.body.classList.add('dark-mode');
-    document.body.dataset.dark = 'true';
-    this.textContent = '☀️ Выключить темный режим';
-    this.className = 'toggle-btn dark';
-    localStorage.setItem('darkMode', 'true');
-    document.getElementById('status').textContent = '✅ Темный режим включен';
-  }
-  
-  document.getElementById('status').className = 'status ok';
-});
+$(&#x27;dark&#x27;).checked = localStorage.getItem(KEY) === &#x27;true&#x27;;
+applyDark();</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр18_зад4_счетчик_кликов.html'">← Пред.</button><button class="btn" onclick="location.href='пр18_зад6_контент_скрипт.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР18 · страница 6 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const KEY = 'pr18_darkMode';
+
+function applyDark() {
+  const isDark = $('dark').checked;
+  const page = $('page');
+  page.dataset.dark = String(isDark);
+  page.style.backgroundColor = isDark ? '#1a1a1a' : '';
+  page.style.color = isDark ? '#ffffff' : '';
+  localStorage.setItem(KEY, isDark ? 'true' : 'false');
+  out(`Тёмный режим: <span class="hl">${isDark ? 'включён' : 'выключен'}</span>
+Сохранено в storage: ${isDark}`);
+}
+
+$('dark').checked = localStorage.getItem(KEY) === 'true';
+applyDark();
+
 </script>
 </body>
 </html>

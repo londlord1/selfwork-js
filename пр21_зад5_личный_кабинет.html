@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР21 • Зад.5 • Личный кабинет пользователя</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.service{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:8px 0;cursor:pointer;transition:.2s}
+.service:hover{border-color:#1a73e8;background:#eef6ff}
+.service.active{border-color:#1a73e8;box-shadow:0 0 0 2px #c7d2fe}
+.badge-status{font-size:12px;padding:2px 10px;border-radius:999px;background:#e0f2fe;color:#075985}
+.badge-status.done{background:#dcfce7;color:#166534}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр21_зад4_вход_по_снилс.html'">← Пред.</button><button class="btn" onclick="location.href='пр21_зад6_система_оповещений.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР21 • Зад.5</span>
+<h1>Личный кабинет пользователя</h1>
+<div class="desc">Задание 5: блок с личными данными — ФИО, контакты, СНИЛС, паспортные данные и история обращений из <code>userDB</code> и <code>historyDB</code>.</div>
+
+<div class="card">
+  <h2>Вход через Госуслуги</h2>
+  <div class="row">
+    <input id="login" placeholder="Логин" value="user123" style="min-width:150px">
+    <input id="password" placeholder="Пароль" type="password" value="password" style="min-width:150px">
+    <button class="btn" onclick="login()">Войти</button>
+    <span id="auth-status" class="muted">не авторизован</span>
+  </div>
+</div>
+
+<div class="card" id="cabinet" style="display:none">
+  <h2>Личный кабинет</h2>
+  <div id="user"></div>
+  <h2 style="margin-top:16px">История обращений</h2>
+  <div id="history"></div>
+</div>
+<div class="out" id="out">Войдите, чтобы увидеть личный кабинет.</div>
+<details><summary>Показать код решения</summary><pre class="code">const userDB = {
+  fio: &#x27;Иванов Иван Иванович&#x27;,
+  birth: &#x27;15.03.1990&#x27;,
+  email: &#x27;ivanov@example.ru&#x27;,
+  phone: &#x27;+7 (900) 123-45-67&#x27;,
+  snils: &#x27;123-456-789 00&#x27;,
+  passport: &#x27;45 12 № 345678, выдан ОВД Тверского района 20.04.2010&#x27;
+};
+
+const historyDB = [
+  { id: 101, service: &#x27;Замена паспорта&#x27;, date: &#x27;12.10.2026&#x27;, status: &#x27;в обработке&#x27; },
+  { id: 102, service: &#x27;Детские выплаты&#x27;, date: &#x27;01.10.2026&#x27;, status: &#x27;исполнено&#x27; },
+  { id: 103, service: &#x27;Запись к врачу&#x27;, date: &#x27;25.09.2026&#x27;, status: &#x27;исполнено&#x27; }
+];
+
+function login() {
+  const ok = $(&#x27;login&#x27;).value === &#x27;user123&#x27; &amp;&amp; $(&#x27;password&#x27;).value === &#x27;password&#x27;;
+  $(&#x27;auth-status&#x27;).textContent = ok ? &#x27;авторизован&#x27; : &#x27;не авторизован&#x27;;
+  $(&#x27;auth-status&#x27;).className = ok ? &#x27;ok&#x27; : &#x27;muted&#x27;;
+  if (!ok) {
+    $(&#x27;cabinet&#x27;).style.display = &#x27;none&#x27;;
+    out(&#x27;&lt;span class=&quot;err&quot;&gt;Неверный логин или пароль&lt;/span&gt;&#x27;);
+    return;
+  }
+  $(&#x27;cabinet&#x27;).style.display = &#x27;block&#x27;;
+  $(&#x27;user&#x27;).innerHTML = `
+    &lt;div class=&quot;item&quot;&gt;&lt;span class=&quot;muted&quot;&gt;ФИО&lt;/span&gt;&lt;b&gt;${esc(userDB.fio)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span class=&quot;muted&quot;&gt;Дата рождения&lt;/span&gt;&lt;b&gt;${esc(userDB.birth)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span class=&quot;muted&quot;&gt;Телефон&lt;/span&gt;&lt;b&gt;${esc(userDB.phone)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span class=&quot;muted&quot;&gt;E-mail&lt;/span&gt;&lt;b&gt;${esc(userDB.email)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span class=&quot;muted&quot;&gt;СНИЛС&lt;/span&gt;&lt;b&gt;${esc(userDB.snils)}&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;span class=&quot;muted&quot;&gt;Паспорт&lt;/span&gt;&lt;b&gt;${esc(userDB.passport)}&lt;/b&gt;&lt;/div&gt;`;
+  $(&#x27;history&#x27;).innerHTML = historyDB.map(h =&gt;
+    `&lt;div class=&quot;item&quot;&gt;&lt;span&gt;№${h.id} · ${esc(h.service)} · ${h.date}&lt;/span&gt;&lt;span class=&quot;badge-status ${h.status === &#x27;исполнено&#x27; ? &#x27;done&#x27; : &#x27;&#x27;}&quot;&gt;${esc(h.status)}&lt;/span&gt;&lt;/div&gt;`
+  ).join(&#x27;&#x27;);
+  out(&#x27;&lt;span class=&quot;ok&quot;&gt;Личный кабинет загружен&lt;/span&gt;&#x27;);
+}</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр21_зад4_вход_по_снилс.html'">← Пред.</button><button class="btn" onclick="location.href='пр21_зад6_система_оповещений.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР21 · страница 27 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const userDB = {
+  fio: 'Иванов Иван Иванович',
+  birth: '15.03.1990',
+  email: 'ivanov@example.ru',
+  phone: '+7 (900) 123-45-67',
+  snils: '123-456-789 00',
+  passport: '45 12 № 345678, выдан ОВД Тверского района 20.04.2010'
+};
+
+const historyDB = [
+  { id: 101, service: 'Замена паспорта', date: '12.10.2026', status: 'в обработке' },
+  { id: 102, service: 'Детские выплаты', date: '01.10.2026', status: 'исполнено' },
+  { id: 103, service: 'Запись к врачу', date: '25.09.2026', status: 'исполнено' }
+];
+
+function login() {
+  const ok = $('login').value === 'user123' && $('password').value === 'password';
+  $('auth-status').textContent = ok ? 'авторизован' : 'не авторизован';
+  $('auth-status').className = ok ? 'ok' : 'muted';
+  if (!ok) {
+    $('cabinet').style.display = 'none';
+    out('<span class="err">Неверный логин или пароль</span>');
+    return;
+  }
+  $('cabinet').style.display = 'block';
+  $('user').innerHTML = `
+    <div class="item"><span class="muted">ФИО</span><b>${esc(userDB.fio)}</b></div>
+    <div class="item"><span class="muted">Дата рождения</span><b>${esc(userDB.birth)}</b></div>
+    <div class="item"><span class="muted">Телефон</span><b>${esc(userDB.phone)}</b></div>
+    <div class="item"><span class="muted">E-mail</span><b>${esc(userDB.email)}</b></div>
+    <div class="item"><span class="muted">СНИЛС</span><b>${esc(userDB.snils)}</b></div>
+    <div class="item"><span class="muted">Паспорт</span><b>${esc(userDB.passport)}</b></div>`;
+  $('history').innerHTML = historyDB.map(h =>
+    `<div class="item"><span>№${h.id} · ${esc(h.service)} · ${h.date}</span><span class="badge-status ${h.status === 'исполнено' ? 'done' : ''}">${esc(h.status)}</span></div>`
+  ).join('');
+  out('<span class="ok">Личный кабинет загружен</span>');
+}
+
+</script>
+</body>
+</html>

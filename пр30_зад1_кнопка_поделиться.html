@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР30 • Зад.1 • React: кнопка «Поделиться»</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.quote{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin:10px 0;position:relative}
+.quote-text{font-size:16px;line-height:1.6;font-style:italic}
+.quote-author{margin-top:8px;color:#64748b;font-size:14px;text-align:right}
+.quote-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.suggest{position:absolute;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.12);z-index:5;max-height:220px;overflow:auto;min-width:240px}
+.suggest div{padding:8px 12px;cursor:pointer;font-size:14px}
+.suggest div:hover{background:#eef6ff}
+.rel{position:relative}
+.fade{animation:fadeIn .35s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр29_зад7_интервальная_тренировка.html'">← Пред.</button><button class="btn" onclick="location.href='пр30_зад2_выбор_количества_цитат.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР30 • Зад.1</span>
+<h1>React: кнопка «Поделиться»</h1>
+<div class="desc">Задание 1: цитату можно скопировать в буфер обмена через <code>navigator.clipboard.writeText()</code> (с запасным вариантом через textarea) и отправить через <code>navigator.share</code>.</div>
+<div id="root"></div>
+<details><summary>Показать код решения</summary><pre class="code">const { useState } = React;
+
+const QUOTES = [
+  { _id: &#x27;q1&#x27;, content: &#x27;Мы то, что мы делаем постоянно. Совершенство — не действие, а привычка.&#x27;, author: &#x27;Аристотель&#x27; },
+  { _id: &#x27;q2&#x27;, content: &#x27;Единственный способ сделать великую работу — любить то, что делаешь.&#x27;, author: &#x27;Стив Джобс&#x27; },
+  { _id: &#x27;q3&#x27;, content: &#x27;Жизнь — это то, что происходит с тобой, пока ты строишь планы.&#x27;, author: &#x27;Джон Леннон&#x27; }
+];
+
+function App() {
+  const [index, setIndex] = useState(0);
+  const [message, setMessage] = useState(&#x27;&#x27;);
+  const quote = QUOTES[index];
+
+  const copyText = async (text) =&gt; {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      const ta = document.createElement(&#x27;textarea&#x27;);
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand(&#x27;copy&#x27;);
+      document.body.removeChild(ta);
+      return ok;
+    }
+  };
+
+  const shareQuote = async () =&gt; {
+    const text = `${quote.content} — ${quote.author}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: &#x27;Цитата дня&#x27;, text });
+        setMessage(&#x27;Отправлено через системный Share API&#x27;);
+        return;
+      } catch (e) { /* пользователь отменил */ }
+    }
+    const ok = await copyText(text);
+    setMessage(ok ? &#x27;✅ Цитата скопирована в буфер обмена&#x27; : &#x27;❌ Не удалось скопировать&#x27;);
+  };
+
+  return (
+    &lt;div className=&quot;card&quot;&gt;
+      &lt;h2&gt;Цитата дня&lt;/h2&gt;
+      &lt;div className=&quot;quote fade&quot; key={quote._id}&gt;
+        &lt;div className=&quot;quote-text&quot;&gt;«{quote.content}»&lt;/div&gt;
+        &lt;div className=&quot;quote-author&quot;&gt;— {quote.author}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;quote-actions&quot;&gt;
+        &lt;button className=&quot;rbtn&quot; onClick={shareQuote}&gt;📋 Поделиться&lt;/button&gt;
+        &lt;button className=&quot;rbtn gray&quot; onClick={() =&gt; setIndex((index + 1) % QUOTES.length)}&gt;Другая цитата&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;p className=&quot;muted&quot; style={{ marginTop: 10 }}&gt;{message}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр29_зад7_интервальная_тренировка.html'">← Пред.</button><button class="btn" onclick="location.href='пр30_зад2_выбор_количества_цитат.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР30 · страница 70 из 90</footer>
+</div>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+
+const { useState } = React;
+
+const QUOTES = [
+  { _id: 'q1', content: 'Мы то, что мы делаем постоянно. Совершенство — не действие, а привычка.', author: 'Аристотель' },
+  { _id: 'q2', content: 'Единственный способ сделать великую работу — любить то, что делаешь.', author: 'Стив Джобс' },
+  { _id: 'q3', content: 'Жизнь — это то, что происходит с тобой, пока ты строишь планы.', author: 'Джон Леннон' }
+];
+
+function App() {
+  const [index, setIndex] = useState(0);
+  const [message, setMessage] = useState('');
+  const quote = QUOTES[index];
+
+  const copyText = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    }
+  };
+
+  const shareQuote = async () => {
+    const text = `${quote.content} — ${quote.author}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Цитата дня', text });
+        setMessage('Отправлено через системный Share API');
+        return;
+      } catch (e) { /* пользователь отменил */ }
+    }
+    const ok = await copyText(text);
+    setMessage(ok ? '✅ Цитата скопирована в буфер обмена' : '❌ Не удалось скопировать');
+  };
+
+  return (
+    <div className="card">
+      <h2>Цитата дня</h2>
+      <div className="quote fade" key={quote._id}>
+        <div className="quote-text">«{quote.content}»</div>
+        <div className="quote-author">— {quote.author}</div>
+      </div>
+      <div className="quote-actions">
+        <button className="rbtn" onClick={shareQuote}>📋 Поделиться</button>
+        <button className="rbtn gray" onClick={() => setIndex((index + 1) % QUOTES.length)}>Другая цитата</button>
+      </div>
+      <p className="muted" style={{ marginTop: 10 }}>{message}</p>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+</body>
+</html>

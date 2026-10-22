@@ -2,165 +2,148 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ПР18 • Зад.3 • Смена размера шрифта</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
-    min-height: 100vh;
-    padding: 30px 20px;
-    color: #1a1a2e;
-    font-size: 16px;
-    transition: font-size 0.3s;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
-  .top-link:hover { text-decoration: underline; }
-  .nav {
-    display: flex; justify-content: space-between; align-items: center;
-    margin: 14px 0 20px; padding: 10px 16px;
-    background: white; border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .nav a {
-    color: #4a6cf7; text-decoration: none; font-weight: 600;
-    padding: 6px 14px; border-radius: 6px;
-  }
-  .nav a:hover { background: #e8edf9; }
-  .badge {
-    display: inline-block; background: #4a6cf7; color: white;
-    padding: 4px 12px; border-radius: 12px; font-size: 13px;
-    margin-bottom: 12px;
-  }
-  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
-  .card {
-    background: white; border-radius: 14px; padding: 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
-  }
-  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
-  .task code {
-    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
-    font-family: 'Courier New', monospace; color: #d63384;
-  }
-  .code-block {
-    background: #1a1a2e; color: #e0e0e0;
-    padding: 16px; border-radius: 8px;
-    font-family: 'Courier New', monospace; font-size: 13px;
-    line-height: 1.6; overflow-x: auto;
-    margin: 12px 0;
-  }
-  .code-block .keyword { color: #c792ea; }
-  .code-block .string { color: #c3e88d; }
-  .code-block .comment { color: #676e95; font-style: italic; }
-  .code-block .func { color: #82aaff; }
-  .preview {
-    background: #f8f9fc; border-radius: 8px; padding: 16px;
-    margin: 12px 0; text-align: center;
-  }
-  .preview-buttons {
-    display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;
-  }
-  .btn {
-    padding: 10px 16px; border: none; border-radius: 6px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-  }
-  .btn-inc { background: #4CAF50; color: white; }
-  .btn-dec { background: #ff9800; color: white; }
-  .btn:hover { opacity: 0.9; }
-  .demo-text {
-    background: white; padding: 16px; border-radius: 8px;
-    border: 2px dashed #e0e5ec; margin-top: 12px;
-  }
-  .current-size {
-    display: inline-block; background: #4a6cf7; color: white;
-    padding: 4px 12px; border-radius: 12px; font-size: 13px;
-    margin-top: 8px;
-  }
-  .status {
-    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
-    font-size: 13px; background: #f0f2f5; min-height: 40px;
-  }
-  .status.ok { background: #d4edda; color: #155724; }
-  .footer {
-    text-align: center; font-size: 12px; color: #888;
-    margin-top: 20px; padding-top: 16px;
-    border-top: 1px solid #e0e5ec;
-  }
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр18_зад2_добавить_кнопку.html'">← Пред.</button><button class="btn" onclick="location.href='пр18_зад4_счетчик_кликов.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР18 • Зад.3</span>
+<h1>Смена размера шрифта</h1>
+<div class="desc">Задание 3: кнопки «Увеличить шрифт» и «Уменьшить шрифт» меняют размер текста на странице на ±2px. Минимальный размер ограничен 8px.</div>
 
-  <div class="nav">
-    <a href="пр18_зад2_добавить_кнопку.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">ПР18 • Зад.3</span>
-    <a href="пр18_зад4_счетчик_кликов.html">След. →</a>
+<div class="card">
+  <h2>Popup расширения</h2>
+  <div class="row">
+    <button class="btn" onclick="executeInTab(actions.increaseFont)">A+ Увеличить шрифт</button>
+    <button class="btn orange" onclick="executeInTab(actions.decreaseFont)">A− Уменьшить шрифт</button>
+    <button class="btn gray" onclick="executeInTab(actions.resetFont)">Сброс</button>
   </div>
-
-  <span class="badge">ПР18</span>
-  <h1>ПР18 • Зад.3 • Смена размера шрифта</h1>
-
-  <div class="card">
-    <div class="task">
-      Добавьте кнопки <code>«Увеличить шрифт»</code> и <code>«Уменьшить шрифт»</code>, которые меняют размер текста на странице.
-    </div>
-
-    <div class="code-block">
-<span class="keyword">const</span> actions = {
-  <span class="func">increaseFont</span>: <span class="keyword">function</span>() {
-    <span class="keyword">const</span> currentSize = parseFloat(document.body.style.fontSize) || <span class="string">16</span>;
-    document.body.style.fontSize = (currentSize + <span class="string">2</span>) + <span class="string">'px'</span>;
-  },
-  <span class="func">decreaseFont</span>: <span class="keyword">function</span>() {
-    <span class="keyword">const</span> currentSize = parseFloat(document.body.style.fontSize) || <span class="string">16</span>;
-    document.body.style.fontSize = Math.max(<span class="string">8</span>, currentSize - <span class="string">2</span>) + <span class="string">'px'</span>;
-  }
-};
-    </div>
-
-    <div class="preview">
-      <div class="preview-buttons">
-        <button class="btn btn-inc" id="inc-btn">🔼 Увеличить шрифт</button>
-        <button class="btn btn-dec" id="dec-btn">🔽 Уменьшить шрифт</button>
-      </div>
-      <div class="demo-text" id="demo-text">
-        Это демонстрационный текст. Нажмите кнопки выше, чтобы изменить его размер.
-      </div>
-      <div class="current-size" id="size-display">Текущий размер: 16px</div>
-    </div>
-
-    <div class="status" id="status">Используйте кнопки для изменения размера шрифта.</div>
-  </div>
-
-  <div class="nav">
-    <a href="пр18_зад2_добавить_кнопку.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">стр. 57 из 82</span>
-    <a href="пр18_зад4_счетчик_кликов.html">След. →</a>
-  </div>
-
-  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 57 из 82</div>
+  <div class="out" id="out">Текущий размер: 16px</div>
 </div>
 
+<div class="preview" id="page">
+  <h3>Демо-страница сайта</h3>
+  <p>Это обычная страница, на которую расширение применяет свои действия.</p>
+  <h4>Заголовок второго уровня</h4>
+  <p>Расширение работает через <code>chrome.scripting.executeScript</code> или контент-скрипт.</p>
+  <ul><li>Первый пункт списка</li><li>Второй пункт списка</li></ul>
+</div>
+
+<details><summary>Показать код решения</summary><pre class="code">const actions = {
+  increaseFont() {
+    const current = parseFloat($(&#x27;page&#x27;).style.fontSize) || 16;
+    $(&#x27;page&#x27;).style.fontSize = (current + 2) + &#x27;px&#x27;;
+    report();
+  },
+  decreaseFont() {
+    const current = parseFloat($(&#x27;page&#x27;).style.fontSize) || 16;
+    $(&#x27;page&#x27;).style.fontSize = Math.max(8, current - 2) + &#x27;px&#x27;;
+    report();
+  },
+  resetFont() {
+    $(&#x27;page&#x27;).style.fontSize = &#x27;&#x27;;
+    report();
+  }
+};
+
+function report() {
+  out(`Текущий размер: &lt;span class=&quot;hl&quot;&gt;${parseFloat($(&#x27;page&#x27;).style.fontSize) || 16}px&lt;/span&gt;`);
+}
+
+function executeInTab(action) { action(); }</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр18_зад2_добавить_кнопку.html'">← Пред.</button><button class="btn" onclick="location.href='пр18_зад4_счетчик_кликов.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР18 · страница 4 из 90</footer>
+</div>
 <script>
-let currentSize = 16;
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-document.getElementById('inc-btn').addEventListener('click', () => {
-  currentSize += 2;
-  document.body.style.fontSize = currentSize + 'px';
-  document.getElementById('size-display').textContent = `Текущий размер: ${currentSize}px`;
-  document.getElementById('status').textContent = `✅ Шрифт увеличен до ${currentSize}px`;
-  document.getElementById('status').className = 'status ok';
-});
+const actions = {
+  increaseFont() {
+    const current = parseFloat($('page').style.fontSize) || 16;
+    $('page').style.fontSize = (current + 2) + 'px';
+    report();
+  },
+  decreaseFont() {
+    const current = parseFloat($('page').style.fontSize) || 16;
+    $('page').style.fontSize = Math.max(8, current - 2) + 'px';
+    report();
+  },
+  resetFont() {
+    $('page').style.fontSize = '';
+    report();
+  }
+};
 
-document.getElementById('dec-btn').addEventListener('click', () => {
-  currentSize = Math.max(8, currentSize - 2);
-  document.body.style.fontSize = currentSize + 'px';
-  document.getElementById('size-display').textContent = `Текущий размер: ${currentSize}px`;
-  document.getElementById('status').textContent = `✅ Шрифт уменьшен до ${currentSize}px`;
-  document.getElementById('status').className = 'status ok';
-});
+function report() {
+  out(`Текущий размер: <span class="hl">${parseFloat($('page').style.fontSize) || 16}px</span>`);
+}
+
+function executeInTab(action) { action(); }
+
 </script>
 </body>
 </html>

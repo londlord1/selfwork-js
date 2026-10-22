@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР31 • Зад.5 • React: системы счисления</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.calc{max-width:520px;margin:0 auto}
+.calc-result{background:#0f172a;color:#4ade80;font-family:Consolas,monospace;font-size:26px;padding:16px;border-radius:10px;text-align:right;min-height:64px;margin:12px 0}
+.calc-error{color:#fca5a5;font-size:14px;min-height:20px}
+.keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.keypad button{padding:14px 0;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;font-size:17px;cursor:pointer}
+.keypad button:hover{background:#eef6ff}
+.keypad button.op{background:#e0f2fe}
+.keypad button.eq{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.mem-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр31_зад4_цифровая_клавиатура.html'">← Пред.</button><button class="btn" onclick="location.href='пр31_зад6_память_калькулятора.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР31 • Зад.5</span>
+<h1>React: системы счисления</h1>
+<div class="desc">Задание 5: переключение DEC / BIN / OCT / HEX. Число вводится в выбранной системе, результат показывается во всех четырёх.</div>
+<div id="root"></div>
+<details><summary>Показать код решения</summary><pre class="code">const { useState } = React;
+
+const BASES = [
+  { value: 2, label: &#x27;BIN&#x27; },
+  { value: 8, label: &#x27;OCT&#x27; },
+  { value: 10, label: &#x27;DEC&#x27; },
+  { value: 16, label: &#x27;HEX&#x27; }
+];
+
+function App() {
+  const [base, setBase] = useState(10);
+  const [value, setValue] = useState(&#x27;255&#x27;);
+
+  const parse = () =&gt; {
+    const cleaned = value.trim().toUpperCase();
+    if (!cleaned) return null;
+    const allowed = base === 2 ? /^[01]+$/ : base === 8 ? /^[0-7]+$/ : base === 10 ? /^\d+$/ : /^[0-9A-F]+$/;
+    if (!allowed.test(cleaned)) return NaN;
+    return parseInt(cleaned, base);
+  };
+
+  const decimal = parse();
+  const valid = decimal !== null &amp;&amp; !Number.isNaN(decimal);
+
+  return (
+    &lt;div className=&quot;card calc&quot;&gt;
+      &lt;h2&gt;Конвертер систем счисления&lt;/h2&gt;
+      &lt;div className=&quot;row&quot;&gt;
+        &lt;select value={base} onChange={(e) =&gt; setBase(Number(e.target.value))}&gt;
+          {BASES.map(b =&gt; &lt;option key={b.value} value={b.value}&gt;{b.label}&lt;/option&gt;)}
+        &lt;/select&gt;
+        &lt;input value={value} onChange={(e) =&gt; setValue(e.target.value)} style={{ flex: 1, minWidth: 180, fontFamily: &#x27;Consolas,monospace&#x27; }} /&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;calc-result&quot; style={{ fontSize: 18 }}&gt;
+        {valid ? (
+          &lt;div style={{ textAlign: &#x27;left&#x27;, lineHeight: 1.8 }}&gt;
+            &lt;div&gt;DEC: {decimal}&lt;/div&gt;
+            &lt;div&gt;BIN: {decimal.toString(2)}&lt;/div&gt;
+            &lt;div&gt;OCT: {decimal.toString(8)}&lt;/div&gt;
+            &lt;div&gt;HEX: {decimal.toString(16).toUpperCase()}&lt;/div&gt;
+          &lt;/div&gt;
+        ) : &#x27;—&#x27;}
+      &lt;/div&gt;
+      &lt;div className=&quot;calc-error&quot;&gt;{decimal !== null &amp;&amp; Number.isNaN(decimal) ? &#x27;Недопустимые символы для выбранной системы&#x27; : &#x27;&#x27;}&lt;/div&gt;
+      &lt;p className=&quot;muted&quot;&gt;parseInt(value, base).toString(base)&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр31_зад4_цифровая_клавиатура.html'">← Пред.</button><button class="btn" onclick="location.href='пр31_зад6_память_калькулятора.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР31 · страница 81 из 90</footer>
+</div>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+
+const { useState } = React;
+
+const BASES = [
+  { value: 2, label: 'BIN' },
+  { value: 8, label: 'OCT' },
+  { value: 10, label: 'DEC' },
+  { value: 16, label: 'HEX' }
+];
+
+function App() {
+  const [base, setBase] = useState(10);
+  const [value, setValue] = useState('255');
+
+  const parse = () => {
+    const cleaned = value.trim().toUpperCase();
+    if (!cleaned) return null;
+    const allowed = base === 2 ? /^[01]+$/ : base === 8 ? /^[0-7]+$/ : base === 10 ? /^\d+$/ : /^[0-9A-F]+$/;
+    if (!allowed.test(cleaned)) return NaN;
+    return parseInt(cleaned, base);
+  };
+
+  const decimal = parse();
+  const valid = decimal !== null && !Number.isNaN(decimal);
+
+  return (
+    <div className="card calc">
+      <h2>Конвертер систем счисления</h2>
+      <div className="row">
+        <select value={base} onChange={(e) => setBase(Number(e.target.value))}>
+          {BASES.map(b => <option key={b.value} value={b.value}>{b.label}</option>)}
+        </select>
+        <input value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1, minWidth: 180, fontFamily: 'Consolas,monospace' }} />
+      </div>
+      <div className="calc-result" style={{ fontSize: 18 }}>
+        {valid ? (
+          <div style={{ textAlign: 'left', lineHeight: 1.8 }}>
+            <div>DEC: {decimal}</div>
+            <div>BIN: {decimal.toString(2)}</div>
+            <div>OCT: {decimal.toString(8)}</div>
+            <div>HEX: {decimal.toString(16).toUpperCase()}</div>
+          </div>
+        ) : '—'}
+      </div>
+      <div className="calc-error">{decimal !== null && Number.isNaN(decimal) ? 'Недопустимые символы для выбранной системы' : ''}</div>
+      <p className="muted">parseInt(value, base).toString(base)</p>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР20 • Зад.7 • 3D-анимация карточки</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.card3d{width:100%;max-width:360px;aspect-ratio:1.586;border-radius:16px;padding:20px;color:#fff;
+background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);box-shadow:0 12px 30px rgba(0,0,0,.25);
+display:flex;flex-direction:column;justify-content:space-between;transition:transform .6s,background .3s;transform-style:preserve-3d}
+.card3d.visa{background:linear-gradient(135deg,#1a1a2e,#0f3460)}
+.card3d.mastercard{background:linear-gradient(135deg,#3a1c1c,#8e2de2)}
+.card3d.mir{background:linear-gradient(135deg,#0f5132,#1e7e34)}
+.card3d.unionpay{background:linear-gradient(135deg,#d52b1e,#b71c1c)}
+.card3d.flip{transform:rotateY(180deg)}
+.card3d .num{font:600 20px/1.4 Consolas,monospace;letter-spacing:2px}
+.card3d .lbl{font-size:10px;letter-spacing:2px;opacity:.7;text-transform:uppercase}
+.card3d .brand{font-size:22px;font-weight:700;text-align:right}
+
+.card3d{transform-style:preserve-3d;perspective:1000px}
+#card:hover{transform:rotateY(12deg) rotateX(6deg) scale(1.02)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр20_зад6_несколько_валют.html'">← Пред.</button><button class="btn" onclick="location.href='пр21_зад1_новая_услуга.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР20 • Зад.7</span>
+<h1>3D-анимация карточки</h1>
+<div class="desc">Задание 7: карточка поворачивается в 3D при наведении и переворачивается на 180° по кнопке (показывает «оборот» с CVV).</div>
+
+<div class="row">
+  <button class="btn" onclick="flip()">🔄 Перевернуть карточку</button>
+  <button class="btn gray" onclick="reset()">Сброс</button>
+</div>
+
+<div class="row">
+  <div class="card3d" id="card">
+    <div class="row" style="justify-content:space-between;margin:0">
+      <span class="brand" id="brand">CARD</span>
+      <span class="brand" id="currency-badge"></span>
+    </div>
+    <div>
+      <div class="lbl">Номер карты</div>
+      <div class="num" id="num">•••• •••• •••• ••••</div>
+    </div>
+    <div class="row" style="justify-content:space-between;margin:0">
+      <div><div class="lbl">Владелец</div><div id="holder">ИМЯ ФАМИЛИЯ</div></div>
+      <div><div class="lbl">Срок</div><div id="expiry">MM/YY</div></div>
+      <div><div class="lbl">CVV</div><div id="cvv">•••</div></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <input id="number" placeholder="0000 0000 0000 0000" maxlength="19" style="flex:1;min-width:220px">
+  <input id="holder-input" placeholder="IVAN IVANOV" style="flex:1;min-width:160px">
+  <input id="expiry-input" placeholder="MM/YY" maxlength="5" style="width:100px">
+  <input id="cvv-input" placeholder="CVV" maxlength="4" style="width:80px">
+</div>
+
+<div class="out" id="out">Наведите курсор на карточку или нажмите «Перевернуть».</div>
+<details><summary>Показать код решения</summary><pre class="code">function maskNumber(value) {
+  const digits = String(value).replace(/\D/g, &#x27;&#x27;);
+  let out = &#x27;&#x27;;
+  for (let i = 0; i &lt; 16; i++) {
+    out += digits[i] || &#x27;•&#x27;;
+    if (i % 4 === 3 &amp;&amp; i &lt; 15) out += &#x27; &#x27;;
+  }
+  return out;
+}
+
+let flipped = false;
+
+function flip() {
+  flipped = !flipped;
+  $(&#x27;card&#x27;).classList.toggle(&#x27;flip&#x27;, flipped);
+  out(`Карточка перевёрнута: &lt;span class=&quot;hl&quot;&gt;${flipped ? &#x27;да&#x27; : &#x27;нет&#x27;}&lt;/span&gt;`);
+}
+
+function reset() {
+  flipped = false;
+  $(&#x27;card&#x27;).classList.remove(&#x27;flip&#x27;);
+  $(&#x27;card&#x27;).style.transform = &#x27;&#x27;;
+  out(&#x27;Анимация сброшена&#x27;);
+}
+
+function updateCard() {
+  const digits = $(&#x27;number&#x27;).value.replace(/\D/g, &#x27;&#x27;);
+  $(&#x27;num&#x27;).textContent = maskNumber(digits);
+  $(&#x27;holder&#x27;).textContent = ($(&#x27;holder-input&#x27;).value || &#x27;ИМЯ ФАМИЛИЯ&#x27;).toUpperCase();
+  $(&#x27;expiry&#x27;).textContent = $(&#x27;expiry-input&#x27;).value || &#x27;MM/YY&#x27;;
+  $(&#x27;cvv&#x27;).textContent = &#x27;•&#x27;.repeat($(&#x27;cvv-input&#x27;).value.length) || &#x27;•••&#x27;;
+  $(&#x27;brand&#x27;).textContent = &#x27;💳 CARD&#x27;;
+}
+
+[&#x27;number&#x27;, &#x27;holder-input&#x27;, &#x27;expiry-input&#x27;, &#x27;cvv-input&#x27;].forEach(id =&gt; $(id).addEventListener(&#x27;input&#x27;, updateCard));
+$(&#x27;number&#x27;).addEventListener(&#x27;input&#x27;, function () {
+  this.value = this.value.replace(/\D/g, &#x27;&#x27;).slice(0, 19).replace(/(.{4})/g, &#x27;$1 &#x27;).trim();
+});
+$(&#x27;cvv-input&#x27;).addEventListener(&#x27;input&#x27;, function () {
+  const d = this.value.replace(/\D/g, &#x27;&#x27;).slice(0, 4);
+  this.value = &#x27;•&#x27;.repeat(d.length);
+});
+updateCard();</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр20_зад6_несколько_валют.html'">← Пред.</button><button class="btn" onclick="location.href='пр21_зад1_новая_услуга.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР20 · страница 22 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function maskNumber(value) {
+  const digits = String(value).replace(/\D/g, '');
+  let out = '';
+  for (let i = 0; i < 16; i++) {
+    out += digits[i] || '•';
+    if (i % 4 === 3 && i < 15) out += ' ';
+  }
+  return out;
+}
+
+let flipped = false;
+
+function flip() {
+  flipped = !flipped;
+  $('card').classList.toggle('flip', flipped);
+  out(`Карточка перевёрнута: <span class="hl">${flipped ? 'да' : 'нет'}</span>`);
+}
+
+function reset() {
+  flipped = false;
+  $('card').classList.remove('flip');
+  $('card').style.transform = '';
+  out('Анимация сброшена');
+}
+
+function updateCard() {
+  const digits = $('number').value.replace(/\D/g, '');
+  $('num').textContent = maskNumber(digits);
+  $('holder').textContent = ($('holder-input').value || 'ИМЯ ФАМИЛИЯ').toUpperCase();
+  $('expiry').textContent = $('expiry-input').value || 'MM/YY';
+  $('cvv').textContent = '•'.repeat($('cvv-input').value.length) || '•••';
+  $('brand').textContent = '💳 CARD';
+}
+
+['number', 'holder-input', 'expiry-input', 'cvv-input'].forEach(id => $(id).addEventListener('input', updateCard));
+$('number').addEventListener('input', function () {
+  this.value = this.value.replace(/\D/g, '').slice(0, 19).replace(/(.{4})/g, '$1 ').trim();
+});
+$('cvv-input').addEventListener('input', function () {
+  const d = this.value.replace(/\D/g, '').slice(0, 4);
+  this.value = '•'.repeat(d.length);
+});
+updateCard();
+
+</script>
+</body>
+</html>

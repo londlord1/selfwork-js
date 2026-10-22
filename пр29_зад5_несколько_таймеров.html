@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР29 • Зад.5 • React: несколько таймеров</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.timer{max-width:460px;margin:0 auto;text-align:center}
+.time{font-size:58px;font-weight:700;font-variant-numeric:tabular-nums;color:#1a73e8;line-height:1.1;margin:8px 0}
+.timer-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.timer-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin:10px 0}
+.finished{color:#f44336}
+.multi-timer{border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;margin:8px 0;text-align:left}
+.phase{display:inline-block;padding:4px 14px;border-radius:999px;font-weight:600;font-size:14px}
+.phase.work{background:#dcfce7;color:#166534}
+.phase.rest{background:#e0f2fe;color:#075985}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр29_зад4_круговой_прогресс.html'">← Пред.</button><button class="btn" onclick="location.href='пр29_зад6_таймер_в_localstorage.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР29 • Зад.5</span>
+<h1>React: несколько таймеров</h1>
+<div class="desc">Задание 5: кнопка «Добавить таймер» создаёт независимый таймер. Каждый работает со своим временем.</div>
+<div id="root"></div>
+<details><summary>Показать код решения</summary><pre class="code">const { useState, useEffect } = React;
+
+let nextId = 3;
+
+function App() {
+  const [timers, setTimers] = useState([
+    { id: 1, time: 10, initial: 10, active: false },
+    { id: 2, time: 20, initial: 20, active: false }
+  ]);
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; {
+      setTimers(list =&gt; list.map(t =&gt; t.active &amp;&amp; t.time &gt; 0 ? { ...t, time: Math.max(0, t.time - 1), active: t.time - 1 &gt; 0 } : t));
+    }, 1000);
+    return () =&gt; clearInterval(id);
+  }, []);
+
+  const update = (id, updates) =&gt; setTimers(list =&gt; list.map(t =&gt; t.id === id ? { ...t, ...updates } : t));
+
+  const addTimer = () =&gt; setTimers(list =&gt; [...list, { id: nextId++, time: 10, initial: 10, active: false }]);
+
+  return (
+    &lt;div className=&quot;card&quot;&gt;
+      &lt;h2&gt;Несколько таймеров&lt;/h2&gt;
+      &lt;button className=&quot;rbtn green&quot; onClick={addTimer}&gt;+ Добавить таймер&lt;/button&gt;
+      {timers.map(t =&gt; (
+        &lt;div className=&quot;multi-timer&quot; key={t.id}&gt;
+          &lt;div style={{ display: &#x27;flex&#x27;, justifyContent: &#x27;space-between&#x27;, alignItems: &#x27;center&#x27;, flexWrap: &#x27;wrap&#x27;, gap: 8 }}&gt;
+            &lt;b&gt;Таймер #{t.id}&lt;/b&gt;
+            &lt;span style={{ fontSize: 26, fontWeight: 700, color: t.time === 0 ? &#x27;#f44336&#x27; : &#x27;#1a73e8&#x27; }}&gt;
+              {String(Math.floor(t.time / 60)).padStart(2, &#x27;0&#x27;)}:{String(t.time % 60).padStart(2, &#x27;0&#x27;)}
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;timer-btns&quot; style={{ justifyContent: &#x27;flex-start&#x27; }}&gt;
+            &lt;button className=&quot;rbtn&quot; onClick={() =&gt; update(t.id, { active: !t.active })}&gt;
+              {t.active ? &#x27;Пауза&#x27; : &#x27;Старт&#x27;}
+            &lt;/button&gt;
+            &lt;button className=&quot;rbtn gray&quot; onClick={() =&gt; update(t.id, { active: false, time: t.initial })}&gt;Сброс&lt;/button&gt;
+            &lt;button className=&quot;rbtn red&quot; onClick={() =&gt; setTimers(list =&gt; list.filter(x =&gt; x.id !== t.id))}&gt;Удалить&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр29_зад4_круговой_прогресс.html'">← Пред.</button><button class="btn" onclick="location.href='пр29_зад6_таймер_в_localstorage.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР29 · страница 67 из 90</footer>
+</div>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+
+const { useState, useEffect } = React;
+
+let nextId = 3;
+
+function App() {
+  const [timers, setTimers] = useState([
+    { id: 1, time: 10, initial: 10, active: false },
+    { id: 2, time: 20, initial: 20, active: false }
+  ]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTimers(list => list.map(t => t.active && t.time > 0 ? { ...t, time: Math.max(0, t.time - 1), active: t.time - 1 > 0 } : t));
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const update = (id, updates) => setTimers(list => list.map(t => t.id === id ? { ...t, ...updates } : t));
+
+  const addTimer = () => setTimers(list => [...list, { id: nextId++, time: 10, initial: 10, active: false }]);
+
+  return (
+    <div className="card">
+      <h2>Несколько таймеров</h2>
+      <button className="rbtn green" onClick={addTimer}>+ Добавить таймер</button>
+      {timers.map(t => (
+        <div className="multi-timer" key={t.id}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+            <b>Таймер #{t.id}</b>
+            <span style={{ fontSize: 26, fontWeight: 700, color: t.time === 0 ? '#f44336' : '#1a73e8' }}>
+              {String(Math.floor(t.time / 60)).padStart(2, '0')}:{String(t.time % 60).padStart(2, '0')}
+            </span>
+          </div>
+          <div className="timer-btns" style={{ justifyContent: 'flex-start' }}>
+            <button className="rbtn" onClick={() => update(t.id, { active: !t.active })}>
+              {t.active ? 'Пауза' : 'Старт'}
+            </button>
+            <button className="rbtn gray" onClick={() => update(t.id, { active: false, time: t.initial })}>Сброс</button>
+            <button className="rbtn red" onClick={() => setTimers(list => list.filter(x => x.id !== t.id))}>Удалить</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+</body>
+</html>

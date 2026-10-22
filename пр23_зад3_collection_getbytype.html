@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР23 • Зад.3 • Класс Collection</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.book{background:#fff;border:1px solid #e2e8f0;border-left:4px solid #1a73e8;border-radius:10px;padding:12px 14px;margin:8px 0}
+.book b{color:#0f172a}
+.book .meta{font-size:13px;color:#64748b;margin-top:4px}
+.stars{color:#f59e0b;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр23_зад2_audiobook_skipto.html'">← Пред.</button><button class="btn" onclick="location.href='пр24_зад1_редактирование_книги.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР23 • Зад.3</span>
+<h1>Класс Collection</h1>
+<div class="desc">Задание 3: коллекция книг с методами <code>addBook()</code>, <code>getAllBooks()</code> и <code>getByType()</code>. Тип определяется через <code>instanceof</code>.</div>
+
+<div class="card">
+  <h2>Коллекция</h2>
+  <div class="row">
+    <button class="btn" onclick="add('book')">+ Обычная книга</button>
+    <button class="btn green" onclick="add('ebook')">+ Электронная</button>
+    <button class="btn orange" onclick="add('audiobook')">+ Аудиокнига</button>
+  </div>
+  <div class="row">
+    <button class="btn gray" onclick="show('all')">getAllBooks()</button>
+    <button class="btn gray" onclick="show('book')">getByType('book')</button>
+    <button class="btn gray" onclick="show('ebook')">getByType('ebook')</button>
+    <button class="btn gray" onclick="show('audiobook')">getByType('audiobook')</button>
+  </div>
+  <div id="list"></div>
+  <div class="out" id="out"></div>
+</div>
+<details><summary>Показать код решения</summary><pre class="code">class Book {
+  constructor(title) { this.title = title; this.type = &#x27;book&#x27;; }
+  getInfo() { return `${this.title} (печатная книга)`; }
+}
+class EBook extends Book {
+  constructor(title, fileSize) { super(title); this.type = &#x27;ebook&#x27;; this.fileSize = fileSize; }
+  getInfo() { return `${this.title} (электронная, ${this.fileSize} МБ)`; }
+}
+class AudioBook extends Book {
+  constructor(title, duration) { super(title); this.type = &#x27;audiobook&#x27;; this.duration = duration; }
+  getInfo() { return `${this.title} (аудиокнига, ${this.duration} мин)`; }
+}
+
+class Collection {
+  constructor() { this.books = []; }
+  addBook(book) { this.books.push(book); return this; }
+  getAllBooks() { return this.books; }
+  getByType(type) {
+    if (type === &#x27;ebook&#x27;) return this.books.filter(b =&gt; b instanceof EBook);
+    if (type === &#x27;audiobook&#x27;) return this.books.filter(b =&gt; b instanceof AudioBook);
+    if (type === &#x27;book&#x27;) return this.books.filter(b =&gt; !(b instanceof EBook) &amp;&amp; !(b instanceof AudioBook));
+    return this.books;
+  }
+}
+
+const collection = new Collection();
+let counter = 0;
+
+function add(type) {
+  counter++;
+  if (type === &#x27;ebook&#x27;) collection.addBook(new EBook(&#x27;Электронная книга &#x27; + counter, 2 + counter));
+  else if (type === &#x27;audiobook&#x27;) collection.addBook(new AudioBook(&#x27;Аудиокнига &#x27; + counter, 120 + counter * 10));
+  else collection.addBook(new Book(&#x27;Печатная книга &#x27; + counter));
+  show(&#x27;all&#x27;);
+}
+
+function show(type) {
+  const list = type === &#x27;all&#x27; ? collection.getAllBooks() : collection.getByType(type);
+  $(&#x27;list&#x27;).innerHTML = list.length
+    ? list.map(b =&gt; `&lt;div class=&quot;book&quot;&gt;&lt;b&gt;${esc(b.getInfo())}&lt;/b&gt;&lt;div class=&quot;meta&quot;&gt;type: ${b.type}&lt;/div&gt;&lt;/div&gt;`).join(&#x27;&#x27;)
+    : &#x27;&lt;p class=&quot;muted&quot;&gt;В этой категории пусто.&lt;/p&gt;&#x27;;
+  out(`getByType(&#x27;${type}&#x27;) → &lt;span class=&quot;hl&quot;&gt;${list.length}&lt;/span&gt; книг(и)`);
+}
+
+add(&#x27;book&#x27;);
+add(&#x27;ebook&#x27;);
+add(&#x27;audiobook&#x27;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр23_зад2_audiobook_skipto.html'">← Пред.</button><button class="btn" onclick="location.href='пр24_зад1_редактирование_книги.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР23 · страница 36 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+class Book {
+  constructor(title) { this.title = title; this.type = 'book'; }
+  getInfo() { return `${this.title} (печатная книга)`; }
+}
+class EBook extends Book {
+  constructor(title, fileSize) { super(title); this.type = 'ebook'; this.fileSize = fileSize; }
+  getInfo() { return `${this.title} (электронная, ${this.fileSize} МБ)`; }
+}
+class AudioBook extends Book {
+  constructor(title, duration) { super(title); this.type = 'audiobook'; this.duration = duration; }
+  getInfo() { return `${this.title} (аудиокнига, ${this.duration} мин)`; }
+}
+
+class Collection {
+  constructor() { this.books = []; }
+  addBook(book) { this.books.push(book); return this; }
+  getAllBooks() { return this.books; }
+  getByType(type) {
+    if (type === 'ebook') return this.books.filter(b => b instanceof EBook);
+    if (type === 'audiobook') return this.books.filter(b => b instanceof AudioBook);
+    if (type === 'book') return this.books.filter(b => !(b instanceof EBook) && !(b instanceof AudioBook));
+    return this.books;
+  }
+}
+
+const collection = new Collection();
+let counter = 0;
+
+function add(type) {
+  counter++;
+  if (type === 'ebook') collection.addBook(new EBook('Электронная книга ' + counter, 2 + counter));
+  else if (type === 'audiobook') collection.addBook(new AudioBook('Аудиокнига ' + counter, 120 + counter * 10));
+  else collection.addBook(new Book('Печатная книга ' + counter));
+  show('all');
+}
+
+function show(type) {
+  const list = type === 'all' ? collection.getAllBooks() : collection.getByType(type);
+  $('list').innerHTML = list.length
+    ? list.map(b => `<div class="book"><b>${esc(b.getInfo())}</b><div class="meta">type: ${b.type}</div></div>`).join('')
+    : '<p class="muted">В этой категории пусто.</p>';
+  out(`getByType('${type}') → <span class="hl">${list.length}</span> книг(и)`);
+}
+
+add('book');
+add('ebook');
+add('audiobook');
+
+</script>
+</body>
+</html>

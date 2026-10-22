@@ -6,11 +6,11 @@
 <title>ПР17 • Зад.1 • Инкапсуляция. Ограниченный счётчик</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
-.wrap{max-width:860px;margin:0 auto}
+.wrap{max-width:900px;margin:0 auto}
 .topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
 .topnav a:hover{text-decoration:underline}
-.navbtns{display:flex;gap:8px}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
 .navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
 .navbtns .btn:hover{background:#eef6ff}
 .navbtns .btn:disabled{opacity:.4;cursor:default}
@@ -24,7 +24,9 @@ h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
 .btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
 .btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
 .btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
-input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
 input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
 label{font-size:14px;color:#555}
 .out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
@@ -36,57 +38,179 @@ footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
 ol{padding-left:20px}
 ol li{margin:6px 0}
 ol a{color:#0b57d0;text-decoration:none;font-size:15px}
-ol a:hover{text-decoration:underline}</style>
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+</style>
 </head>
 <body>
 <div class="wrap">
 <div class="topnav">
   <a href="index.html">« Хаб самостоятельных работ</a>
-  <div class="navbtns"><button class="btn" onclick="location.href='пр16_зад4_экспорт_данных_в_json.html'" >← Пред.</button><button class="btn" onclick="location.href='index.html'" >След. →</button></div>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр16_зад4_экспорт_данных_в_json.html'">← Пред.</button><button class="btn" onclick="location.href='пр18_зад1_изменить_приветствие.html'">След. →</button></div>
 </div>
-<span class="pr-tag">ПР17</span>
-<h1>ПР17 • Зад.1 • Инкапсуляция. Ограниченный счётчик</h1>
-<div class="desc">Модифицируйте счётчик так, чтобы он работал в заданном диапазоне: <code>createBoundedCounter(min, max)</code> — приватная переменная через замыкание, блокировка выхода за пределы, метод <code>getRange()</code>, <code>reset()</code> до min.</div>
+<span class="pr-tag">ПР17 • Зад.1</span>
+<h1>Инкапсуляция. Ограниченный счётчик</h1>
+<div class="desc">Фабричная функция <code>createBoundedCounter(min, max)</code>: приватная переменная через замыкание, блокировка выхода за пределы диапазона, методы <code>getRange()</code>, <code>getValue()</code> и <code>reset()</code> (сброс до <code>min</code>). Некорректный диапазон (min &gt; max) выбрасывает ошибку.</div>
 
 <div class="card">
-<h2>Создать счётчик</h2>
-<label>min:</label><input id="min" type="number" value="0" style="width:90px">
-<label>max:</label><input id="max" type="number" value="5" style="width:90px">
-<button class="btn green" onclick="createCounter()">🆕 Создать</button>
-<button class="btn red" onclick="resetCounter()">🔄 reset()</button>
+  <h2>1. Создание счётчика</h2>
+  <div class="row">
+    <label>min</label><input id="min" type="number" value="0" style="width:90px">
+    <label>max</label><input id="max" type="number" value="5" style="width:90px">
+    <button class="btn green" onclick="createCounter()">Создать</button>
+    <button class="btn red" onclick="resetCounter()">reset()</button>
+  </div>
+  <p class="muted">Попробуйте min = 5, max = 0 — фабрика выбросит ошибку.</p>
 </div>
 
 <div class="card">
-<h2>Действия</h2>
-<button class="btn" onclick="doIncrement()">➕ increment()</button>
-<button class="btn orange" onclick="doDecrement()">➖ decrement()</button>
-<button class="btn" onclick="showRange()">📊 getRange()</button>
-<button class="btn" onclick="showValue()">🔍 getValue()</button>
+  <h2>2. Публичный API</h2>
+  <div class="row">
+    <button class="btn" onclick="doIncrement()">increment()</button>
+    <button class="btn orange" onclick="doDecrement()">decrement()</button>
+    <button class="btn gray" onclick="showValue()">getValue()</button>
+    <button class="btn gray" onclick="showRange()">getRange()</button>
+  </div>
+  <div class="out" id="out">Сначала создайте счётчик.</div>
 </div>
 
-<div class="out" id="out">Нажмите «Создать», затем increment() / decrement(). Прямой доступ к счётчику снаружи невозможен.</div>
-
-<script>
-// ========== ФАБРИЧНАЯ ФУНКЦИЯ (инкапсуляция через замыкание) ==========
-function createBoundedCounter(min, max) {
-  // Проверка корректности диапазона
-  if (Number(min) > Number(max)) {
-    throw new Error(`Некорректный диапазон: min (${min}) больше max (${max})`);
-  }
+<details><summary>Показать код решения</summary><pre class="code">function createBoundedCounter(min, max) {
   min = Number(min);
   max = Number(max);
+  if (!Number.isFinite(min) || !Number.isFinite(max)) {
+    throw new Error(&#x27;min и max должны быть числами&#x27;);
+  }
+  if (min &gt; max) {
+    throw new Error(`Некорректный диапазон: min (${min}) больше max (${max})`);
+  }
 
-  // ========== ПРИВАТНАЯ ЗОНА ==========
-  let count = min; // начальное значение = min, доступно только внутри
+  let count = min;
 
   function log(operation) {
     console.log(`[${new Date().toLocaleTimeString()}] ${operation}: ${count} (${min}..${max})`);
   }
-  // ==================================
 
-  // ========== ПУБЛИЧНЫЙ API ==========
   return {
-    increment: function () {
+    increment() {
+      if (count &gt;= max) {
+        console.warn(`Достигнут максимум: ${max}`);
+        return { value: count, warning: `Достигнут максимум: ${max}` };
+      }
+      count++;
+      log(&#x27;INCREMENT&#x27;);
+      return { value: count };
+    },
+    decrement() {
+      if (count &lt;= min) {
+        console.warn(`Достигнут минимум: ${min}`);
+        return { value: count, warning: `Достигнут минимум: ${min}` };
+      }
+      count--;
+      log(&#x27;DECREMENT&#x27;);
+      return { value: count };
+    },
+    getValue() {
+      return count;
+    },
+    getRange() {
+      return { min, max, current: count };
+    },
+    reset() {
+      count = min;
+      log(&#x27;RESET&#x27;);
+      return { value: count };
+    }
+  };
+}
+
+let counter = null;
+
+function render(extra) {
+  const r = counter.getRange();
+  out(`&lt;span class=&quot;hl&quot;&gt;getRange()&lt;/span&gt; → ${JSON.stringify(r)}
+${extra || &#x27;&#x27;}
+&lt;span class=&quot;ok&quot;&gt;Приватность:&lt;/span&gt; counter.count = ${String(counter.count)} — прямого доступа нет`);
+}
+
+function createCounter() {
+  try {
+    counter = createBoundedCounter($(&#x27;min&#x27;).value, $(&#x27;max&#x27;).value);
+    render(`&lt;span class=&quot;ok&quot;&gt;Создан счётчик ${counter.getRange().min}..${counter.getRange().max}, текущее = ${counter.getValue()}&lt;/span&gt;`);
+  } catch (e) {
+    counter = null;
+    out(`&lt;span class=&quot;err&quot;&gt;Ошибка: ${esc(e.message)}&lt;/span&gt;`);
+  }
+}
+
+function need() {
+  if (!counter) { out(&#x27;&lt;span class=&quot;err&quot;&gt;Сначала создайте счётчик&lt;/span&gt;&#x27;); return false; }
+  return true;
+}
+
+function doIncrement() {
+  if (!need()) return;
+  const res = counter.increment();
+  render(res.warning ? `&lt;span class=&quot;err&quot;&gt;${res.warning}&lt;/span&gt;` : `increment() → &lt;span class=&quot;ok&quot;&gt;${res.value}&lt;/span&gt;`);
+}
+
+function doDecrement() {
+  if (!need()) return;
+  const res = counter.decrement();
+  render(res.warning ? `&lt;span class=&quot;err&quot;&gt;${res.warning}&lt;/span&gt;` : `decrement() → &lt;span class=&quot;ok&quot;&gt;${res.value}&lt;/span&gt;`);
+}
+
+function showValue() { if (need()) render(`getValue() → &lt;span class=&quot;ok&quot;&gt;${counter.getValue()}&lt;/span&gt;`); }
+function showRange() { if (need()) render(&#x27;&#x27;); }
+function resetCounter() { if (need()) render(`reset() → &lt;span class=&quot;ok&quot;&gt;${counter.reset().value}&lt;/span&gt;`); }
+
+createCounter();</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр16_зад4_экспорт_данных_в_json.html'">← Пред.</button><button class="btn" onclick="location.href='пр18_зад1_изменить_приветствие.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР17 · страница 1 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function createBoundedCounter(min, max) {
+  min = Number(min);
+  max = Number(max);
+  if (!Number.isFinite(min) || !Number.isFinite(max)) {
+    throw new Error('min и max должны быть числами');
+  }
+  if (min > max) {
+    throw new Error(`Некорректный диапазон: min (${min}) больше max (${max})`);
+  }
+
+  let count = min;
+
+  function log(operation) {
+    console.log(`[${new Date().toLocaleTimeString()}] ${operation}: ${count} (${min}..${max})`);
+  }
+
+  return {
+    increment() {
       if (count >= max) {
         console.warn(`Достигнут максимум: ${max}`);
         return { value: count, warning: `Достигнут максимум: ${max}` };
@@ -95,7 +219,7 @@ function createBoundedCounter(min, max) {
       log('INCREMENT');
       return { value: count };
     },
-    decrement: function () {
+    decrement() {
       if (count <= min) {
         console.warn(`Достигнут минимум: ${min}`);
         return { value: count, warning: `Достигнут минимум: ${min}` };
@@ -104,91 +228,62 @@ function createBoundedCounter(min, max) {
       log('DECREMENT');
       return { value: count };
     },
-    getValue: function () {
+    getValue() {
       return count;
     },
-    getRange: function () {
+    getRange() {
       return { min, max, current: count };
     },
-    reset: function () {
+    reset() {
       count = min;
       log('RESET');
       return { value: count };
     }
   };
-  // ==================================
 }
 
-// ========== UI / ТЕСТИРОВАНИЕ ==========
-let scoreCounter = null;
+let counter = null;
 
-function out(html) {
-  document.getElementById('out').innerHTML = html;
-}
-
-function renderStatus(extra = '') {
-  const r = scoreCounter.getRange();
+function render(extra) {
+  const r = counter.getRange();
   out(`<span class="hl">getRange()</span> → ${JSON.stringify(r)}
-${extra}
-<span class="ok">Приватность:</span> scoreCounter.count = ${String(scoreCounter.count)} (undefined — прямого доступа нет)`);
+${extra || ''}
+<span class="ok">Приватность:</span> counter.count = ${String(counter.count)} — прямого доступа нет`);
 }
 
 function createCounter() {
-  const min = Number(document.getElementById('min').value);
-  const max = Number(document.getElementById('max').value);
   try {
-    scoreCounter = createBoundedCounter(min, max);
-    renderStatus(`<span class="ok">Создан счётчик ${min}..${max}, текущее = ${scoreCounter.getValue()}</span>`);
+    counter = createBoundedCounter($('min').value, $('max').value);
+    render(`<span class="ok">Создан счётчик ${counter.getRange().min}..${counter.getRange().max}, текущее = ${counter.getValue()}</span>`);
   } catch (e) {
-    scoreCounter = null;
-    out(`<span class="err">Ошибка: ${e.message}</span>`);
+    counter = null;
+    out(`<span class="err">Ошибка: ${esc(e.message)}</span>`);
   }
 }
 
-function ensureCounter() {
-  if (!scoreCounter) {
-    out('<span class="err">Сначала создайте счётчик кнопкой «Создать»</span>');
-    return false;
-  }
+function need() {
+  if (!counter) { out('<span class="err">Сначала создайте счётчик</span>'); return false; }
   return true;
 }
 
 function doIncrement() {
-  if (!ensureCounter()) return;
-  const res = scoreCounter.increment();
-  if (res.warning) renderStatus(`<span class="err">${res.warning}</span>`);
-  else renderStatus(`increment() → <span class="ok">${res.value}</span>`);
+  if (!need()) return;
+  const res = counter.increment();
+  render(res.warning ? `<span class="err">${res.warning}</span>` : `increment() → <span class="ok">${res.value}</span>`);
 }
 
 function doDecrement() {
-  if (!ensureCounter()) return;
-  const res = scoreCounter.decrement();
-  if (res.warning) renderStatus(`<span class="err">${res.warning}</span>`);
-  else renderStatus(`decrement() → <span class="ok">${res.value}</span>`);
+  if (!need()) return;
+  const res = counter.decrement();
+  render(res.warning ? `<span class="err">${res.warning}</span>` : `decrement() → <span class="ok">${res.value}</span>`);
 }
 
-function resetCounter() {
-  if (!ensureCounter()) return;
-  const res = scoreCounter.reset();
-  renderStatus(`reset() → <span class="ok">${res.value}</span>`);
-}
+function showValue() { if (need()) render(`getValue() → <span class="ok">${counter.getValue()}</span>`); }
+function showRange() { if (need()) render(''); }
+function resetCounter() { if (need()) render(`reset() → <span class="ok">${counter.reset().value}</span>`); }
 
-function showRange() {
-  if (!ensureCounter()) return;
-  renderStatus('');
-}
-
-function showValue() {
-  if (!ensureCounter()) return;
-  renderStatus(`getValue() → <span class="ok">${scoreCounter.getValue()}</span>`);
-}
-
-// автосоздание при загрузке — чтобы демо сразу работало
 createCounter();
-</script>
 
-<div class="navbtns" style="margin-top:22px"><button class="btn" onclick="location.href='пр16_зад4_экспорт_данных_в_json.html'" >← Пред.</button><button class="btn" onclick="location.href='index.html'" >След. →</button></div>
-<footer>Хаб самостоятельных работ JavaScript · ПР17 · страница 54 из 53</footer>
-</div>
+</script>
 </body>
 </html>

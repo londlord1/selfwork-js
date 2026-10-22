@@ -2,251 +2,208 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ПР18 • Зад.7 • Заметки на странице</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
-    min-height: 100vh;
-    padding: 30px 20px;
-    color: #1a1a2e;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
-  .top-link:hover { text-decoration: underline; }
-  .nav {
-    display: flex; justify-content: space-between; align-items: center;
-    margin: 14px 0 20px; padding: 10px 16px;
-    background: white; border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .nav a {
-    color: #4a6cf7; text-decoration: none; font-weight: 600;
-    padding: 6px 14px; border-radius: 6px;
-  }
-  .nav a:hover { background: #e8edf9; }
-  .badge {
-    display: inline-block; background: #4a6cf7; color: white;
-    padding: 4px 12px; border-radius: 12px; font-size: 13px;
-    margin-bottom: 12px;
-  }
-  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
-  .card {
-    background: white; border-radius: 14px; padding: 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
-  }
-  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
-  .task code {
-    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
-    font-family: 'Courier New', monospace; color: #d63384;
-  }
-  .code-block {
-    background: #1a1a2e; color: #e0e0e0;
-    padding: 16px; border-radius: 8px;
-    font-family: 'Courier New', monospace; font-size: 13px;
-    line-height: 1.6; overflow-x: auto;
-    margin: 12px 0;
-  }
-  .code-block .keyword { color: #c792ea; }
-  .code-block .string { color: #c3e88d; }
-  .code-block .comment { color: #676e95; font-style: italic; }
-  .code-block .func { color: #82aaff; }
-  .preview {
-    background: #f8f9fc; border-radius: 8px; padding: 16px;
-    margin: 12px 0;
-  }
-  .btn {
-    padding: 10px 20px; border: none; border-radius: 6px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    margin: 4px;
-  }
-  .btn-primary { background: #4a6cf7; color: white; }
-  .btn-success { background: #4CAF50; color: white; }
-  .btn-danger { background: #dc3545; color: white; }
-  .btn:hover { opacity: 0.9; }
-  .note-input {
-    width: 100%; padding: 12px; border: 2px solid #e0e5ec;
-    border-radius: 8px; font-size: 14px; margin: 12px 0;
-    font-family: inherit; resize: vertical; min-height: 80px;
-  }
-  .note-input:focus { outline: none; border-color: #4a6cf7; }
-  .notes-list {
-    margin-top: 16px;
-  }
-  .note-item {
-    background: white; border: 2px solid #e0e5ec;
-    border-radius: 8px; padding: 12px; margin-bottom: 8px;
-    position: relative;
-  }
-  .note-item:hover { border-color: #4a6cf7; }
-  .note-text { font-size: 14px; line-height: 1.5; margin-bottom: 6px; }
-  .note-meta { font-size: 11px; color: #999; }
-  .note-delete {
-    position: absolute; top: 8px; right: 8px;
-    background: #dc3545; color: white; border: none;
-    width: 24px; height: 24px; border-radius: 50%;
-    cursor: pointer; font-size: 14px;
-  }
-  .note-delete:hover { background: #c82333; }
-  .url-display {
-    background: #fff3cd; border: 1px solid #ffc107;
-    padding: 8px 12px; border-radius: 6px; font-size: 12px;
-    font-family: 'Courier New', monospace; margin-bottom: 12px;
-    word-break: break-all;
-  }
-  .storage-info {
-    background: #d1ecf1; border: 1px solid #bee5eb;
-    padding: 10px; border-radius: 6px; font-size: 13px;
-    margin-top: 12px;
-  }
-  .status {
-    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
-    font-size: 13px; background: #f0f2f5; min-height: 40px;
-  }
-  .status.ok { background: #d4edda; color: #155724; }
-  .footer {
-    text-align: center; font-size: 12px; color: #888;
-    margin-top: 20px; padding-top: 16px;
-    border-top: 1px solid #e0e5ec;
-  }
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр18_зад6_контент_скрипт.html'">← Пред.</button><button class="btn" onclick="location.href='пр19_зад1_новая_команда.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР18 • Зад.7</span>
+<h1>Заметки на странице</h1>
+<div class="desc">Задание 7: заметки привязываются к URL страницы и хранятся в <code>localStorage</code>. При повторном открытии страницы заметки восстанавливаются.</div>
 
-  <div class="nav">
-    <a href="пр18_зад6_контент_скрипт.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">ПР18 • Зад.7</span>
-    <a href="пр19_зад1_новая_команда.html">След. →</a>
+<div class="card">
+  <h2>Заметки к странице</h2>
+  <p class="muted">📍 URL: <span id="current-url" class="kv"></span></p>
+  <div class="row">
+    <textarea id="note-text" placeholder="Текст заметки..." style="flex:1;min-width:240px;min-height:70px"></textarea>
   </div>
-
-  <span class="badge">ПР18</span>
-  <h1>ПР18 • Зад.7 • Заметки на странице</h1>
-
-  <div class="card">
-    <div class="task">
-      Создайте расширение, которое позволяет добавлять заметки к любой веб-странице. Заметка сохраняется и привязывается к URL страницы. При повторном открытии страницы заметка восстанавливается.
-    </div>
-
-    <div class="code-block">
-<span class="comment">// Сохранение заметки</span>
-<span class="keyword">const</span> url = window.location.href;
-<span class="keyword">const</span> notes = JSON.parse(localStorage.getItem(<span class="string">'notes_'</span> + url) || <span class="string">'[]'</span>);
-notes.push({ text: noteText, date: <span class="keyword">new</span> Date().toISOString() });
-localStorage.setItem(<span class="string">'notes_'</span> + url, JSON.stringify(notes));
-
-<span class="comment">// Загрузка заметок</span>
-<span class="keyword">const</span> savedNotes = JSON.parse(localStorage.getItem(<span class="string">'notes_'</span> + url) || <span class="string">'[]'</span>);
-    </div>
-
-    <div class="preview">
-      <div class="url-display">
-        📍 URL: <span id="current-url">file:///путь/к/пр18_зад7_заметки.html</span>
-      </div>
-      
-      <button class="btn btn-primary" id="add-note-btn">➕ Добавить заметку</button>
-      
-      <div id="note-form" style="display: none; margin-top: 12px;">
-        <textarea class="note-input" id="note-text" placeholder="Введите текст заметки..."></textarea>
-        <button class="btn btn-success" id="save-note-btn">💾 Сохранить</button>
-        <button class="btn btn-danger" id="cancel-btn">❌ Отмена</button>
-      </div>
-
-      <div class="notes-list" id="notes-list"></div>
-
-      <div class="storage-info">
-        💾 Заметки сохраняются в <code>localStorage</code> с ключом, основанным на URL страницы
-      </div>
-    </div>
-
-    <div class="status" id="status">Нажмите «Добавить заметку» для создания.</div>
+  <div class="row">
+    <button class="btn green" onclick="saveNote()">💾 Сохранить заметку</button>
+    <button class="btn red" onclick="clearNotes()">Очистить все</button>
   </div>
-
-  <div class="nav">
-    <a href="пр18_зад6_контент_скрипт.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">стр. 61 из 82</span>
-    <a href="пр19_зад1_новая_команда.html">След. →</a>
-  </div>
-
-  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 61 из 82</div>
+  <div id="notes"></div>
+  <div class="out" id="out"></div>
 </div>
 
-<script>
-const currentUrl = window.location.href;
-document.getElementById('current-url').textContent = currentUrl;
+<details><summary>Показать код решения</summary><pre class="code">const URL_KEY = &#x27;notes_&#x27; + location.pathname;
+$(&#x27;current-url&#x27;).textContent = location.pathname;
 
-// Загрузка заметок
 function loadNotes() {
-  const notes = JSON.parse(localStorage.getItem('notes_' + currentUrl) || '[]');
-  const notesList = document.getElementById('notes-list');
-  notesList.innerHTML = '';
-  
-  if (notes.length === 0) {
-    notesList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Заметок пока нет</p>';
-    return;
+  try {
+    return JSON.parse(localStorage.getItem(URL_KEY) || &#x27;[]&#x27;);
+  } catch (e) {
+    return [];
   }
-  
-  notes.forEach((note, index) => {
-    const noteItem = document.createElement('div');
-    noteItem.className = 'note-item';
-    noteItem.innerHTML = `
-      <button class="note-delete" data-index="${index}">×</button>
-      <div class="note-text">${note.text}</div>
-      <div class="note-meta">${new Date(note.date).toLocaleString('ru-RU')}</div>
-    `;
-    notesList.appendChild(noteItem);
-  });
-  
-  // Обработчики удаления
-  document.querySelectorAll('.note-delete').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const index = parseInt(this.dataset.index);
-      const notes = JSON.parse(localStorage.getItem('notes_' + currentUrl) || '[]');
-      notes.splice(index, 1);
-      localStorage.setItem('notes_' + currentUrl, JSON.stringify(notes));
-      loadNotes();
-      document.getElementById('status').textContent = '✅ Заметка удалена';
-      document.getElementById('status').className = 'status ok';
-    });
-  });
 }
 
-// Показать форму
-document.getElementById('add-note-btn').addEventListener('click', () => {
-  document.getElementById('note-form').style.display = 'block';
-  document.getElementById('note-text').focus();
-});
-
-// Отмена
-document.getElementById('cancel-btn').addEventListener('click', () => {
-  document.getElementById('note-form').style.display = 'none';
-  document.getElementById('note-text').value = '';
-});
-
-// Сохранение
-document.getElementById('save-note-btn').addEventListener('click', () => {
-  const noteText = document.getElementById('note-text').value.trim();
-  if (!noteText) {
-    alert('Введите текст заметки');
+function renderNotes() {
+  const notes = loadNotes();
+  const box = $(&#x27;notes&#x27;);
+  if (!notes.length) {
+    box.innerHTML = &#x27;&lt;p class=&quot;muted&quot;&gt;Заметок пока нет.&lt;/p&gt;&#x27;;
     return;
   }
-  
-  const notes = JSON.parse(localStorage.getItem('notes_' + currentUrl) || '[]');
-  notes.push({ text: noteText, date: new Date().toISOString() });
-  localStorage.setItem('notes_' + currentUrl, JSON.stringify(notes));
-  
-  document.getElementById('note-form').style.display = 'none';
-  document.getElementById('note-text').value = '';
-  loadNotes();
-  
-  document.getElementById('status').textContent = '✅ Заметка сохранена';
-  document.getElementById('status').className = 'status ok';
-});
+  box.innerHTML = notes.map((note, i) =&gt; `
+    &lt;div class=&quot;item&quot;&gt;
+      &lt;div&gt;
+        &lt;div&gt;${esc(note.text)}&lt;/div&gt;
+        &lt;div class=&quot;muted&quot;&gt;${new Date(note.date).toLocaleString(&#x27;ru-RU&#x27;)}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button class=&quot;btn red&quot; onclick=&quot;removeNote(${i})&quot;&gt;×&lt;/button&gt;
+    &lt;/div&gt;`).join(&#x27;&#x27;);
+}
 
-// Инициализация
-loadNotes();
+function saveNote() {
+  const text = $(&#x27;note-text&#x27;).value.trim();
+  if (!text) { out(&#x27;&lt;span class=&quot;err&quot;&gt;Введите текст заметки&lt;/span&gt;&#x27;); return; }
+  const notes = loadNotes();
+  notes.push({ text, date: new Date().toISOString() });
+  localStorage.setItem(URL_KEY, JSON.stringify(notes));
+  $(&#x27;note-text&#x27;).value = &#x27;&#x27;;
+  renderNotes();
+  out(`&lt;span class=&quot;ok&quot;&gt;Заметка сохранена для ${esc(location.pathname)}&lt;/span&gt;`);
+}
+
+function removeNote(i) {
+  const notes = loadNotes();
+  notes.splice(i, 1);
+  localStorage.setItem(URL_KEY, JSON.stringify(notes));
+  renderNotes();
+  out(&#x27;&lt;span class=&quot;ok&quot;&gt;Заметка удалена&lt;/span&gt;&#x27;);
+}
+
+function clearNotes() {
+  localStorage.removeItem(URL_KEY);
+  renderNotes();
+  out(&#x27;&lt;span class=&quot;ok&quot;&gt;Все заметки удалены&lt;/span&gt;&#x27;);
+}
+
+renderNotes();</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр18_зад6_контент_скрипт.html'">← Пред.</button><button class="btn" onclick="location.href='пр19_зад1_новая_команда.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР18 · страница 8 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const URL_KEY = 'notes_' + location.pathname;
+$('current-url').textContent = location.pathname;
+
+function loadNotes() {
+  try {
+    return JSON.parse(localStorage.getItem(URL_KEY) || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function renderNotes() {
+  const notes = loadNotes();
+  const box = $('notes');
+  if (!notes.length) {
+    box.innerHTML = '<p class="muted">Заметок пока нет.</p>';
+    return;
+  }
+  box.innerHTML = notes.map((note, i) => `
+    <div class="item">
+      <div>
+        <div>${esc(note.text)}</div>
+        <div class="muted">${new Date(note.date).toLocaleString('ru-RU')}</div>
+      </div>
+      <button class="btn red" onclick="removeNote(${i})">×</button>
+    </div>`).join('');
+}
+
+function saveNote() {
+  const text = $('note-text').value.trim();
+  if (!text) { out('<span class="err">Введите текст заметки</span>'); return; }
+  const notes = loadNotes();
+  notes.push({ text, date: new Date().toISOString() });
+  localStorage.setItem(URL_KEY, JSON.stringify(notes));
+  $('note-text').value = '';
+  renderNotes();
+  out(`<span class="ok">Заметка сохранена для ${esc(location.pathname)}</span>`);
+}
+
+function removeNote(i) {
+  const notes = loadNotes();
+  notes.splice(i, 1);
+  localStorage.setItem(URL_KEY, JSON.stringify(notes));
+  renderNotes();
+  out('<span class="ok">Заметка удалена</span>');
+}
+
+function clearNotes() {
+  localStorage.removeItem(URL_KEY);
+  renderNotes();
+  out('<span class="ok">Все заметки удалены</span>');
+}
+
+renderNotes();
+
 </script>
 </body>
 </html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР29 • Зад.3 • React: установка минут и секунд</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.timer{max-width:460px;margin:0 auto;text-align:center}
+.time{font-size:58px;font-weight:700;font-variant-numeric:tabular-nums;color:#1a73e8;line-height:1.1;margin:8px 0}
+.timer-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.timer-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin:10px 0}
+.finished{color:#f44336}
+.multi-timer{border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;margin:8px 0;text-align:left}
+.phase{display:inline-block;padding:4px 14px;border-radius:999px;font-weight:600;font-size:14px}
+.phase.work{background:#dcfce7;color:#166534}
+.phase.rest{background:#e0f2fe;color:#075985}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр29_зад2_быстрые_кнопки_времени.html'">← Пред.</button><button class="btn" onclick="location.href='пр29_зад4_круговой_прогресс.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР29 • Зад.3</span>
+<h1>React: установка минут и секунд</h1>
+<div class="desc">Задание 3: два поля ввода — минуты (0–99) и секунды (0–59). Формат отображения MM:SS с валидацией.</div>
+<div id="root"></div>
+<details><summary>Показать код решения</summary><pre class="code">const { useState, useEffect } = React;
+
+function App() {
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(10);
+  const [time, setTime] = useState(10);
+  const [active, setActive] = useState(false);
+
+  useEffect(() =&gt; {
+    const total = minutes * 60 + seconds;
+    if (!active) setTime(total);
+  }, [minutes, seconds]);
+
+  useEffect(() =&gt; {
+    if (!active) return;
+    const id = setInterval(() =&gt; setTime(t =&gt; Math.max(0, t - 1)), 1000);
+    return () =&gt; clearInterval(id);
+  }, [active]);
+
+  useEffect(() =&gt; {
+    if (time === 0 &amp;&amp; active) setActive(false);
+  }, [time, active]);
+
+  return (
+    &lt;div className=&quot;card timer&quot;&gt;
+      &lt;h2&gt;Таймер MM:SS&lt;/h2&gt;
+      &lt;div className=&quot;time&quot;&gt;{String(Math.floor(time / 60)).padStart(2, &#x27;0&#x27;)}:{String(time % 60).padStart(2, &#x27;0&#x27;)}&lt;/div&gt;
+      &lt;div className=&quot;timer-row&quot;&gt;
+        &lt;input
+          type=&quot;number&quot; min=&quot;0&quot; max=&quot;99&quot; value={minutes}
+          onChange={(e) =&gt; setMinutes(Math.max(0, Math.min(99, parseInt(e.target.value) || 0)))}
+          style={{ width: 70, textAlign: &#x27;center&#x27; }}
+        /&gt;
+        &lt;b&gt;:&lt;/b&gt;
+        &lt;input
+          type=&quot;number&quot; min=&quot;0&quot; max=&quot;59&quot; value={seconds}
+          onChange={(e) =&gt; setSeconds(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
+          style={{ width: 70, textAlign: &#x27;center&#x27; }}
+        /&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;timer-btns&quot;&gt;
+        &lt;button className=&quot;rbtn green&quot; onClick={() =&gt; setActive(true)} disabled={active || time === 0}&gt;Старт&lt;/button&gt;
+        &lt;button className=&quot;rbtn gray&quot; onClick={() =&gt; setActive(false)} disabled={!active}&gt;Пауза&lt;/button&gt;
+        &lt;button className=&quot;rbtn red&quot; onClick={() =&gt; { setActive(false); setTime(minutes * 60 + seconds); }}&gt;Сброс&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;p className=&quot;muted&quot;&gt;Минуты 0–99, секунды 0–59&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр29_зад2_быстрые_кнопки_времени.html'">← Пред.</button><button class="btn" onclick="location.href='пр29_зад4_круговой_прогресс.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР29 · страница 65 из 90</footer>
+</div>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+
+const { useState, useEffect } = React;
+
+function App() {
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(10);
+  const [time, setTime] = useState(10);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const total = minutes * 60 + seconds;
+    if (!active) setTime(total);
+  }, [minutes, seconds]);
+
+  useEffect(() => {
+    if (!active) return;
+    const id = setInterval(() => setTime(t => Math.max(0, t - 1)), 1000);
+    return () => clearInterval(id);
+  }, [active]);
+
+  useEffect(() => {
+    if (time === 0 && active) setActive(false);
+  }, [time, active]);
+
+  return (
+    <div className="card timer">
+      <h2>Таймер MM:SS</h2>
+      <div className="time">{String(Math.floor(time / 60)).padStart(2, '0')}:{String(time % 60).padStart(2, '0')}</div>
+      <div className="timer-row">
+        <input
+          type="number" min="0" max="99" value={minutes}
+          onChange={(e) => setMinutes(Math.max(0, Math.min(99, parseInt(e.target.value) || 0)))}
+          style={{ width: 70, textAlign: 'center' }}
+        />
+        <b>:</b>
+        <input
+          type="number" min="0" max="59" value={seconds}
+          onChange={(e) => setSeconds(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
+          style={{ width: 70, textAlign: 'center' }}
+        />
+      </div>
+      <div className="timer-btns">
+        <button className="rbtn green" onClick={() => setActive(true)} disabled={active || time === 0}>Старт</button>
+        <button className="rbtn gray" onClick={() => setActive(false)} disabled={!active}>Пауза</button>
+        <button className="rbtn red" onClick={() => { setActive(false); setTime(minutes * 60 + seconds); }}>Сброс</button>
+      </div>
+      <p className="muted">Минуты 0–99, секунды 0–59</p>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+</body>
+</html>

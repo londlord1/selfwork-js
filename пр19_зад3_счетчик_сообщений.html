@@ -2,210 +2,157 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>ПР19 • Зад.3 • Счетчик сообщений</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
-    min-height: 100vh;
-    padding: 30px 20px;
-    color: #1a1a2e;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
-  .top-link:hover { text-decoration: underline; }
-  .nav {
-    display: flex; justify-content: space-between; align-items: center;
-    margin: 14px 0 20px; padding: 10px 16px;
-    background: white; border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .nav a {
-    color: #4a6cf7; text-decoration: none; font-weight: 600;
-    padding: 6px 14px; border-radius: 6px;
-  }
-  .nav a:hover { background: #e8edf9; }
-  .badge {
-    display: inline-block; background: #4a6cf7; color: white;
-    padding: 4px 12px; border-radius: 12px; font-size: 13px;
-    margin-bottom: 12px;
-  }
-  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
-  .card {
-    background: white; border-radius: 14px; padding: 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
-  }
-  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
-  .task code {
-    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
-    font-family: 'Courier New', monospace; color: #d63384;
-  }
-  .code-block {
-    background: #1a1a2e; color: #e0e0e0;
-    padding: 16px; border-radius: 8px;
-    font-family: 'Courier New', monospace; font-size: 13px;
-    line-height: 1.6; overflow-x: auto;
-    margin: 12px 0;
-  }
-  .code-block .keyword { color: #c792ea; }
-  .code-block .string { color: #c3e88d; }
-  .code-block .comment { color: #676e95; font-style: italic; }
-  .counter-display {
-    background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
-    color: white; padding: 12px 20px; border-radius: 10px;
-    text-align: center; font-size: 18px; font-weight: 600;
-    margin-bottom: 12px;
-  }
-  .chat {
-    background: #f8f9fc; border-radius: 8px; padding: 16px;
-    min-height: 200px; max-height: 300px; overflow-y: auto;
-    margin: 12px 0;
-  }
-  .msg {
-    padding: 8px 14px; border-radius: 12px; margin-bottom: 6px;
-    max-width: 75%; font-size: 14px; line-height: 1.5;
-  }
-  .msg.user {
-    background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
-    color: white; margin-left: auto; text-align: right;
-    border-bottom-right-radius: 4px;
-  }
-  .msg.bot {
-    background: white; color: #1a1a2e;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border-bottom-left-radius: 4px;
-  }
-  .input-row {
-    display: flex; gap: 8px; margin-top: 12px;
-  }
-  .input-row input {
-    flex: 1; padding: 10px 14px; border: 2px solid #e0e5ec;
-    border-radius: 20px; font-size: 14px; outline: none;
-  }
-  .input-row input:focus { border-color: #4a6cf7; }
-  .input-row button {
-    padding: 10px 20px; border: none; border-radius: 20px;
-    background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
-    color: white; font-weight: 600; cursor: pointer;
-  }
-  .status {
-    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
-    font-size: 13px; background: #f0f2f5; min-height: 40px;
-  }
-  .status.ok { background: #d4edda; color: #155724; }
-  .footer {
-    text-align: center; font-size: 12px; color: #888;
-    margin-top: 20px; padding-top: 16px;
-    border-top: 1px solid #e0e5ec;
-  }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР19 • Зад.3 • Счётчик сообщений</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр19_зад2_день_рождения.html'">← Пред.</button><button class="btn" onclick="location.href='пр19_зад4_несколько_слов.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР19 • Зад.3</span>
+<h1>Счётчик сообщений</h1>
+<div class="desc">Задание 3: в конце каждого ответа бот показывает номер сообщения (сколько сообщений уже отправлено).</div>
 
-  <div class="nav">
-    <a href="пр19_зад2_день_рождения.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">ПР19 • Зад.3</span>
-    <a href="пр19_зад4_несколько_слов.html">След. →</a>
+<div class="card">
+  <h2>Чат с ботом</h2>
+  <p class="muted">Отправьте несколько сообщений — номер будет расти.</p>
+  <div class="out" id="chat" style="min-height:220px;max-height:320px;overflow:auto"></div>
+  <div class="row">
+    <input id="msg" placeholder="Введите сообщение..." style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter')send()">
+    <button class="btn" onclick="send()">Отправить</button>
   </div>
-
-  <span class="badge">ПР19</span>
-  <h1>ПР19 • Зад.3 • Счетчик сообщений</h1>
-
-  <div class="card">
-    <div class="task">
-      Добавьте счетчик сообщений: бот в конце каждого ответа показывает, сколько сообщений уже отправлено.
-    </div>
-
-    <div class="code-block">
-<span class="keyword">let</span> messageCount = <span class="string">0</span>;
-
-<span class="keyword">function</span> <span class="func">sendMessage</span>() {
-  messageCount++;
-  <span class="comment">// ...</span>
-  setTimeout(() => {
-    <span class="keyword">const</span> response = getBotResponse(text) + <span class="string">` (Сообщение #${messageCount})`</span>;
-    <span class="comment">// ...</span>
-  }, delay);
-}
-    </div>
-
-    <div class="counter-display" id="counter">Сообщений: 0</div>
-
-    <div class="chat" id="chat">
-      <div class="msg bot">Привет! Теперь я считаю сообщения 📊</div>
-    </div>
-
-    <div class="input-row">
-      <input type="text" id="msg-input" placeholder="Введите сообщение...">
-      <button id="send-btn">➤</button>
-    </div>
-
-    <div class="status" id="status">Введите сообщение.</div>
-  </div>
-
-  <div class="nav">
-    <a href="пр19_зад2_день_рождения.html">← Пред.</a>
-    <span style="font-size:13px;color:#888;">стр. 64 из 82</span>
-    <a href="пр19_зад4_несколько_слов.html">След. →</a>
-  </div>
-
-  <div class="footer">Хаб самостоятельных работ JavaScript · ПР19 · страница 64 из 82</div>
+  <div class="out" id="out" style="min-height:auto"></div>
 </div>
 
-<script>
-let messageCount = 0;
+<details><summary>Показать код решения</summary><pre class="code">let messageCount = 0;
+let userMessages = 0;
 
-const botResponses = {
-  'привет': ['Привет! 😊'],
-  'пока': ['Пока! 👋'],
-  'как дела': ['Отлично! 🌟']
-};
-
-function getBotResponse(msg) {
-  const lower = msg.toLowerCase();
-  for (const [keyword, responses] of Object.entries(botResponses)) {
-    if (lower.includes(keyword)) {
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-  }
-  return 'Интересно... 🤔';
+function getBotResponse(text) {
+  if (/привет/i.test(text)) return &#x27;Привет! 👋&#x27;;
+  if (/как дела/i.test(text)) return &#x27;Отлично! А у тебя? 😊&#x27;;
+  return &#x27;Интересно! Расскажи ещё 🤔&#x27;;
 }
 
-function addMessage(text, sender) {
-  const chat = document.getElementById('chat');
-  const msg = document.createElement('div');
-  msg.className = `msg ${sender}`;
-  msg.textContent = text;
-  chat.appendChild(msg);
+function addMessage(text, who) {
+  const chat = $(&#x27;chat&#x27;);
+  chat.innerHTML += `&lt;div style=&quot;margin:6px 0&quot;&gt;&lt;b class=&quot;${who === &#x27;user&#x27; ? &#x27;hl&#x27; : &#x27;ok&#x27;}&quot;&gt;${who === &#x27;user&#x27; ? &#x27;Вы&#x27; : &#x27;Бот&#x27;}:&lt;/b&gt; ${esc(text)}&lt;/div&gt;`;
   chat.scrollTop = chat.scrollHeight;
 }
 
-function sendMessage() {
-  const input = document.getElementById('msg-input');
+function send() {
+  const input = $(&#x27;msg&#x27;);
   const text = input.value.trim();
   if (!text) return;
-  
-  messageCount++;
-  document.getElementById('counter').textContent = `Сообщений: ${messageCount}`;
-  
-  addMessage(text, 'user');
-  input.value = '';
-  
-  setTimeout(() => {
-    const response = getBotResponse(text) + ` (Сообщение #${messageCount})`;
-    addMessage(response, 'bot');
-    document.getElementById('status').textContent = `✅ Отправлено сообщение #${messageCount}`;
-    document.getElementById('status').className = 'status ok';
-  }, 500);
+  userMessages++;
+  addMessage(text, &#x27;user&#x27;);
+  input.value = &#x27;&#x27;;
+
+  setTimeout(() =&gt; {
+    messageCount = userMessages;
+    addMessage(`${getBotResponse(text)} (Сообщение #${messageCount})`, &#x27;bot&#x27;);
+  }, 300);
 }
 
-document.getElementById('send-btn').addEventListener('click', sendMessage);
-document.getElementById('msg-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') sendMessage();
-});
+addMessage(&#x27;Напишите что-нибудь — я посчитаю сообщения.&#x27;, &#x27;bot&#x27;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр19_зад2_день_рождения.html'">← Пред.</button><button class="btn" onclick="location.href='пр19_зад4_несколько_слов.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР19 · страница 11 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let messageCount = 0;
+let userMessages = 0;
+
+function getBotResponse(text) {
+  if (/привет/i.test(text)) return 'Привет! 👋';
+  if (/как дела/i.test(text)) return 'Отлично! А у тебя? 😊';
+  return 'Интересно! Расскажи ещё 🤔';
+}
+
+function addMessage(text, who) {
+  const chat = $('chat');
+  chat.innerHTML += `<div style="margin:6px 0"><b class="${who === 'user' ? 'hl' : 'ok'}">${who === 'user' ? 'Вы' : 'Бот'}:</b> ${esc(text)}</div>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function send() {
+  const input = $('msg');
+  const text = input.value.trim();
+  if (!text) return;
+  userMessages++;
+  addMessage(text, 'user');
+  input.value = '';
+
+  setTimeout(() => {
+    messageCount = userMessages;
+    addMessage(`${getBotResponse(text)} (Сообщение #${messageCount})`, 'bot');
+  }, 300);
+}
+
+addMessage('Напишите что-нибудь — я посчитаю сообщения.', 'bot');
+
 </script>
 </body>
 </html>

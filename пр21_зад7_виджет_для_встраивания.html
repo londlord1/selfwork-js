@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР21 • Зад.7 • Виджет для встраивания</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.service{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:8px 0;cursor:pointer;transition:.2s}
+.service:hover{border-color:#1a73e8;background:#eef6ff}
+.service.active{border-color:#1a73e8;box-shadow:0 0 0 2px #c7d2fe}
+.badge-status{font-size:12px;padding:2px 10px;border-radius:999px;background:#e0f2fe;color:#075985}
+.badge-status.done{background:#dcfce7;color:#166534}
+
+#gosuslugi-widget{background:#eef6ff;border:1px solid #c9e3ff;border-radius:12px;padding:16px}
+#gosuslugi-widget h3{color:#1a56a0;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр21_зад6_система_оповещений.html'">← Пред.</button><button class="btn" onclick="location.href='пр22_зад1_метод_isold.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР21 • Зад.7</span>
+<h1>Виджет для встраивания</h1>
+<div class="desc">Задание 7: самовызывающаяся функция (IIFE), которая находит контейнер <code>#gosuslugi-widget</code> и рендерит виджет ПОС. Такой код можно скопировать и вставить на любой сайт.</div>
+
+<div class="card">
+  <h2>Предпросмотр виджета</h2>
+  <div id="gosuslugi-widget"></div>
+  <div class="row">
+    <button class="btn" onclick="showCode()">Показать код для вставки</button>
+  </div>
+  <div class="out" id="out"></div>
+</div>
+<div class="card">
+  <h2>Отправка обращения</h2>
+  <div class="row">
+    <input id="fb-name" placeholder="Ваше имя" style="min-width:180px">
+    <input id="fb-text" placeholder="Текст обращения" style="flex:1;min-width:240px">
+    <button class="btn green" onclick="sendFeedback()">Отправить</button>
+  </div>
+</div>
+<details><summary>Показать код решения</summary><pre class="code">let widgetCounter = 0;
+
+(function initWidget() {
+  const container = document.getElementById(&#x27;gosuslugi-widget&#x27;);
+  if (!container) return;
+
+  container.innerHTML = `
+    &lt;h3&gt;Платформа обратной связи&lt;/h3&gt;
+    &lt;p class=&quot;muted&quot;&gt;Виджет встроен на страницу сайта. Сообщений отправлено: &lt;b id=&quot;fb-count&quot;&gt;0&lt;/b&gt;&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;span class=&quot;pill active&quot;&gt;Сообщить о проблеме&lt;/span&gt;
+      &lt;span class=&quot;pill&quot;&gt;Задать вопрос&lt;/span&gt;
+    &lt;/div&gt;`;
+})();
+
+function sendFeedback() {
+  const name = $(&#x27;fb-name&#x27;).value.trim() || &#x27;Аноним&#x27;;
+  const text = $(&#x27;fb-text&#x27;).value.trim();
+  if (!text) { out(&#x27;&lt;span class=&quot;err&quot;&gt;Введите текст обращения&lt;/span&gt;&#x27;); return; }
+  widgetCounter++;
+  $(&#x27;fb-count&#x27;).textContent = widgetCounter;
+  $(&#x27;fb-text&#x27;).value = &#x27;&#x27;;
+  out(`&lt;span class=&quot;ok&quot;&gt;Обращение принято&lt;/span&gt;
+От: ${esc(name)}
+Текст: ${esc(text)}
+Номер обращения: ПОС-${String(widgetCounter).padStart(4, &#x27;0&#x27;)}`);
+}
+
+function showCode() {
+  out(`&lt;pre class=&quot;code&quot; style=&quot;max-height:240px&quot;&gt;&amp;lt;div id=&quot;gosuslugi-widget&quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;script&amp;gt;
+(function() {
+  const container = document.getElementById(&#x27;gosuslugi-widget&#x27;);
+  if (!container) return;
+  container.innerHTML = renderWidget();
+})();
+&amp;lt;/script&amp;gt;&lt;/pre&gt;`);
+}</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр21_зад6_система_оповещений.html'">← Пред.</button><button class="btn" onclick="location.href='пр22_зад1_метод_isold.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР21 · страница 29 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let widgetCounter = 0;
+
+(function initWidget() {
+  const container = document.getElementById('gosuslugi-widget');
+  if (!container) return;
+
+  container.innerHTML = `
+    <h3>Платформа обратной связи</h3>
+    <p class="muted">Виджет встроен на страницу сайта. Сообщений отправлено: <b id="fb-count">0</b></p>
+    <div class="row">
+      <span class="pill active">Сообщить о проблеме</span>
+      <span class="pill">Задать вопрос</span>
+    </div>`;
+})();
+
+function sendFeedback() {
+  const name = $('fb-name').value.trim() || 'Аноним';
+  const text = $('fb-text').value.trim();
+  if (!text) { out('<span class="err">Введите текст обращения</span>'); return; }
+  widgetCounter++;
+  $('fb-count').textContent = widgetCounter;
+  $('fb-text').value = '';
+  out(`<span class="ok">Обращение принято</span>
+От: ${esc(name)}
+Текст: ${esc(text)}
+Номер обращения: ПОС-${String(widgetCounter).padStart(4, '0')}`);
+}
+
+function showCode() {
+  out(`<pre class="code" style="max-height:240px">&lt;div id="gosuslugi-widget"&gt;&lt;/div&gt;
+&lt;script&gt;
+(function() {
+  const container = document.getElementById('gosuslugi-widget');
+  if (!container) return;
+  container.innerHTML = renderWidget();
+})();
+&lt;/script&gt;</pre>`);
+}
+
+</script>
+</body>
+</html>

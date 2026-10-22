@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР21 • Зад.6 • Система оповещений</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.service{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:8px 0;cursor:pointer;transition:.2s}
+.service:hover{border-color:#1a73e8;background:#eef6ff}
+.service.active{border-color:#1a73e8;box-shadow:0 0 0 2px #c7d2fe}
+.badge-status{font-size:12px;padding:2px 10px;border-radius:999px;background:#e0f2fe;color:#075985}
+.badge-status.done{background:#dcfce7;color:#166534}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр21_зад5_личный_кабинет.html'">← Пред.</button><button class="btn" onclick="location.href='пр21_зад7_виджет_для_встраивания.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР21 • Зад.6</span>
+<h1>Система оповещений</h1>
+<div class="desc">Задание 6: имитация уведомлений Госуслуг — о новой заявке и об изменении статуса, со счётчиком непрочитанных и отметкой «прочитано».</div>
+
+<div class="card">
+  <h2>Вход через Госуслуги</h2>
+  <div class="row">
+    <input id="login" placeholder="Логин" value="user123" style="min-width:150px">
+    <input id="password" placeholder="Пароль" type="password" value="password" style="min-width:150px">
+    <button class="btn" onclick="login()">Войти</button>
+    <span id="auth-status" class="muted">не авторизован</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Уведомления <span class="badge-status" id="unread">0</span></h2>
+  <div class="row">
+    <button class="btn" onclick="pushNotification('new')">Новая заявка</button>
+    <button class="btn orange" onclick="pushNotification('status')">Изменение статуса</button>
+    <button class="btn gray" onclick="readAll()">Прочитать все</button>
+  </div>
+  <div id="list"></div>
+  <div class="out" id="out"></div>
+</div>
+<details><summary>Показать код решения</summary><pre class="code">const notifications = [];
+let seq = 0;
+
+const templates = {
+  new: () =&gt; ({ title: &#x27;Новая заявка&#x27;, text: &#x27;Заявление №&#x27; + (1000 + seq) + &#x27; зарегистрировано&#x27; }),
+  status: () =&gt; ({ title: &#x27;Статус изменён&#x27;, text: &#x27;Заявление №&#x27; + (1000 + seq) + &#x27; перешло в статус «в обработке»&#x27; })
+};
+
+function render() {
+  const unread = notifications.filter(n =&gt; !n.read).length;
+  $(&#x27;unread&#x27;).textContent = unread;
+  $(&#x27;unread&#x27;).className = &#x27;badge-status&#x27; + (unread ? &#x27;&#x27; : &#x27; done&#x27;);
+  $(&#x27;list&#x27;).innerHTML = notifications.length ? notifications.map(n =&gt; `
+    &lt;div class=&quot;item&quot; style=&quot;${n.read ? &#x27;opacity:.6&#x27; : &#x27;&#x27;}&quot;&gt;
+      &lt;div&gt;&lt;b&gt;${esc(n.title)}&lt;/b&gt;&lt;div class=&quot;muted&quot;&gt;${esc(n.text)} · ${n.time}&lt;/div&gt;&lt;/div&gt;
+      ${n.read ? &#x27;&lt;span class=&quot;ok&quot;&gt;прочитано&lt;/span&gt;&#x27; : `&lt;button class=&quot;btn&quot; onclick=&quot;markRead(${n.id})&quot;&gt;Прочитать&lt;/button&gt;`}
+    &lt;/div&gt;`).join(&#x27;&#x27;) : &#x27;&lt;p class=&quot;muted&quot;&gt;Уведомлений нет.&lt;/p&gt;&#x27;;
+}
+
+function pushNotification(kind) {
+  seq++;
+  const t = templates[kind]();
+  notifications.unshift({ id: seq, ...t, read: false, time: new Date().toLocaleTimeString(&#x27;ru-RU&#x27;) });
+  render();
+  out(`&lt;span class=&quot;ok&quot;&gt;Добавлено уведомление: ${esc(t.title)}&lt;/span&gt;`);
+}
+
+function markRead(id) {
+  const n = notifications.find(x =&gt; x.id === id);
+  if (n) n.read = true;
+  render();
+}
+
+function readAll() {
+  notifications.forEach(n =&gt; n.read = true);
+  render();
+  out(&#x27;&lt;span class=&quot;ok&quot;&gt;Все уведомления прочитаны&lt;/span&gt;&#x27;);
+}
+
+render();</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр21_зад5_личный_кабинет.html'">← Пред.</button><button class="btn" onclick="location.href='пр21_зад7_виджет_для_встраивания.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР21 · страница 28 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const notifications = [];
+let seq = 0;
+
+const templates = {
+  new: () => ({ title: 'Новая заявка', text: 'Заявление №' + (1000 + seq) + ' зарегистрировано' }),
+  status: () => ({ title: 'Статус изменён', text: 'Заявление №' + (1000 + seq) + ' перешло в статус «в обработке»' })
+};
+
+function render() {
+  const unread = notifications.filter(n => !n.read).length;
+  $('unread').textContent = unread;
+  $('unread').className = 'badge-status' + (unread ? '' : ' done');
+  $('list').innerHTML = notifications.length ? notifications.map(n => `
+    <div class="item" style="${n.read ? 'opacity:.6' : ''}">
+      <div><b>${esc(n.title)}</b><div class="muted">${esc(n.text)} · ${n.time}</div></div>
+      ${n.read ? '<span class="ok">прочитано</span>' : `<button class="btn" onclick="markRead(${n.id})">Прочитать</button>`}
+    </div>`).join('') : '<p class="muted">Уведомлений нет.</p>';
+}
+
+function pushNotification(kind) {
+  seq++;
+  const t = templates[kind]();
+  notifications.unshift({ id: seq, ...t, read: false, time: new Date().toLocaleTimeString('ru-RU') });
+  render();
+  out(`<span class="ok">Добавлено уведомление: ${esc(t.title)}</span>`);
+}
+
+function markRead(id) {
+  const n = notifications.find(x => x.id === id);
+  if (n) n.read = true;
+  render();
+}
+
+function readAll() {
+  notifications.forEach(n => n.read = true);
+  render();
+  out('<span class="ok">Все уведомления прочитаны</span>');
+}
+
+render();
+
+</script>
+</body>
+</html>

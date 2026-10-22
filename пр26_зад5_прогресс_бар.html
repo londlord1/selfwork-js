@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР26 • Зад.5 • React: визуализация счётчика</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.counter-box{text-align:center;padding:10px}
+.counter-value{font-size:56px;font-weight:700;color:#1a73e8;line-height:1.1;margin:10px 0}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.green{background:#28a745}.rbtn.red{background:#dc3545}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+.hist{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.hist span{background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:4px 10px;font-size:13px}
+.progress{height:18px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin-top:16px}
+.progress > div{height:100%;transition:width .3s,background .3s}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр26_зад4_настройка_шага.html'">← Пред.</button><button class="btn" onclick="location.href='пр27_зад1_добавление_по_enter.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР26 • Зад.5</span>
+<h1>React: визуализация счётчика</h1>
+<div class="desc">Задание 5: прогресс-бар от 0 до 20. При достижении максимума кнопка «+» блокируется, цвет полосы меняется после 15.</div>
+<div id="root"></div>
+<details><summary>Показать код решения</summary><pre class="code">const { useState } = React;
+
+function App() {
+  const [count, setCount] = useState(0);
+  const maxCount = 20;
+  const progress = Math.min((count / maxCount) * 100, 100);
+
+  return (
+    &lt;div className=&quot;card counter-box&quot;&gt;
+      &lt;h2&gt;Счётчик с прогресс-баром&lt;/h2&gt;
+      &lt;div className=&quot;counter-value&quot;&gt;{count} &lt;span style={{ fontSize: 20, color: &#x27;#94a3b8&#x27; }}&gt;/ {maxCount}&lt;/span&gt;&lt;/div&gt;
+      &lt;div className=&quot;btn-row&quot;&gt;
+        &lt;button className=&quot;rbtn green&quot; disabled={count &gt;= maxCount} onClick={() =&gt; setCount(count + 1)}&gt;+1&lt;/button&gt;
+        &lt;button className=&quot;rbtn red&quot; disabled={count &lt;= 0} onClick={() =&gt; setCount(count - 1)}&gt;−1&lt;/button&gt;
+        &lt;button className=&quot;rbtn gray&quot; onClick={() =&gt; setCount(0)}&gt;Сброс&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div className=&quot;progress&quot;&gt;
+        &lt;div style={{
+          width: `${progress}%`,
+          backgroundColor: count &gt; 15 ? &#x27;#f44336&#x27; : &#x27;#4CAF50&#x27;
+        }} /&gt;
+      &lt;/div&gt;
+      &lt;p className=&quot;muted&quot;&gt;{count &gt;= maxCount ? &#x27;Достигнут максимум — кнопка «+» заблокирована&#x27; : `Осталось до максимума: ${maxCount - count}`}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(&lt;App /&gt;);</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр26_зад4_настройка_шага.html'">← Пред.</button><button class="btn" onclick="location.href='пр27_зад1_добавление_по_enter.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР26 · страница 48 из 90</footer>
+</div>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+
+const { useState } = React;
+
+function App() {
+  const [count, setCount] = useState(0);
+  const maxCount = 20;
+  const progress = Math.min((count / maxCount) * 100, 100);
+
+  return (
+    <div className="card counter-box">
+      <h2>Счётчик с прогресс-баром</h2>
+      <div className="counter-value">{count} <span style={{ fontSize: 20, color: '#94a3b8' }}>/ {maxCount}</span></div>
+      <div className="btn-row">
+        <button className="rbtn green" disabled={count >= maxCount} onClick={() => setCount(count + 1)}>+1</button>
+        <button className="rbtn red" disabled={count <= 0} onClick={() => setCount(count - 1)}>−1</button>
+        <button className="rbtn gray" onClick={() => setCount(0)}>Сброс</button>
+      </div>
+      <div className="progress">
+        <div style={{
+          width: `${progress}%`,
+          backgroundColor: count > 15 ? '#f44336' : '#4CAF50'
+        }} />
+      </div>
+      <p className="muted">{count >= maxCount ? 'Достигнут максимум — кнопка «+» заблокирована' : `Осталось до максимума: ${maxCount - count}`}</p>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+</body>
+</html>

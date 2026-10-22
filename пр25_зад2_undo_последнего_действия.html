@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР25 • Зад.2 • Отмена последнего действия (Undo)</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.topnav a:hover{text-decoration:underline}
+.navbtns{display:flex;gap:8px;flex-wrap:wrap}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+.navbtns .btn:hover{background:#eef6ff}
+.navbtns .btn:disabled{opacity:.4;cursor:default}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.card h2{font-size:17px;color:#333;margin-bottom:10px}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.btn.green{background:#28a745}.btn.green:hover{background:#1e7e34}
+.btn.red{background:#dc3545}.btn.red:hover{background:#c82333}
+.btn.orange{background:#f39c12}.btn.orange:hover{background:#d68910}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;margin:4px 6px 4px 0;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a73e8;outline:none}
+label{font-size:14px;color:#555}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #cbd5e1;padding:8px;text-align:left}
+th{background:#eef2ff}
+footer{margin-top:24px;font-size:12px;color:#999;text-align:center}
+ol{padding-left:20px}
+ol li{margin:6px 0}
+ol a{color:#0b57d0;text-decoration:none;font-size:15px}
+ol a:hover{text-decoration:underline}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.chip{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:2px 10px;font-size:12px;color:#3730a3;margin:2px}
+pre.code{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;max-height:420px}
+details{margin:14px 0}
+summary{cursor:pointer;color:#0b57d0;font-size:14px;user-select:none}
+.preview{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px;margin:12px 0}
+.preview.dark{background:#1a1a1a;color:#fff;border-color:#444}
+.preview.dark input,.preview.dark select{background:#2d2d2d;color:#fff;border-color:#555}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.pill.active{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:90px}
+.stat b{display:block;font-size:20px;color:#1a73e8}
+.stat span{font-size:12px;color:#777}
+.rbtn{padding:10px 18px;border:none;border-radius:8px;background:#1a73e8;color:#fff;font-size:14px;cursor:pointer}
+.rbtn:hover{background:#0b5bc0}
+.rbtn.gray{background:#64748b}.rbtn.gray:hover{background:#475569}
+.rbtn.green{background:#28a745}.rbtn.green:hover{background:#1e7e34}
+.rbtn.red{background:#dc3545}.rbtn.red:hover{background:#c82333}
+.rbtn:disabled{opacity:.45;cursor:not-allowed}
+
+.book{background:#fff;border:1px solid #e2e8f0;border-left:4px solid #1a73e8;border-radius:10px;padding:12px 14px;margin:8px 0}
+.book b{color:#0f172a}
+.book .meta{font-size:13px;color:#64748b;margin-top:4px}
+.stars{color:#f59e0b;letter-spacing:1px}
+
+.saved{font-size:13px;color:#16a34a;background:#dcfce7;border:1px solid #86efac;border-radius:8px;padding:6px 12px;display:inline-block}
+.status-line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns "><button class="btn" onclick="location.href='пр25_зад1_индикатор_сохранения.html'">← Пред.</button><button class="btn" onclick="location.href='пр25_зад3_синхронизация_вкладок.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР25 • Зад.2</span>
+<h1>Отмена последнего действия (Undo)</h1>
+<div class="desc">Задание 2: история состояний массива книг. Кнопка «Отменить» откатывает на одно действие назад.</div>
+
+<div class="card">
+  <div class="status-line">
+    <b>Книги</b>
+    <span class="saved" id="saved">история: 1 состояние</span>
+  </div>
+  <div class="row">
+    <input id="title" placeholder="Название новой книги" style="flex:1;min-width:220px">
+    <button class="btn green" onclick="addBook()">Добавить</button>
+    <button class="btn orange" onclick="undo()">↩ Отменить</button>
+    <button class="btn red" onclick="resetAll()">Сброс</button>
+  </div>
+  <div id="books"></div>
+  <div class="out" id="out"></div>
+</div>
+<details><summary>Показать код решения</summary><pre class="code">const KEY = &#x27;pr25_books_undo&#x27;;
+
+class LibraryManager {
+  constructor() {
+    this.books = [];
+    this.history = [];
+    this.historyIndex = -1;
+    this.loadFromStorage();
+    if (this.history.length === 0) this.saveToStorage();
+  }
+
+  loadFromStorage() {
+    try {
+      const data = JSON.parse(localStorage.getItem(KEY) || &#x27;null&#x27;);
+      if (data &amp;&amp; Array.isArray(data.books)) {
+        this.books = data.books;
+        this.history = data.history || [data.books];
+        this.historyIndex = typeof data.historyIndex === &#x27;number&#x27; ? data.historyIndex : this.history.length - 1;
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  saveToStorage() {
+    localStorage.setItem(KEY, JSON.stringify({
+      books: this.books,
+      history: this.history,
+      historyIndex: this.historyIndex
+    }));
+  }
+
+  snapshot() {
+    const copy = JSON.parse(JSON.stringify(this.books));
+    this.history = this.history.slice(0, this.historyIndex + 1);
+    this.history.push(copy);
+    this.historyIndex = this.history.length - 1;
+    this.saveToStorage();
+  }
+
+  addBook(title) {
+    this.books.push({ title });
+    this.snapshot();
+  }
+
+  removeBook(index) {
+    this.books.splice(index, 1);
+    this.snapshot();
+  }
+
+  undo() {
+    if (this.historyIndex &gt; 0) {
+      this.historyIndex--;
+      this.books = JSON.parse(JSON.stringify(this.history[this.historyIndex]));
+      this.saveToStorage();
+      return true;
+    }
+    return false;
+  }
+
+  reset() {
+    this.books = [];
+    this.history = [];
+    this.historyIndex = -1;
+    this.snapshot();
+  }
+}
+
+const library = new LibraryManager();
+
+function render() {
+  $(&#x27;books&#x27;).innerHTML = library.books.length
+    ? library.books.map((b, i) =&gt; `&lt;div class=&quot;item&quot;&gt;&lt;span&gt;${esc(b.title)}&lt;/span&gt;&lt;button class=&quot;btn red&quot; onclick=&quot;removeBook(${i})&quot;&gt;×&lt;/button&gt;&lt;/div&gt;`).join(&#x27;&#x27;)
+    : &#x27;&lt;p class=&quot;muted&quot;&gt;Книг нет.&lt;/p&gt;&#x27;;
+  $(&#x27;saved&#x27;).textContent = `история: ${library.history.length} состояний, текущее #${library.historyIndex + 1}`;
+}
+
+function addBook() {
+  const title = $(&#x27;title&#x27;).value.trim();
+  if (!title) { out(&#x27;&lt;span class=&quot;err&quot;&gt;Введите название&lt;/span&gt;&#x27;); return; }
+  library.addBook(title);
+  $(&#x27;title&#x27;).value = &#x27;&#x27;;
+  render();
+  out(`&lt;span class=&quot;ok&quot;&gt;Добавлено:&lt;/span&gt; ${esc(title)}`);
+}
+
+function removeBook(index) {
+  library.removeBook(index);
+  render();
+  out(&#x27;&lt;span class=&quot;ok&quot;&gt;Удалено, можно отменить&lt;/span&gt;&#x27;);
+}
+
+function undo() {
+  const ok = library.undo();
+  render();
+  out(ok ? &#x27;&lt;span class=&quot;ok&quot;&gt;Последнее действие отменено&lt;/span&gt;&#x27; : &#x27;&lt;span class=&quot;err&quot;&gt;Отменять больше нечего&lt;/span&gt;&#x27;);
+}
+
+function resetAll() {
+  library.reset();
+  render();
+  out(&#x27;Библиотека сброшена&#x27;);
+}
+
+render();</pre></details>
+<div class="navbtns st"><button class="btn" onclick="location.href='пр25_зад1_индикатор_сохранения.html'">← Пред.</button><button class="btn" onclick="location.href='пр25_зад3_синхронизация_вкладок.html'">След. →</button></div>
+<footer>Хаб самостоятельных работ JavaScript · ПР25 · страница 41 из 90</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+function out(html) { const el = $('out'); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const KEY = 'pr25_books_undo';
+
+class LibraryManager {
+  constructor() {
+    this.books = [];
+    this.history = [];
+    this.historyIndex = -1;
+    this.loadFromStorage();
+    if (this.history.length === 0) this.saveToStorage();
+  }
+
+  loadFromStorage() {
+    try {
+      const data = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (data && Array.isArray(data.books)) {
+        this.books = data.books;
+        this.history = data.history || [data.books];
+        this.historyIndex = typeof data.historyIndex === 'number' ? data.historyIndex : this.history.length - 1;
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  saveToStorage() {
+    localStorage.setItem(KEY, JSON.stringify({
+      books: this.books,
+      history: this.history,
+      historyIndex: this.historyIndex
+    }));
+  }
+
+  snapshot() {
+    const copy = JSON.parse(JSON.stringify(this.books));
+    this.history = this.history.slice(0, this.historyIndex + 1);
+    this.history.push(copy);
+    this.historyIndex = this.history.length - 1;
+    this.saveToStorage();
+  }
+
+  addBook(title) {
+    this.books.push({ title });
+    this.snapshot();
+  }
+
+  removeBook(index) {
+    this.books.splice(index, 1);
+    this.snapshot();
+  }
+
+  undo() {
+    if (this.historyIndex > 0) {
+      this.historyIndex--;
+      this.books = JSON.parse(JSON.stringify(this.history[this.historyIndex]));
+      this.saveToStorage();
+      return true;
+    }
+    return false;
+  }
+
+  reset() {
+    this.books = [];
+    this.history = [];
+    this.historyIndex = -1;
+    this.snapshot();
+  }
+}
+
+const library = new LibraryManager();
+
+function render() {
+  $('books').innerHTML = library.books.length
+    ? library.books.map((b, i) => `<div class="item"><span>${esc(b.title)}</span><button class="btn red" onclick="removeBook(${i})">×</button></div>`).join('')
+    : '<p class="muted">Книг нет.</p>';
+  $('saved').textContent = `история: ${library.history.length} состояний, текущее #${library.historyIndex + 1}`;
+}
+
+function addBook() {
+  const title = $('title').value.trim();
+  if (!title) { out('<span class="err">Введите название</span>'); return; }
+  library.addBook(title);
+  $('title').value = '';
+  render();
+  out(`<span class="ok">Добавлено:</span> ${esc(title)}`);
+}
+
+function removeBook(index) {
+  library.removeBook(index);
+  render();
+  out('<span class="ok">Удалено, можно отменить</span>');
+}
+
+function undo() {
+  const ok = library.undo();
+  render();
+  out(ok ? '<span class="ok">Последнее действие отменено</span>' : '<span class="err">Отменять больше нечего</span>');
+}
+
+function resetAll() {
+  library.reset();
+  render();
+  out('Библиотека сброшена');
+}
+
+render();
+
+</script>
+</body>
+</html>
