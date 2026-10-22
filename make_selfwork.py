@@ -227,6 +227,7 @@ def build_index():
 <body><div class="wrap"><h1>Самостоятельные работы по JavaScript</h1>
 <p class="desc">Все самостоятельные задачи из практических работ ПР03–ПР32 — %d страниц. Каждая задача открывается отдельно; переход между страницами — кнопками «← Пред.» и «След. →».</p>
 <div class='card' style='background:#fff7e6;border-color:#f5e6a8'><b>Как пользоваться:</b> index.html — хаб со ссылками на все самостоятельные задачи. Страницы ПР17–ПР32 собраны скриптом <code>make_selfwork.py</code>. Задачи ПР26–ПР32 используют React 18 через CDN (нужен интернет), остальные работают полностью офлайн.</div>
+<div class='card' style='background:#eef6ff;border-color:#c9e3ff'><b>Расширение браузера (ПР18):</b> готовое расширение «Помощник страницы» лежит в папке <a href="pr18-extension/README.md">pr18-extension/</a> — внутри инструкция по установке в Chrome, Edge, Яндекс.Браузер, Opera и Firefox.</div>
 %s
 </div></body></html>
 """ % (CSS, total, "\n".join(cards))

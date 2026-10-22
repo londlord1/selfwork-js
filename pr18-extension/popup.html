@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Помощник страницы</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <img src="icons/icon48.png" alt="" width="34" height="34">
+    <div class="head-text">
+      <h1>Помощник страницы</h1>
+      <p id="page-url" class="muted">Определяю страницу…</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Приветствие</h2>
+    <div class="row">
+      <input id="name" type="text" placeholder="Ваше имя" value="студент" maxlength="40">
+      <button id="hello" class="primary">Привет, студент! 👋</button>
+    </div>
+    <p class="muted">Задание 1: текст «Hello, World!» заменён на приветствие.</p>
+  </section>
+
+  <section>
+    <h2>2. Фон страницы</h2>
+    <div class="colors">
+      <button class="swatch" data-color="#ffebee" style="background:#ffebee" title="Красный" aria-label="Красный"></button>
+      <button class="swatch" data-color="#e8f5e9" style="background:#e8f5e9" title="Зелёный" aria-label="Зелёный"></button>
+      <button class="swatch" data-color="#fff3e0" style="background:#fff3e0" title="Оранжевый" aria-label="Оранжевый"></button>
+      <button class="swatch" data-color="#2196F3" style="background:#2196F3" title="Синий" aria-label="Синий"></button>
+      <button id="bg-reset" class="ghost">Сброс</button>
+    </div>
+    <p class="muted">Задание 2: четвёртая кнопка — синий фон.</p>
+  </section>
+
+  <section>
+    <h2>3. Размер шрифта</h2>
+    <div class="row">
+      <button id="font-dec" class="square" title="Уменьшить">A−</button>
+      <span id="font-size" class="value">16 px</span>
+      <button id="font-inc" class="square" title="Увеличить">A+</button>
+      <button id="font-reset" class="ghost">Сброс</button>
+    </div>
+    <p class="muted">Задание 3: шаг 2 px, минимум 8 px, максимум 32 px.</p>
+  </section>
+
+  <section>
+    <h2>4. Счётчик кликов</h2>
+    <div class="row">
+      <span class="value">Нажатий: <b id="count">0</b></span>
+      <button id="count-reset" class="ghost">Сбросить</button>
+    </div>
+    <p class="muted">Задание 4: значение хранится в chrome.storage.local.</p>
+  </section>
+
+  <section>
+    <h2>5. Тёмный режим</h2>
+    <div class="row">
+      <label class="switch">
+        <input id="dark" type="checkbox">
+        <span class="slider"></span>
+      </label>
+      <span id="dark-label" class="value">выключен</span>
+    </div>
+    <p class="muted">Задание 5: состояние сохраняется и применяется к странице.</p>
+  </section>
+
+  <section>
+    <h2>6. Контент-скрипт</h2>
+    <div class="row">
+      <button id="highlight">Выделить заголовки</button>
+      <button id="banner">Баннер</button>
+      <button id="clear" class="ghost">Убрать эффекты</button>
+    </div>
+    <p class="muted">Задание 6: команды popup → content-script.js через runtime/tabs.sendMessage.</p>
+  </section>
+
+  <section>
+    <h2>7. Заметки к странице</h2>
+    <textarea id="note-text" placeholder="Текст заметки…" rows="2" maxlength="1000"></textarea>
+    <div class="row">
+      <button id="note-save" class="primary">Сохранить</button>
+      <button id="notes-toggle" class="ghost">Показать на странице</button>
+    </div>
+    <div id="notes-list" class="notes"></div>
+    <p class="muted">Задание 7: заметки привязаны к URL и хранятся в chrome.storage.local.</p>
+  </section>
+
+  <div id="status" class="status">Готово к работе.</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
