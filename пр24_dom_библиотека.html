@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>ПР24 • DOM</title>
+<style>body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;padding:24px}.container{max-width:800px;margin:0 auto}.controls{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}.card{background:#fff;padding:15px;border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 4px rgba(0,0,0,0.05)}button{padding:8px 12px;border:none;border-radius:6px;cursor:pointer;background:#007bff;color:#fff}input,select{padding:8px;border:1px solid #ccc;border-radius:6px}</style>
+</head><body>
+<div class="container">
+  <div class="controls">
+    <input type="text" id="search" placeholder="Поиск по названию..." oninput="updateUI()">
+    <select id="sort" onchange="updateUI()">
+      <option value="none">Без сортировки</option>
+      <option value="year-desc">Год (сначала новые)</option>
+      <option value="year-asc">Год (сначала старые)</option>
+      <option value="title">Название (А-Я)</option>
+    </select>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+let books = [
+    { id: 1, title: 'Война и мир', year: 1869 },
+    { id: 2, title: '1984', year: 1949 },
+    { id: 3, title: 'Дюна', year: 1965 },
+    { id: 4, title: 'Гарри Поттер', year: 1997 }
+];
+
+function updateUI() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const sort = document.getElementById('sort').value;
+    
+    let result = books.filter(b => b.title.toLowerCase().includes(query));
+    
+    if (sort === 'year-desc') result.sort((a, b) => b.year - a.year);
+    if (sort === 'year-asc') result.sort((a, b) => a.year - b.year);
+    if (sort === 'title') result.sort((a, b) => a.title.localeCompare(b.title));
+    
+    document.getElementById('list').innerHTML = result.map(b => `
+        <div class="card">
+            <div>
+                <b>${b.title}</b> (${b.year})
+            </div>
+            <button onclick="editBook(${b.id})" style="background:#f39c12">Редактировать</button>
+        </div>
+    `).join('');
+}
+
+// Задание 1: Редактирование
+function editBook(id) {
+    const book = books.find(b => b.id === id);
+    const newTitle = prompt('Введите новое название:', book.title);
+    if (newTitle !== null && newTitle.trim() !== '') {
+        book.title = newTitle.trim();
+        updateUI();
+    }
+}
+
+updateUI();
+</script>
+</body></html>
