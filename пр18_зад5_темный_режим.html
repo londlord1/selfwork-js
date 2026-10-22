@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПР18 • Зад.5 • Темный режим</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1a1a2e;
+    transition: background 0.5s, color 0.5s;
+  }
+  body.dark-mode {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
+  .top-link:hover { text-decoration: underline; }
+  body.dark-mode .top-link { color: #6c8cff; }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 14px 0 20px; padding: 10px 16px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: background 0.5s;
+  }
+  body.dark-mode .nav {
+    background: #2a2a2a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .nav a {
+    color: #4a6cf7; text-decoration: none; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  .nav a:hover { background: #e8edf9; }
+  body.dark-mode .nav a { color: #6c8cff; }
+  body.dark-mode .nav a:hover { background: #3a3a3a; }
+  .badge {
+    display: inline-block; background: #4a6cf7; color: white;
+    padding: 4px 12px; border-radius: 12px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
+  .card {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
+    transition: background 0.5s;
+  }
+  body.dark-mode .card {
+    background: #2a2a2a;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .task code {
+    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Courier New', monospace; color: #d63384;
+  }
+  body.dark-mode .task code {
+    background: #3a3a3a;
+    color: #ff79c6;
+  }
+  .code-block {
+    background: #1a1a2e; color: #e0e0e0;
+    padding: 16px; border-radius: 8px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .comment { color: #676e95; font-style: italic; }
+  .code-block .func { color: #82aaff; }
+  .preview {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    margin: 12px 0; text-align: center;
+    transition: background 0.5s;
+  }
+  body.dark-mode .preview {
+    background: #3a3a3a;
+  }
+  .toggle-btn {
+    padding: 14px 28px; border: none; border-radius: 8px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .toggle-btn.light {
+    background: #1a1a2e; color: white;
+  }
+  .toggle-btn.dark {
+    background: #ffffff; color: #1a1a2e;
+    border: 2px solid #1a1a2e;
+  }
+  .toggle-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .storage-info {
+    background: #fff3cd; border: 1px solid #ffc107;
+    padding: 10px; border-radius: 6px; font-size: 13px;
+    margin-top: 12px;
+  }
+  body.dark-mode .storage-info {
+    background: #4a3f1a;
+    border-color: #ffc107;
+    color: #ffd700;
+  }
+  .status {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; background: #f0f2f5; min-height: 40px;
+    transition: background 0.5s;
+  }
+  body.dark-mode .status {
+    background: #3a3a3a;
+    color: #e0e0e0;
+  }
+  .status.ok { background: #d4edda; color: #155724; }
+  body.dark-mode .status.ok { background: #1a4a1a; color: #4ade80; }
+  .footer {
+    text-align: center; font-size: 12px; color: #888;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid #e0e5ec;
+  }
+  body.dark-mode .footer {
+    border-top-color: #3a3a3a;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+
+  <div class="nav">
+    <a href="пр18_зад4_счетчик_кликов.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">ПР18 • Зад.5</span>
+    <a href="пр18_зад6_контент_скрипт.html">След. →</a>
+  </div>
+
+  <span class="badge">ПР18</span>
+  <h1>ПР18 • Зад.5 • Темный режим</h1>
+
+  <div class="card">
+    <div class="task">
+      Создайте расширение, которое добавляет переключатель темного режима. При включении: фон → <code>#1a1a1a</code>, текст → белый. Состояние сохраняется в <code>browser.storage.local</code>.
+    </div>
+
+    <div class="code-block">
+<span class="keyword">const</span> actions = {
+  <span class="func">toggleDarkMode</span>: <span class="keyword">function</span>() {
+    <span class="keyword">const</span> isDark = document.body.dataset.dark === <span class="string">'true'</span>;
+    <span class="keyword">if</span> (isDark) {
+      document.body.style.backgroundColor = <span class="string">''</span>;
+      document.body.style.color = <span class="string">''</span>;
+      document.body.dataset.dark = <span class="string">'false'</span>;
+    } <span class="keyword">else</span> {
+      document.body.style.backgroundColor = <span class="string">'#1a1a1a'</span>;
+      document.body.style.color = <span class="string">'#ffffff'</span>;
+      document.body.dataset.dark = <span class="string">'true'</span>;
+    }
+  }
+};
+    </div>
+
+    <div class="preview">
+      <button class="toggle-btn light" id="toggle-btn">🌙 Включить темный режим</button>
+      <div class="storage-info">
+        💾 Состояние сохраняется в <code>localStorage</code> (имитация <code>browser.storage.local</code>)
+      </div>
+    </div>
+
+    <div class="status" id="status">Текущий режим: светлый</div>
+  </div>
+
+  <div class="nav">
+    <a href="пр18_зад4_счетчик_кликов.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">стр. 59 из 82</span>
+    <a href="пр18_зад6_контент_скрипт.html">След. →</a>
+  </div>
+
+  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 59 из 82</div>
+</div>
+
+<script>
+// Загрузка состояния из localStorage
+const isDark = localStorage.getItem('darkMode') === 'true';
+if (isDark) {
+  document.body.classList.add('dark-mode');
+  document.body.dataset.dark = 'true';
+  document.getElementById('toggle-btn').textContent = '☀️ Выключить темный режим';
+  document.getElementById('toggle-btn').className = 'toggle-btn dark';
+  document.getElementById('status').textContent = 'Текущий режим: темный';
+}
+
+document.getElementById('toggle-btn').addEventListener('click', function() {
+  const isDark = document.body.dataset.dark === 'true';
+  
+  if (isDark) {
+    document.body.classList.remove('dark-mode');
+    document.body.dataset.dark = 'false';
+    this.textContent = '🌙 Включить темный режим';
+    this.className = 'toggle-btn light';
+    localStorage.setItem('darkMode', 'false');
+    document.getElementById('status').textContent = '✅ Темный режим выключен';
+  } else {
+    document.body.classList.add('dark-mode');
+    document.body.dataset.dark = 'true';
+    this.textContent = '☀️ Выключить темный режим';
+    this.className = 'toggle-btn dark';
+    localStorage.setItem('darkMode', 'true');
+    document.getElementById('status').textContent = '✅ Темный режим включен';
+  }
+  
+  document.getElementById('status').className = 'status ok';
+});
+</script>
+</body>
+</html>
