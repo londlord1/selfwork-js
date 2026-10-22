@@ -56,28 +56,57 @@ ol a:hover{text-decoration:underline}</style>
 <button class="btn orange" onclick="runProduct()">getProduct() — произведение</button>
 </div>
 <script>
-const nums=[12,7,23,45,18,31,6,2,19,8];
-const out=()=>document.getElementById('out');
-function isPrime(n){if(n<2)return false;for(let i=2;i<=Math.sqrt(n);i++)if(n%i===0)return false;return true;}
-function getPrimes(a){return a.filter(isPrime);}
-function getSquares(a){return a.map(n=>n*n);}
-function getProduct(a){return a.reduce((p,n)=>p*n,1);}
-function runPrimes(){out().innerHTML=`<span class="hl">getPrimes()</span>
+// Исходные данные
+const numbers = [12, 7, 23, 45, 18, 31, 6, 2, 19, 8];
 
-Исходные: [${nums.join(', ')}]
+/**
+ * Функция проверки: является ли число простым
+ * Простое число — это натуральное число больше 1, которое имеет только два делителя: 1 и само себя.
+ */
+function isPrime(num) {
+    if (num <= 1) return false; // 1 и меньше — не простые
+    if (num === 2) return true; // 2 — простое
+    if (num % 2 === 0) return false; // Четные числа, кроме 2, не простые
+    
+    // Проверяем делители от 3 до квадратного корня из числа (только нечетные)
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}
 
-Результат: [${getPrimes(nums).join(', ')}]`;}
-function runSquares(){out().innerHTML=`<span class="hl">getSquares()</span>
+/**
+ * 1. getPrimes() — возвращает только простые числа из массива
+ */
+function getPrimes(arr) {
+    return arr.filter(isPrime);
+}
 
-Исходные: [${nums.join(', ')}]
+/**
+ * 2. getSquares() — возвращает квадраты всех чисел массива
+ */
+function getSquares(arr) {
+    return arr.map(num => num * num);
+}
 
-Результат: [${getSquares(nums).join(', ')}]`;}
-function runProduct(){out().innerHTML=`<span class="hl">getProduct() via reduce</span>
+/**
+ * 3. getProduct() — возвращает произведение всех чисел через reduce
+ */
+function getProduct(arr) {
+    // Важно: начальное значение должно быть 1, иначе умножение сломается
+    return arr.reduce((accumulator, currentValue) => accumulator * currentValue, 1);
+}
 
-Исходные: [${nums.join(', ')}]
+// --- Тестирование ---
+console.log("Исходный массив:", numbers);
+console.log("Простые числа:", getPrimes(numbers)); 
+// Ожидаемый результат: [7, 23, 31, 2, 19]
 
-Результат: ${getProduct(nums)}`;}
-</script>
+console.log("Квадраты чисел:", getSquares(numbers)); 
+// Ожидаемый результат: [144, 49, 529, 2025, 324, 961, 36, 4, 361, 64]
+
+console.log("Произведение всех чисел:", getProduct(numbers)); 
+// Ожидаемый результат: очень большое число (12 * 7 * 23 * ... * 8)
 
 <div class="navbtns" style="margin-top:22px"><button class="btn" onclick="location.href=''" disabled>← Пред.</button><button class="btn" onclick="location.href='пр03_зад2_самое_длинноекороткое_слово_и_группировка_по_длине.html'" >След. →</button></div>
 <footer>Хаб самостоятельных работ JavaScript · ПР03 · страница 1 из 53</footer>
