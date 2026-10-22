@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР21 • Зад.1 • Расширенное API Госуслуг</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+button{padding:10px 15px; border:none; border-radius:5px; background:#0047ab; color:white; cursor:pointer; font-weight:bold;}
+button:hover{background:#003380;}
+.service-item{display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee; cursor:pointer;}
+.service-item:hover{background:#f0f7ff;}
+.history-list{font-size:14px; max-height:200px; overflow-y:auto;}
+.history-item{padding:8px; border-bottom:1px dashed #ccc;}
+.login-box{display:flex; gap:10px; margin-bottom:20px;}
+input{padding:10px; border:1px solid #ccc; border-radius:5px; flex:1;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+</div>
+<span class="pr-tag">ПР21</span>
+<h1>ПР21 • Зад.1 • Расширенное API Госуслуг</h1>
+
+<div class="card">
+  <h3>Авторизация по СНИЛС</h3>
+  <div class="login-box">
+    <input type="text" id="snilsInput" placeholder="СНИЛС (123-456-789 00)" value="123-456-789 00">
+    <button onclick="loginSnils()">Войти</button>
+  </div>
+  <div id="authStatus" style="color:red; font-weight:bold;">Статус: Не авторизован</div>
+</div>
+
+<div class="card" id="servicesCard" style="display:none;">
+  <h3>Доступные услуги</h3>
+  <div class="service-item" onclick="showDetail('doctor')">
+    <span>🏥 Запись к врачу</span>
+    <span style="color:#4CAF50; font-size:12px;">доступно</span>
+  </div>
+  <div class="service-item" onclick="showDetail('tax')">
+    <span>💰 Налоговая задолженность</span>
+    <span style="color:#4CAF50; font-size:12px;">доступно</span>
+  </div>
+  <div id="detailView" style="margin-top:20px; padding:15px; background:#f9f9f9; border-radius:8px; display:none;">
+    <h4 id="dTitle"></h4>
+    <p id="dDesc"></p>
+    <button id="dActionBtn" style="margin-top:10px; background:#4CAF50;" onclick="submitApplication()">Подать заявление</button>
+  </div>
+</div>
+
+<div class="card" id="historyCard" style="display:none;">
+  <h3>История обращений</h3>
+  <div class="history-list" id="historyList"></div>
+</div>
+
+<script>
+let isAuth = false;
+let currentService = null;
+let userSnils = '';
+
+const services = {
+  doctor: { name: 'Запись к врачу', desc: 'Электронная запись в поликлинику. Выберите врача и время приема.' },
+  tax: { name: 'Налоговая задолженность', desc: 'Проверка и погашение текущих налоговых задолженностей.' }
+};
+
+let history = [
+  { id: 1, service: 'Налоговая задолженность', date: '2025-01-15', status: 'завершено' }
+];
+
+function loginSnils() {
+  const snils = document.getElementById('snilsInput').value;
+  if (snils === '123-456-789 00') {
+    isAuth = true;
+    userSnils = snils;
+    document.getElementById('authStatus').innerHTML = '<span style="color:green;">Авторизован по СНИЛС</span>';
+    document.getElementById('servicesCard').style.display = 'block';
+    document.getElementById('historyCard').style.display = 'block';
+    renderHistory();
+  } else {
+    alert('Неверный СНИЛС! Используйте: 123-456-789 00');
+  }
+}
+
+function showDetail(serviceId) {
+  currentService = serviceId;
+  const s = services[serviceId];
+  document.getElementById('detailView').style.display = 'block';
+  document.getElementById('dTitle').textContent = s.name;
+  document.getElementById('dDesc').textContent = s.desc;
+  document.getElementById('dActionBtn').style.display = 'block';
+}
+
+function submitApplication() {
+  if (!currentService) return;
+  const newApp = {
+    id: Date.now(),
+    service: services[currentService].name,
+    date: new Date().toLocaleDateString('ru-RU'),
+    status: 'подано (в обработке)'
+  };
+  history.unshift(newApp);
+  renderHistory();
+  document.getElementById('dActionBtn').style.display = 'none';
+  alert('Заявление успешно подано!');
+}
+
+function renderHistory() {
+  const container = document.getElementById('historyList');
+  container.innerHTML = history.map(h => `
+    <div class="history-item">
+      <strong>${h.service}</strong><br>
+      <span style="color:#666; font-size:12px;">${h.date} — ${h.status}</span>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
