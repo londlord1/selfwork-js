@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПР18 • Зад.2 • Добавить новую кнопку</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1a1a2e;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
+  .top-link:hover { text-decoration: underline; }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 14px 0 20px; padding: 10px 16px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .nav a {
+    color: #4a6cf7; text-decoration: none; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  .nav a:hover { background: #e8edf9; }
+  .badge {
+    display: inline-block; background: #4a6cf7; color: white;
+    padding: 4px 12px; border-radius: 12px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
+  .card {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
+  }
+  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .task code {
+    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Courier New', monospace; color: #d63384;
+  }
+  .code-block {
+    background: #1a1a2e; color: #e0e0e0;
+    padding: 16px; border-radius: 8px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .comment { color: #676e95; font-style: italic; }
+  .code-block .func { color: #82aaff; }
+  .preview {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    margin: 12px 0;
+  }
+  .preview-buttons {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    padding: 10px 16px; border: none; border-radius: 6px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .btn-green { background: #4CAF50; color: white; }
+  .btn-blue { background: #2196F3; color: white; }
+  .btn-gray { background: #9E9E9E; color: white; }
+  .btn-new { background: #2196F3; color: white; }
+  .btn:hover { opacity: 0.9; }
+  .status {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; background: #f0f2f5; min-height: 40px;
+  }
+  .status.ok { background: #d4edda; color: #155724; }
+  .footer {
+    text-align: center; font-size: 12px; color: #888;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid #e0e5ec;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+
+  <div class="nav">
+    <a href="пр18_зад1_изменить_приветствие.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">ПР18 • Зад.2</span>
+    <a href="пр18_зад3_размер_шрифта.html">След. →</a>
+  </div>
+
+  <span class="badge">ПР18</span>
+  <h1>ПР18 • Зад.2 • Добавить новую кнопку</h1>
+
+  <div class="card">
+    <div class="task">
+      Добавьте четвертую кнопку в popup, которая меняет цвет фона на синий (<code>#2196F3</code>).
+    </div>
+
+    <div class="code-block">
+<span class="comment">// popup.html — добавлена новая кнопка</span>
+&lt;<span class="keyword">button</span> <span class="func">id</span>=<span class="string">"blue-btn"</span>&gt;Синий фон&lt;/<span class="keyword">button</span>&gt;
+
+<span class="comment">// popup.js — добавлено действие</span>
+<span class="keyword">const</span> actions = {
+  <span class="comment">// ... существующие действия</span>
+  <span class="func">changeBlue</span>: <span class="keyword">function</span>() {
+    document.body.style.backgroundColor = <span class="string">'#2196F3'</span>;
+    document.body.style.transition = <span class="string">'background-color 0.5s'</span>;
+  }
+};
+
+<span class="comment">// Обработчик</span>
+document.getElementById(<span class="string">'blue-btn'</span>).addEventListener(<span class="string">'click'</span>, <span class="keyword">function</span>() {
+  executeInTab(actions.changeBlue);
+});
+    </div>
+
+    <div class="preview">
+      <div class="preview-buttons">
+        <button class="btn btn-green" id="hello-btn">👋 Hello World!</button>
+        <button class="btn btn-blue" id="color-btn">🎨 Сменить фон</button>
+        <button class="btn btn-gray" id="reset-btn">↺ Сбросить</button>
+        <button class="btn btn-new" id="blue-btn">💙 Синий фон</button>
+      </div>
+    </div>
+
+    <div class="status" id="status">Нажмите «Синий фон» для проверки.</div>
+  </div>
+
+  <div class="nav">
+    <a href="пр18_зад1_изменить_приветствие.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">стр. 56 из 82</span>
+    <a href="пр18_зад3_размер_шрифта.html">След. →</a>
+  </div>
+
+  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 56 из 82</div>
+</div>
+
+<script>
+document.getElementById('hello-btn').addEventListener('click', () => alert('Hello, World! 🌍'));
+document.getElementById('color-btn').addEventListener('click', () => {
+  document.body.style.backgroundColor = '#ffeb3b';
+  document.getElementById('status').textContent = '✅ Фон изменен на желтый';
+  document.getElementById('status').className = 'status ok';
+});
+document.getElementById('reset-btn').addEventListener('click', () => {
+  document.body.style.backgroundColor = '';
+  document.getElementById('status').textContent = '✅ Фон сброшен';
+});
+document.getElementById('blue-btn').addEventListener('click', () => {
+  document.body.style.backgroundColor = '#2196F3';
+  document.getElementById('status').textContent = '✅ Фон изменен на синий (новая кнопка работает!)';
+  document.getElementById('status').className = 'status ok';
+});
+</script>
+</body>
+</html>
