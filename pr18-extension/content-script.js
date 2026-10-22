@@ -74,17 +74,18 @@
   }
 
   function highlightHeadings() {
-    const nodes = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    const nodes = document.querySelectorAll('h1,h2,h3,h4,h5,h6,[role="heading"]');
     let count = 0;
     nodes.forEach((heading) => {
       if (heading.hasAttribute(HL_ATTR)) return;
       heading.setAttribute(HL_ATTR, '1');
       heading.dataset.phPrevStyle = heading.getAttribute('style') || '';
-      heading.style.background = '#fff59d';
-      heading.style.color = '#111';
-      heading.style.padding = '4px 8px';
-      heading.style.borderRadius = '4px';
-      heading.style.outline = '1px solid #fbc02d';
+      heading.style.setProperty('background', '#fff59d', 'important');
+      heading.style.setProperty('color', '#111111', 'important');
+      heading.style.setProperty('padding', '4px 8px', 'important');
+      heading.style.setProperty('border-radius', '4px', 'important');
+      heading.style.setProperty('outline', '2px solid #f59e0b', 'important');
+      heading.style.setProperty('box-shadow', '0 0 0 3px rgba(245, 158, 11, 0.25)', 'important');
       count++;
     });
     return count;

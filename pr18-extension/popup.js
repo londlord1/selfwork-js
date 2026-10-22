@@ -35,13 +35,9 @@ function humanError(error) {
   return error;
 }
 
-function sendToTab(message) {
+function sendRaw(tabId, message) {
   return new Promise((resolve) => {
-    if (!activeTab || !activeTab.id) {
-      resolve({ ok: false, error: 'Нет активной вкладки' });
-      return;
-    }
-    chrome.tabs.sendMessage(activeTab.id, message, (response) => {
+    chrome.tabs.sendMessage(tabId, message, (response) => {
       if (chrome.runtime.lastError) {
         resolve({ ok: false, error: chrome.runtime.lastError.message });
         return;
@@ -49,6 +45,29 @@ function sendToTab(message) {
       resolve(response || { ok: true });
     });
   });
+}
+
+async function sendToTab(message) {
+  if (!activeTab || !activeTab.id) {
+    return { ok: false, error: 'Нет активной вкладки' };
+  }
+
+  let result = await sendRaw(activeTab.id, message);
+
+  if (!result.ok && /Receiving end does not exist|Could not establish connection/i.test(result.error || '')) {
+    try {
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        files: ['content-script.js']
+      });
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      result = await sendRaw(activeTab.id, message);
+    } catch (error) {
+      result = { ok: false, error: error.message };
+    }
+  }
+
+  return result;
 }
 
 async function readStorage() {
@@ -246,7 +265,13 @@ async function init() {
 
   $('highlight').addEventListener('click', async () => {
     const result = await sendToTab({ type: 'highlight' });
-    setStatus(result.ok ? 'Выделено заголовков: ' + result.count : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
+    if (!result.ok) {
+      setStatus('Ошибка: ' + humanError(result.error), 'err');
+    } else if (!result.count) {
+      setStatus('На этой странице не найдено заголовков h1–h6', 'err');
+    } else {
+      setStatus('Выделено заголовков: ' + result.count, 'ok');
+    }
   });
 
   $('banner').addEventListener('click', async () => {
