@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>ПР27 • Список покупок</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head><body style="font-family:sans-serif;background:#f0f2f5;padding:20px">
+<div id="root"></div>
+<script type="text/babel">
+function App() {
+  const [items, setItems] = React.useState(() => {
+    const saved = localStorage.getItem('shopping_v2');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [input, setInput] = React.useState("");
+  const [search, setSearch] = React.useState("");
+
+  React.useEffect(() => {
+    localStorage.setItem('shopping_v2', JSON.stringify(items));
+  }, [items]);
+
+  const addItem = (e) => {
+    e.preventDefault();
+    if(!input.trim()) return;
+    setItems([...items, { id: Date.now(), name: input.trim(), purchased: false }]);
+    setInput("");
+  };
+
+  const toggle = (id) => {
+    setItems(items.map(item => item.id === id ? { ...item, purchased: !item.purchased } : item));
+  };
+
+  const filtered = items.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <div style={{maxWidth:'500px',margin:'0 auto',background:'#fff',padding:'20px',borderRadius:'12px'}}>
+      <form onSubmit={addItem} style={{display:'flex', gap:'10px', marginBottom:'15px'}}>
+        <input value={input} onChange={e => setInput(e.target.value)} placeholder="Что купить?" style={{flex:1, padding:'8px'}}/>
+        <button type="submit">Добавить</button>
+      </form>
+      
+      <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Поиск по списку..." style={{width:'100%', padding:'8px', marginBottom:'15px', boxSizing:'border-box'}}/>
+
+      <ul style={{listStyle:'none', padding:0}}>
+        {filtered.map(item => (
+          <li key={item.id} style={{padding:'10px', borderBottom:'1px solid #eee', display:'flex', alignItems:'center', gap:'10px'}}>
+            <input type="checkbox" checked={item.purchased} onChange={() => toggle(item.id)} />
+            <span style={{textDecoration: item.purchased ? 'line-through' : 'none', color: item.purchased ? '#999' : '#333'}}>
+              {item.name}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>
