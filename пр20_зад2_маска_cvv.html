@@ -106,7 +106,7 @@ display:flex;flex-direction:column;justify-content:space-between;transition:tran
   <input id="number" placeholder="0000 0000 0000 0000" maxlength="19" style="flex:1;min-width:220px">
   <input id="holder-input" placeholder="IVAN IVANOV" style="flex:1;min-width:160px">
   <input id="expiry-input" placeholder="MM/YY" maxlength="5" style="width:100px">
-  <input id="cvv-input" placeholder="CVV" maxlength="4" style="width:80px">
+  <input id="cvv-input" type="password" inputmode="numeric" autocomplete="off" placeholder="CVV" maxlength="4" style="width:80px">
 </div>
 
 <div class="row">
@@ -139,7 +139,7 @@ function updateCard() {
 
 $(&#x27;cvv-input&#x27;).addEventListener(&#x27;input&#x27;, function () {
   actualCvv = this.value.replace(/\D/g, &#x27;&#x27;).slice(0, 4);
-  this.value = &#x27;•&#x27;.repeat(actualCvv.length);
+  this.value = actualCvv;
   updateCard();
 });
 
@@ -193,7 +193,7 @@ function updateCard() {
 
 $('cvv-input').addEventListener('input', function () {
   actualCvv = this.value.replace(/\D/g, '').slice(0, 4);
-  this.value = '•'.repeat(actualCvv.length);
+  this.value = actualCvv;
   updateCard();
 });
 

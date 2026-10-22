@@ -115,7 +115,7 @@ display:flex;flex-direction:column;justify-content:space-between;transition:tran
   <input id="number" placeholder="0000 0000 0000 0000" maxlength="19" style="flex:1;min-width:220px">
   <input id="holder-input" placeholder="IVAN IVANOV" style="flex:1;min-width:160px">
   <input id="expiry-input" placeholder="MM/YY" maxlength="5" style="width:100px">
-  <input id="cvv-input" placeholder="CVV" maxlength="4" style="width:80px">
+  <input id="cvv-input" type="password" inputmode="numeric" autocomplete="off" placeholder="CVV" maxlength="4" style="width:80px">
 </div>
 <div class="out" id="out"></div>
 <details><summary>Показать код решения</summary><pre class="code">function maskNumber(value) {
@@ -147,7 +147,7 @@ $(&#x27;number&#x27;).addEventListener(&#x27;input&#x27;, function () {
 });
 $(&#x27;cvv-input&#x27;).addEventListener(&#x27;input&#x27;, function () {
   const d = this.value.replace(/\D/g, &#x27;&#x27;).slice(0, 4);
-  this.value = &#x27;•&#x27;.repeat(d.length);
+  this.value = d;
 });
 updateCard();</pre></details>
 <div class="navbtns st"><button class="btn" onclick="location.href='пр20_зад5_сохранение_в_localstorage.html'">← Пред.</button><button class="btn" onclick="location.href='пр20_зад7_3d_анимация.html'">След. →</button></div>
@@ -187,7 +187,7 @@ $('number').addEventListener('input', function () {
 });
 $('cvv-input').addEventListener('input', function () {
   const d = this.value.replace(/\D/g, '').slice(0, 4);
-  this.value = '•'.repeat(d.length);
+  this.value = d;
 });
 updateCard();
 

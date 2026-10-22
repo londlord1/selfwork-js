@@ -106,7 +106,7 @@ display:flex;flex-direction:column;justify-content:space-between;transition:tran
   <input id="number" placeholder="0000 0000 0000 0000" maxlength="19" style="flex:1;min-width:220px">
   <input id="holder-input" placeholder="IVAN IVANOV" style="flex:1;min-width:160px">
   <input id="expiry-input" placeholder="MM/YY" maxlength="5" style="width:100px">
-  <input id="cvv-input" placeholder="CVV" maxlength="4" style="width:80px">
+  <input id="cvv-input" type="password" inputmode="numeric" autocomplete="off" placeholder="CVV" maxlength="4" style="width:80px">
 </div>
 <div class="out" id="out"></div>
 <details><summary>Показать код решения</summary><pre class="code">function getCardType(digits) {

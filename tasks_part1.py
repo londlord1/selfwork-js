@@ -882,7 +882,7 @@ CARD_FIELDS = """
   <input id="number" placeholder="0000 0000 0000 0000" maxlength="19" style="flex:1;min-width:220px">
   <input id="holder-input" placeholder="IVAN IVANOV" style="flex:1;min-width:160px">
   <input id="expiry-input" placeholder="MM/YY" maxlength="5" style="width:100px">
-  <input id="cvv-input" placeholder="CVV" maxlength="4" style="width:80px">
+  <input id="cvv-input" type="password" inputmode="numeric" autocomplete="off" placeholder="CVV" maxlength="4" style="width:80px">
 </div>
 """
 
@@ -990,7 +990,7 @@ function updateCard() {
 
 $('cvv-input').addEventListener('input', function () {
   actualCvv = this.value.replace(/\D/g, '').slice(0, 4);
-  this.value = '•'.repeat(actualCvv.length);
+  this.value = actualCvv;
   updateCard();
 });
 
@@ -1065,8 +1065,8 @@ $('expiry-input').addEventListener('input', function () {
 
 $('cvv-input').addEventListener('input', function () {
   const d = this.value.replace(/\D/g, '').slice(0, 3);
-  this.value = '•'.repeat(d.length);
-  $('cvv').textContent = this.value || '•••';
+  this.value = d;
+  $('cvv').textContent = '•'.repeat(d.length) || '•••';
   if (d.length === 3) $('number').focus();
 });
 """,
@@ -1125,7 +1125,7 @@ $('number').addEventListener('input', function () {
 });
 $('cvv-input').addEventListener('input', function () {
   const d = this.value.replace(/\D/g, '').slice(0, 4);
-  this.value = '•'.repeat(d.length);
+  this.value = d;
 });
 updateCard();
 """,
@@ -1253,7 +1253,7 @@ $('number').addEventListener('input', function () {
 });
 $('cvv-input').addEventListener('input', function () {
   const d = this.value.replace(/\D/g, '').slice(0, 4);
-  this.value = '•'.repeat(d.length);
+  this.value = d;
 });
 updateCard();
 """,
@@ -1317,7 +1317,7 @@ $('number').addEventListener('input', function () {
 });
 $('cvv-input').addEventListener('input', function () {
   const d = this.value.replace(/\D/g, '').slice(0, 4);
-  this.value = '•'.repeat(d.length);
+  this.value = d;
 });
 updateCard();
 """,
