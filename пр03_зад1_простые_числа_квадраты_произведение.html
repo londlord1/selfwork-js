@@ -1,99 +1,54 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>ПР03 • Зад.1 • Простые числа, квадраты, произведение</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        h1 { color: #333; }
-        .result {
-            background: #fff;
-            padding: 15px;
-            margin: 10px 0;
-            border-left: 4px solid #4CAF50;
-            border-radius: 4px;
-        }
-        .label {
-            font-weight: bold;
-            color: #555;
-        }
-        .value {
-            color: #2196F3;
-            word-break: break-all;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>ПР03 • Зад.1 • Простые числа, квадраты, произведение</title>
 </head>
 <body>
-    <h1>ПР03 • Задание 1</h1>
-    <div id="output"></div>
 
-    <script>
-        // Исходный массив
-        const numbers = [12, 7, 23, 45, 18, 31, 6, 2, 19, 8];
+  <h1>ПР03 • Зад.1 • Простые числа, квадраты, произведение</h1>
+  <p>Функции: getPrimes() — простые, getSquares() — квадраты, getProduct() — произведение.</p>
+  <div id="out"></div>
 
-        // Вспомогательная функция: проверка, является ли число простым
-        function isPrime(num) {
-            if (num <= 1) return false;
-            if (num === 2) return true;
-            if (num % 2 === 0) return false;
-            for (let i = 3; i <= Math.sqrt(num); i += 2) {
-                if (num % i === 0) return false;
-            }
-            return true;
-        }
+<script>
+  // Данные
+  const числами = [12, 7, 23, 45, 18, 31, 6, 2, 19, 8];
 
-        // 1. Только простые числа массива
-        function getPrimes(arr) {
-            return arr.filter(isPrime);
-        }
+  // Вспомогательная проверка: простое ли число
+  function isPrime(n) {
+    if (n < 2) return false;            // 0 и 1 — не простые
+    for (let i = 2; i * i <= n; i++) {  // достаточно идти до √n
+      if (n % i === 0) return false;    // нашёлся делитель — не простое
+    }
+    return true;
+  }
 
-        // 2. Квадраты всех чисел
-        function getSquares(arr) {
-            return arr.map(num => num * num);
-        }
+  // getPrimes() — только простые числа массива
+  function getPrimes() {
+    return числами.filter(isPrime);
+  }
 
-        // 3. Произведение всех чисел через reduce
-        function getProduct(arr) {
-            return arr.reduce((acc, current) => acc * current, 1);
-        }
+  // getSquares() — квадраты всех чисел
+  function getSquares() {
+    return числами.map(n => n * n);
+  }
 
-        // Вычисляем результаты
-        const primes = getPrimes(numbers);
-        const squares = getSquares(numbers);
-        const product = getProduct(numbers);
+  // getProduct() — произведение всех чисел через reduce
+  function getProduct() {
+    return числами.reduce((acc, n) => acc * n, 1); // 1 — начальный аккумулятор
+  }
 
-        // Вывод в консоль
-        console.log("Исходный массив:", numbers);
-        console.log("Простые числа:", primes);
-        console.log("Квадраты:", squares);
-        console.log("Произведение:", product);
+  // Вывод
+  console.log('Простые:', getPrimes());
+  console.log('Квадраты:', getSquares());
+  console.log('Произведение:', getProduct());
 
-        // Вывод на страницу
-        const output = document.getElementById('output');
-        output.innerHTML = `
-            <div class="result">
-                <span class="label">Исходный массив:</span>
-                <span class="value">[${numbers.join(', ')}]</span>
-            </div>
-            <div class="result">
-                <span class="label">getPrimes() — простые числа:</span>
-                <span class="value">[${primes.join(', ')}]</span>
-            </div>
-            <div class="result">
-                <span class="label">getSquares() — квадраты:</span>
-                <span class="value">[${squares.join(', ')}]</span>
-            </div>
-            <div class="result">
-                <span class="label">getProduct() — произведение:</span>
-                <span class="value">${product}</span>
-            </div>
-        `;
-    </script>
+  document.getElementById('out').innerHTML =
+    '<p><b>Данные:</b> [' + числами.join(', ') + ']</p>' +
+    '<p><b>Простые:</b> [' + getPrimes().join(', ') + ']</p>' +
+    '<p><b>Квадраты:</b> [' + getSquares().join(', ') + ']</p>' +
+    '<p><b>Произведение:</b> ' + getProduct() + '</p>';
+</script>
+
 </body>
 </html>
