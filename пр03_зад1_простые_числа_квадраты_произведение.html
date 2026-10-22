@@ -1,54 +1,51 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>ПР03 • Зад.1 • Простые числа, квадраты, произведение</title>
-</head>
-<body>
+// Исходные данные
+const numbers = [12, 7, 23, 45, 18, 31, 6, 2, 19, 8];
 
-  <h1>ПР03 • Зад.1 • Простые числа, квадраты, произведение</h1>
-  <p>Функции: getPrimes() — простые, getSquares() — квадраты, getProduct() — произведение.</p>
-  <div id="out"></div>
-
-<script>
-  // Данные
-  const числами = [12, 7, 23, 45, 18, 31, 6, 2, 19, 8];
-
-  // Вспомогательная проверка: простое ли число
-  function isPrime(n) {
-    if (n < 2) return false;            // 0 и 1 — не простые
-    for (let i = 2; i * i <= n; i++) {  // достаточно идти до √n
-      if (n % i === 0) return false;    // нашёлся делитель — не простое
+/**
+ * Функция проверки: является ли число простым
+ * Простое число — это натуральное число больше 1, которое имеет только два делителя: 1 и само себя.
+ */
+function isPrime(num) {
+    if (num <= 1) return false; // 1 и меньше — не простые
+    if (num === 2) return true; // 2 — простое
+    if (num % 2 === 0) return false; // Четные числа, кроме 2, не простые
+    
+    // Проверяем делители от 3 до квадратного корня из числа (только нечетные)
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
+        if (num % i === 0) return false;
     }
     return true;
-  }
+}
 
-  // getPrimes() — только простые числа массива
-  function getPrimes() {
-    return числами.filter(isPrime);
-  }
+/**
+ * 1. getPrimes() — возвращает только простые числа из массива
+ */
+function getPrimes(arr) {
+    return arr.filter(isPrime);
+}
 
-  // getSquares() — квадраты всех чисел
-  function getSquares() {
-    return числами.map(n => n * n);
-  }
+/**
+ * 2. getSquares() — возвращает квадраты всех чисел массива
+ */
+function getSquares(arr) {
+    return arr.map(num => num * num);
+}
 
-  // getProduct() — произведение всех чисел через reduce
-  function getProduct() {
-    return числами.reduce((acc, n) => acc * n, 1); // 1 — начальный аккумулятор
-  }
+/**
+ * 3. getProduct() — возвращает произведение всех чисел через reduce
+ */
+function getProduct(arr) {
+    // Важно: начальное значение должно быть 1, иначе умножение сломается
+    return arr.reduce((accumulator, currentValue) => accumulator * currentValue, 1);
+}
 
-  // Вывод
-  console.log('Простые:', getPrimes());
-  console.log('Квадраты:', getSquares());
-  console.log('Произведение:', getProduct());
+// --- Тестирование ---
+console.log("Исходный массив:", numbers);
+console.log("Простые числа:", getPrimes(numbers)); 
+// Ожидаемый результат: [7, 23, 31, 2, 19]
 
-  document.getElementById('out').innerHTML =
-    '<p><b>Данные:</b> [' + числами.join(', ') + ']</p>' +
-    '<p><b>Простые:</b> [' + getPrimes().join(', ') + ']</p>' +
-    '<p><b>Квадраты:</b> [' + getSquares().join(', ') + ']</p>' +
-    '<p><b>Произведение:</b> ' + getProduct() + '</p>';
-</script>
+console.log("Квадраты чисел:", getSquares(numbers)); 
+// Ожидаемый результат: [144, 49, 529, 2025, 324, 961, 36, 4, 361, 64]
 
-</body>
-</html>
+console.log("Произведение всех чисел:", getProduct(numbers)); 
+// Ожидаемый результат: очень большое число (12 * 7 * 23 * ... * 8)
