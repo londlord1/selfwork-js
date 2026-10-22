@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПР19 • Зад.7 • Выбор языка</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1a1a2e;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
+  .top-link:hover { text-decoration: underline; }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 14px 0 20px; padding: 10px 16px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .nav a {
+    color: #4a6cf7; text-decoration: none; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  .nav a:hover { background: #e8edf9; }
+  .badge {
+    display: inline-block; background: #4a6cf7; color: white;
+    padding: 4px 12px; border-radius: 12px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
+  .card {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
+  }
+  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .task code {
+    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Courier New', monospace; color: #d63384;
+  }
+  .code-block {
+    background: #1a1a2e; color: #e0e0e0;
+    padding: 16px; border-radius: 8px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .comment { color: #676e95; font-style: italic; }
+  .code-block .func { color: #82aaff; }
+  .lang-switch {
+    display: flex; gap: 8px; margin-bottom: 12px;
+  }
+  .lang-btn {
+    padding: 8px 16px; border: 2px solid #e0e5ec;
+    border-radius: 20px; background: white;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
+    color: white; border-color: transparent;
+  }
+  .lang-btn:hover:not(.active) { border-color: #4a6cf7; }
+  .chat {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    min-height: 200px; max-height: 300px; overflow-y: auto;
+    margin: 12px 0;
+  }
+  .msg {
+    padding: 8px 14px; border-radius: 12px; margin-bottom: 6px;
+    max-width: 75%; font-size: 14px; line-height: 1.5;
+  }
+  .msg.user {
+    background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
+    color: white; margin-left: auto; text-align: right;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.bot {
+    background: white; color: #1a1a2e;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-bottom-left-radius: 4px;
+  }
+  .input-row {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .input-row input {
+    flex: 1; padding: 10px 14px; border: 2px solid #e0e5ec;
+    border-radius: 20px; font-size: 14px; outline: none;
+  }
+  .input-row input:focus { border-color: #4a6cf7; }
+  .input-row button {
+    padding: 10px 20px; border: none; border-radius: 20px;
+    background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
+    color: white; font-weight: 600; cursor: pointer;
+  }
+  .status {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; background: #f0f2f5; min-height: 40px;
+  }
+  .status.ok { background: #d4edda; color: #155724; }
+  .footer {
+    text-align: center; font-size: 12px; color: #888;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid #e0e5ec;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+
+  <div class="nav">
+    <a href="пр19_зад6_localstorage.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">ПР19 • Зад.7</span>
+    <a href="пр20_зад1_маска_номера.html">След. →</a>
+  </div>
+
+  <span class="badge">ПР19</span>
+  <h1>ПР19 • Зад.7 • Выбор языка</h1>
+
+  <div class="card">
+    <div class="task">
+      Добавьте переключатель языка (русский/английский) для бота.
+    </div>
+
+    <div class="code-block">
+<span class="keyword">let</span> currentLanguage = <span class="string">'ru'</span>;
+
+<span class="keyword">const</span> botResponses = {
+  ru: {
+    <span class="string">'привет'</span>: [<span class="string">'Привет!'</span>, <span class="string">'Здравствуй!'</span>],
+    <span class="string">'пока'</span>: [<span class="string">'Пока!'</span>, <span class="string">'До встречи!'</span>]
+  },
+  en: {
+    <span class="string">'hello'</span>: [<span class="string">'Hello!'</span>, <span class="string">'Hi!'</span>],
+    <span class="string">'bye'</span>: [<span class="string">'Bye!'</span>, <span class="string">'See you!'</span>]
+  }
+};
+
+<span class="keyword">function</span> <span class="func">switchLanguage</span>(lang) {
+  currentLanguage = lang;
+  addMessage(<span class="string">`Язык переключен на ${lang === 'ru' ? 'русский' : 'английский'}`</span>, <span class="string">'bot'</span>);
+}
+    </div>
+
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="ru">🇷🇺 Русский</button>
+      <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+    </div>
+
+    <div class="chat" id="chat">
+      <div class="msg bot">Привет! Я многоязычный бот 🌍</div>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="msg-input" placeholder="Введите сообщение...">
+      <button id="send-btn">➤</button>
+    </div>
+
+    <div class="status" id="status">Текущий язык: русский</div>
+  </div>
+
+  <div class="nav">
+    <a href="пр19_зад6_localstorage.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">стр. 68 из 82</span>
+    <a href="пр20_зад1_маска_номера.html">След. →</a>
+  </div>
+
+  <div class="footer">Хаб самостоятельных работ JavaScript · ПР19 · страница 68 из 82</div>
+</div>
+
+<script>
+let currentLanguage = 'ru';
+
+const botResponses = {
+  ru: {
+    'привет': ['Привет! 😊', 'Здравствуй! 👋'],
+    'пока': ['Пока! 👋', 'До встречи! 😊'],
+    'как дела': ['Отлично! 🌟', 'Прекрасно! 💫']
+  },
+  en: {
+    'hello': ['Hello! 😊', 'Hi there! 👋'],
+    'bye': ['Bye! 👋', 'See you! 😊'],
+    'how are you': ['Great! 🌟', 'Wonderful! 💫']
+  }
+};
+
+function getBotResponse(msg) {
+  const lower = msg.toLowerCase();
+  const responses = botResponses[currentLanguage];
+  
+  for (const [keyword, answers] of Object.entries(responses)) {
+    if (lower.includes(keyword)) {
+      return answers[Math.floor(Math.random() * answers.length)];
+    }
+  }
+  
+  return currentLanguage === 'ru' ? 'Я не совсем понял. 🤔' : "I don't quite understand. 🤔";
+}
+
+function addMessage(text, sender) {
+  const chat = document.getElementById('chat');
+  const msg = document.createElement('div');
+  msg.className = `msg ${sender}`;
+  msg.textContent = text;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function switchLanguage(lang) {
+  currentLanguage = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  
+  const langName = lang === 'ru' ? 'русский' : 'английский';
+  const message = lang === 'ru' ? `Язык переключен на ${langName}` : `Language switched to ${langName}`;
+  addMessage(message, 'bot');
+  
+  document.getElementById('status').textContent = `Текущий язык: ${langName}`;
+  document.getElementById('status').className = 'status ok';
+}
+
+function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if (!text) return;
+  
+  addMessage(text, 'user');
+  input.value = '';
+  
+  setTimeout(() => {
+    const response = getBotResponse(text);
+    addMessage(response, 'bot');
+  }, 500);
+}
+
+document.getElementById('send-btn').addEventListener('click', sendMessage);
+document.getElementById('msg-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchLanguage(btn.dataset.lang));
+});
+</script>
+</body>
+</html>
