@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>ПР21 • Госуслуги</title>
+<style>body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;padding:24px}.container{max-width:600px;margin:0 auto;background:#fff;border-radius:12px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}.header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0047ab;padding-bottom:10px;margin-bottom:20px}.service-item{display:flex;justify-content:space-between;align-items:center;padding:15px;border:1px solid #eee;border-radius:8px;margin-bottom:10px;cursor:pointer;transition:0.2s}.service-item:hover{background:#f8f9fa;border-color:#0047ab}.btn{background:#0047ab;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer}.btn:disabled{background:#ccc}.out{margin-top:20px;padding:15px;background:#1a1a2e;color:#fff;border-radius:8px;font-family:monospace;display:none}</style>
+</head><body>
+<div class="container">
+  <div class="header">
+    <h2>Виджет Госуслуг</h2>
+    <span style="color:green;font-size:14px">● Авторизован</span>
+  </div>
+  <div id="services"></div>
+  <button class="btn" style="width:100%;margin-top:20px" onclick="submitApp()" id="submitBtn" disabled>Подать заявление на выбранную услугу</button>
+  <div class="out" id="out"></div>
+</div>
+<script>
+// Задание 1: Новая услуга
+const servicesDB = [
+    { id: 'passport', name: 'Загранпаспорт', desc: 'Оформление паспорта нового поколения' },
+    { id: 'doctor', name: 'Запись к врачу', desc: 'Электронная регистратура' }, // Новая
+    { id: 'tax', name: 'Налоговая задолженность', desc: 'Проверка и оплата' }
+];
+let selectedService = null;
+const historyDB = []; // Задание 3: Имитация БД заявок
+
+function render() {
+    const container = document.getElementById('services');
+    container.innerHTML = servicesDB.map(s => `
+        <div class="service-item" onclick="selectService('${s.id}', this)">
+            <div>
+                <div style="font-weight:bold">${s.name}</div>
+                <div style="font-size:12px;color:#666">${s.desc}</div>
+            </div>
+            <div style="color:#0047ab;font-weight:bold">→</div>
+        </div>
+    `).join('');
+}
+
+function selectService(id, el) {
+    document.querySelectorAll('.service-item').forEach(d => d.style.borderColor = '#eee');
+    el.style.borderColor = '#0047ab';
+    selectedService = servicesDB.find(s => s.id === id);
+    document.getElementById('submitBtn').disabled = false;
+}
+
+// Задание 3: Отправка заявления
+function submitApp() {
+    if (!selectedService) return;
+    const date = new Date().toLocaleString('ru-RU');
+    const newApp = { id: Date.now(), service: selectedService.name, date, status: 'подано' };
+    historyDB.unshift(newApp);
+    
+    const out = document.getElementById('out');
+    out.style.display = 'block';
+    out.innerHTML = `<span style="color:#2ecc71">✅ Заявление на "${newApp.service}" успешно подано!</span><br><br><b>История обращений:</b><br>` + 
+        historyDB.map(a => `[${a.date}] ${a.service} — <span style="color:#f1c40f">${a.status}</span>`).join('<br>');
+        
+    document.getElementById('submitBtn').disabled = true;
+    selectedService = null;
+    document.querySelectorAll('.service-item').forEach(d => d.style.borderColor = '#eee');
+}
+render();
+</script>
+</body></html>
