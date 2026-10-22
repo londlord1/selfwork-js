@@ -158,6 +158,11 @@ async function updateCount(value) {
   $('count').textContent = value;
 }
 
+function updateGreetingPreview() {
+  const name = $('name').value.trim() || 'студент';
+  $('greet-preview').textContent = 'Будет показано: Привет, ' + name + '! 👋';
+}
+
 async function showHello() {
   const name = $('name').value.trim() || 'студент';
   await writeStorage({ greetingName: name });
@@ -212,7 +217,8 @@ async function init() {
   const data = await readStorage();
   $('count').textContent = data.clickCount;
   $('name').value = data.greetingName || 'студент';
-  $('hello').textContent = 'Привет, ' + ($('name').value || 'студент') + '! 👋';
+  $('version').textContent = 'v' + chrome.runtime.getManifest().version;
+  updateGreetingPreview();
   $('dark').checked = !!data.darkMode;
   $('dark-label').textContent = data.darkMode ? 'включён' : 'выключен';
 
@@ -235,9 +241,7 @@ async function init() {
   }
 
   $('hello').addEventListener('click', showHello);
-  $('name').addEventListener('input', () => {
-    $('hello').textContent = 'Привет, ' + ($('name').value.trim() || 'студент') + '! 👋';
-  });
+  $('name').addEventListener('input', updateGreetingPreview);
 
   bindColorButtons();
 

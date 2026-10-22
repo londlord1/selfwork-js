@@ -24,6 +24,7 @@ body {
 
 .head-text { min-width: 0; }
 .head h1 { font-size: 16px; color: #1a73e8; }
+.ver { font-size: 10px; color: #94a3b8; font-weight: 400; vertical-align: middle; }
 .muted { color: #6b7280; font-size: 11px; }
 #page-url {
   white-space: nowrap;
