@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>ПР26 • Счетчик</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head><body style="font-family:sans-serif;background:#f0f2f5;padding:20px">
+<div id="root"></div>
+<script type="text/babel">
+function App() {
+  const [count, setCount] = React.useState(0);
+  const [step, setStep] = React.useState(1);
+  const [input, setInput] = React.useState("");
+
+  return (
+    <div style={{maxWidth:'400px',margin:'0 auto',background:'#fff',padding:'30px',borderRadius:'12px',textAlign:'center',boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>
+      <h1 style={{color: count > 10 ? 'red' : '#333', fontSize:'60px', margin:'0'}}>{count}</h1>
+      
+      <div style={{display:'flex', gap:'10px', justifyContent:'center', marginBottom:'20px'}}>
+        <button onClick={() => setCount(count - step)} style={{padding:'10px 20px'}}>-{step}</button>
+        <button onClick={() => setCount(count + step)} style={{padding:'10px 20px'}}>+{step}</button>
+        <button onClick={() => setCount(count * 2)} style={{padding:'10px 20px'}}>x2</button>
+      </div>
+
+      <div style={{marginBottom:'20px'}}>
+        <label>Шаг: </label>
+        <input type="number" value={step} onChange={e => setStep(Number(e.target.value) || 1)} style={{width:'60px', padding:'5px'}} />
+      </div>
+
+      <div>
+        <input type="number" value={input} onChange={e => setInput(e.target.value)} placeholder="Свое число" style={{padding:'8px', marginRight:'10px'}}/>
+        <button onClick={() => { setCount(Number(input) || 0); setInput(""); }}>Задать</button>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>
