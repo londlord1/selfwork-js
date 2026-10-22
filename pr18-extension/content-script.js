@@ -13,18 +13,36 @@
   const pageKey = () => location.origin + location.pathname + location.search;
 
   let fontLevel = 16;
+  let fontRecords = [];
 
-  function currentFontSize() {
-    return fontLevel;
+  function collectFontRecords() {
+    fontRecords = [];
+    if (!document.body) return;
+
+    const nodes = [document.body];
+    document.body.querySelectorAll('*').forEach((el) => nodes.push(el));
+
+    nodes.forEach((el) => {
+      if (/^(SCRIPT|STYLE|LINK|META|TITLE|NOSCRIPT|HEAD)$/.test(el.tagName)) return;
+      if (!el.getClientRects().length) return;
+      const size = parseFloat(getComputedStyle(el).fontSize);
+      if (!size) return;
+      fontRecords.push({
+        el,
+        base: size,
+        inline: el.style.getPropertyValue('font-size'),
+        priority: el.style.getPropertyPriority('font-size')
+      });
+    });
   }
 
   function applyFont() {
+    if (!fontRecords.length) collectFontRecords();
     const scale = fontLevel / 16;
-    if (typeof CSS !== 'undefined' && CSS.supports && CSS.supports('zoom', '1.25')) {
-      document.documentElement.style.zoom = scale === 1 ? '' : String(scale);
-    } else if (document.body) {
-      document.body.style.setProperty('font-size', fontLevel + 'px', 'important');
-    }
+    fontRecords.forEach((record) => {
+      if (!record.el.isConnected) return;
+      record.el.style.setProperty('font-size', (record.base * scale).toFixed(2) + 'px', 'important');
+    });
   }
 
   function changeFont(delta) {
@@ -34,9 +52,14 @@
   }
 
   function resetFont() {
+    fontRecords.forEach((record) => {
+      if (!record.el.isConnected) return;
+      if (record.inline) record.el.style.setProperty('font-size', record.inline, record.priority);
+      else record.el.style.removeProperty('font-size');
+    });
+    fontRecords = [];
     fontLevel = 16;
-    document.documentElement.style.zoom = '';
-    if (document.body) document.body.style.removeProperty('font-size');
+    document.documentElement.style.removeProperty('zoom');
     return fontLevel;
   }
 
@@ -329,7 +352,7 @@
         case 'getState':
           sendResponse({
             ok: true,
-            fontSize: currentFontSize(),
+            fontSize: fontLevel,
             dark: !!document.getElementById(DARK_STYLE_ID),
             url: pageKey()
           });
