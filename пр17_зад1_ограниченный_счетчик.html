@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>ПР17 • Ограниченный счетчик</title>
+<style>body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;padding:24px;display:flex;justify-content:center}.card{background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:100%;max-width:500px}h1{color:#1a73e8;font-size:20px;margin-bottom:15px}.count{font-size:60px;font-weight:bold;text-align:center;color:#333;margin:20px 0}.btns{display:flex;gap:10px;justify-content:center}button{padding:10px 20px;font-size:16px;border:none;border-radius:8px;cursor:pointer;background:#1a73e8;color:#fff;transition:0.2s}button:hover{background:#0b5bc0}.info{margin-top:20px;padding:15px;background:#eef6ff;border-radius:8px;font-family:monospace}</style>
+</head><body>
+<div class="card">
+  <h1>Ограниченный счетчик (min: 0, max: 5)</h1>
+  <div class="count" id="display">0</div>
+  <div class="btns">
+    <button onclick="counter.decrement()">-1</button>
+    <button onclick="counter.reset()">Сброс</button>
+    <button onclick="counter.increment()">+1</button>
+  </div>
+  <div class="info" id="info"></div>
+</div>
+<script>
+function createBoundedCounter(min, max) {
+    if (min > max) throw new Error("min не может быть больше max");
+    let count = min;
+    
+    return {
+        increment: function() {
+            if (count < max) count++;
+            else console.warn(`Достигнут максимум: ${max}`);
+            updateUI(this.getRange());
+        },
+        decrement: function() {
+            if (count > min) count--;
+            else console.warn(`Достигнут минимум: ${min}`);
+            updateUI(this.getRange());
+        },
+        reset: function() {
+            count = min;
+            updateUI(this.getRange());
+        },
+        getRange: function() {
+            return { min, max, current: count };
+        }
+    };
+}
+
+function updateUI(state) {
+    document.getElementById('display').textContent = state.current;
+    document.getElementById('info').innerHTML = `min: ${state.min} | max: ${state.max} | current: ${state.current}`;
+}
+
+const counter = createBoundedCounter(0, 5);
+updateUI(counter.getRange());
+</script>
+</body></html>
