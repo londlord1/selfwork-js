@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПР18 • Зад.6 • Контент-скрипт</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1a1a2e;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
+  .top-link:hover { text-decoration: underline; }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 14px 0 20px; padding: 10px 16px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .nav a {
+    color: #4a6cf7; text-decoration: none; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  .nav a:hover { background: #e8edf9; }
+  .badge {
+    display: inline-block; background: #4a6cf7; color: white;
+    padding: 4px 12px; border-radius: 12px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
+  .card {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
+  }
+  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .task code {
+    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Courier New', monospace; color: #d63384;
+  }
+  .file-structure {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.8; margin: 12px 0;
+  }
+  .file-structure .file { color: #4a6cf7; font-weight: 600; }
+  .file-structure .folder { color: #ff9800; }
+  .code-block {
+    background: #1a1a2e; color: #e0e0e0;
+    padding: 16px; border-radius: 8px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .comment { color: #676e95; font-style: italic; }
+  .code-block .func { color: #82aaff; }
+  .comparison {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin: 16px 0;
+  }
+  .comparison-item {
+    background: #f8f9fc; border-radius: 8px; padding: 12px;
+    border: 2px solid #e0e5ec;
+  }
+  .comparison-item h4 {
+    font-size: 14px; margin-bottom: 8px; color: #4a6cf7;
+  }
+  .comparison-item code {
+    display: block; background: white; padding: 8px;
+    border-radius: 4px; font-size: 12px; margin-top: 6px;
+  }
+  .preview {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    margin: 12px 0; text-align: center;
+  }
+  .btn {
+    padding: 10px 20px; border: none; border-radius: 6px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    background: #4a6cf7; color: white;
+  }
+  .btn:hover { background: #3a5ce7; }
+  .status {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; background: #f0f2f5; min-height: 40px;
+  }
+  .status.ok { background: #d4edda; color: #155724; }
+  .footer {
+    text-align: center; font-size: 12px; color: #888;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid #e0e5ec;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+
+  <div class="nav">
+    <a href="пр18_зад5_темный_режим.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">ПР18 • Зад.6</span>
+    <a href="пр18_зад7_заметки.html">След. →</a>
+  </div>
+
+  <span class="badge">ПР18</span>
+  <h1>ПР18 • Зад.6 • Контент-скрипт</h1>
+
+  <div class="card">
+    <div class="task">
+      Напишите расширение, которое использует <code>отдельный файл</code> для скрипта содержимого (вместо внедрения через <code>executeScript</code> с <code>code</code>).
+    </div>
+
+    <div class="file-structure">
+<span class="folder">hello-extension/</span>
+├── <span class="file">manifest.json</span>
+├── <span class="file">content-script.js</span>      ← отдельный файл
+├── <span class="folder">popup/</span>
+│   ├── popup.html
+│   ├── popup.js
+│   └── popup.css
+└── <span class="folder">icons/</span>
+    └── icon-48.png
+    </div>
+
+    <div class="code-block">
+<span class="comment">// manifest.json</span>
+{
+  <span class="string">"content_scripts"</span>: [
+    {
+      <span class="string">"matches"</span>: [<span class="string">"&lt;all_urls&gt;"</span>],
+      <span class="string">"js"</span>: [<span class="string">"content-script.js"</span>]
+    }
+  ]
+}
+
+<span class="comment">// content-script.js</span>
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  <span class="keyword">if</span> (request.command === <span class="string">"changeColor"</span>) {
+    document.body.style.backgroundColor = request.color;
+  }
+});
+    </div>
+
+    <div class="comparison">
+      <div class="comparison-item">
+        <h4>❌ executeScript (inline)</h4>
+        <code>browser.tabs.executeScript(tabId, {<br>&nbsp;&nbsp;code: `(${action.toString()})();`<br>});</code>
+      </div>
+      <div class="comparison-item">
+        <h4>✅ content_scripts (отдельный файл)</h4>
+        <code>"content_scripts": [{<br>&nbsp;&nbsp;"matches": ["&lt;all_urls&gt;"],<br>&nbsp;&nbsp;"js": ["content-script.js"]<br>}]</code>
+      </div>
+    </div>
+
+    <div class="preview">
+      <button class="btn" id="test-btn">🧪 Тест: отправить сообщение в контент-скрипт</button>
+    </div>
+
+    <div class="status" id="status">Нажмите кнопку для демонстрации обмена сообщениями.</div>
+  </div>
+
+  <div class="nav">
+    <a href="пр18_зад5_темный_режим.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">стр. 60 из 82</span>
+    <a href="пр18_зад7_заметки.html">След. →</a>
+  </div>
+
+  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 60 из 82</div>
+</div>
+
+<script>
+document.getElementById('test-btn').addEventListener('click', () => {
+  // Имитация отправки сообщения
+  const message = { command: 'changeColor', color: '#ffeb3b' };
+  console.log('Отправлено сообщение:', message);
+  
+  // Имитация ответа контент-скрипта
+  setTimeout(() => {
+    document.body.style.backgroundColor = '#ffeb3b';
+    document.getElementById('status').textContent = '✅ Контент-скрипт получил сообщение и изменил фон';
+    document.getElementById('status').className = 'status ok';
+    
+    setTimeout(() => {
+      document.body.style.backgroundColor = '';
+    }, 2000);
+  }, 500);
+});
+</script>
+</body>
+</html>
