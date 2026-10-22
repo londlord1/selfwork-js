@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПР18 • Зад.1 • Изменить приветствие</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1a1a2e;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
+  .top-link:hover { text-decoration: underline; }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 14px 0 20px; padding: 10px 16px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .nav a {
+    color: #4a6cf7; text-decoration: none; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  .nav a:hover { background: #e8edf9; }
+  .nav a.disabled { color: #bbb; pointer-events: none; }
+  .badge {
+    display: inline-block; background: #4a6cf7; color: white;
+    padding: 4px 12px; border-radius: 12px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
+  .card {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
+  }
+  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .task code {
+    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Courier New', monospace; color: #d63384;
+  }
+  .code-block {
+    background: #1a1a2e; color: #e0e0e0;
+    padding: 16px; border-radius: 8px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .comment { color: #676e95; font-style: italic; }
+  .code-block .func { color: #82aaff; }
+  .preview {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    margin: 12px 0; text-align: center;
+  }
+  .preview-btn {
+    padding: 10px 20px; background: #4CAF50; color: white;
+    border: none; border-radius: 6px; font-size: 14px;
+    cursor: pointer; font-weight: 600;
+  }
+  .preview-btn:hover { background: #388E3C; }
+  .status {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; background: #f0f2f5; min-height: 40px;
+  }
+  .status.ok { background: #d4edda; color: #155724; }
+  .footer {
+    text-align: center; font-size: 12px; color: #888;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid #e0e5ec;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+
+  <div class="nav">
+    <a href="пр17_зад1_ограниченный_счетчик.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">ПР18 • Зад.1</span>
+    <a href="пр18_зад2_добавить_кнопку.html">След. →</a>
+  </div>
+
+  <span class="badge">ПР18</span>
+  <h1>ПР18 • Зад.1 • Изменить приветствие</h1>
+
+  <div class="card">
+    <div class="task">
+      Измените текст всплывающего окна с <code>"Hello, World! 🌍"</code> на что-то другое (например, ваше имя или <code>"Привет, студент!"</code>).
+    </div>
+
+    <div class="code-block">
+<span class="comment">// popup.js — измененная функция showHello</span>
+<span class="keyword">const</span> actions = {
+  <span class="func">showHello</span>: <span class="keyword">function</span>() {
+    alert(<span class="string">'Привет, студент! 🎓'</span>);
+  },
+  <span class="comment">// ... остальные действия</span>
+};
+    </div>
+
+    <div class="preview">
+      <button class="preview-btn" id="test-btn">🧪 Тест: показать приветствие</button>
+    </div>
+
+    <div class="status" id="status">Нажмите кнопку для проверки измененного приветствия.</div>
+  </div>
+
+  <div class="nav">
+    <a href="пр17_зад1_ограниченный_счетчик.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">стр. 55 из 82</span>
+    <a href="пр18_зад2_добавить_кнопку.html">След. →</a>
+  </div>
+
+  <div class="footer">Хаб самостоятельных работ JavaScript · ПР18 · страница 55 из 82</div>
+</div>
+
+<script>
+document.getElementById('test-btn').addEventListener('click', function() {
+  alert('Привет, студент! 🎓');
+  document.getElementById('status').textContent = '✅ Приветствие изменено на "Привет, студент! 🎓"';
+  document.getElementById('status').className = 'status ok';
+});
+</script>
+</body>
+</html>
