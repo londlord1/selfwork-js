@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПР17 • Зад.1 • Ограниченный счетчик</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;padding:24px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.topnav a{color:#1a73e8;text-decoration:none;font-size:14px}
+.navbtns{display:flex;gap:8px}
+.navbtns .btn{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;color:#0b57d0;text-decoration:none}
+h1{color:#1a73e8;margin-bottom:4px;font-size:24px}
+.pr-tag{display:inline-block;background:#1a73e8;color:#fff;border-radius:12px;padding:2px 12px;font-size:13px;margin-bottom:10px}
+.desc{background:#eef6ff;border:1px solid #c9e3ff;border-radius:10px;padding:12px 16px;margin:14px 0;color:#1a56a0;font-size:14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;margin:16px 0;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.btn{background:#1a73e8;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer;margin:6px 6px 0 0;transition:all .2s}
+.btn:hover{background:#0b5bc0}
+.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;margin:12px 0;white-space:pre-wrap;min-height:40px}
+.ok{color:#2ecc71}.err{color:#ff6b6b}.hl{color:#f1c40f}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topnav">
+  <a href="index.html">« Хаб самостоятельных работ</a>
+  <div class="navbtns"><button class="btn" disabled>← Пред.</button><button class="btn" onclick="location.href='пр18_зад1_симуляция_расширения.html'">След. →</button></div>
+</div>
+<span class="pr-tag">ПР17</span>
+<h1>ПР17 • Зад.1 • Ограниченный счетчик</h1>
+<div class="desc">Создайте фабрику createBoundedCounter(min, max), которая блокирует выход за пределы диапазона и выбрасывает ошибку, если min > max.</div>
+
+<div class="card">
+  <button class="btn" onclick="runTests()">Запустить тесты счетчика</button>
+</div>
+<div class="out" id="out">Нажмите кнопку для запуска...</div>
+
+<script>
+function createBoundedCounter(min, max) {
+  if (min > max) throw new Error('Минимум не может быть больше максимума');
+  let count = min;
+  return {
+    increment() {
+      if (count < max) { count++; }
+      else { console.warn(`Достигнут максимум: ${max}`); }
+    },
+    decrement() {
+      if (count > min) { count--; }
+      else { console.warn(`Достигнут минимум: ${min}`); }
+    },
+    getRange() { return { min, max, current: count }; },
+    reset() { count = min; }
+  };
+}
+
+function runTests() {
+  const out = document.getElementById('out');
+  let html = '<span class="hl">=== ТЕСТИРОВАНИЕ ===</span>\n\n';
+  
+  // Тест 1: Ошибка при неверных значениях
+  try {
+    createBoundedCounter(5, 0);
+    html += '<span class="err">ОШИБКА: Не выброшено исключение при min > max</span>\n';
+  } catch (e) {
+    html += `<span class="ok">✓ Успешно: ${e.message}</span>\n`;
+  }
+
+  // Тест 2: Работа в диапазоне
+  const score = createBoundedCounter(0, 5);
+  html += `\nНачальное состояние: ${JSON.stringify(score.getRange())}\n`;
+  
+  for(let i=0; i<7; i++) score.increment();
+  html += `После 7 инкрементов: ${JSON.stringify(score.getRange())} (должно быть 5)\n`;
+  
+  for(let i=0; i<7; i++) score.decrement();
+  html += `После 7 декрементов: ${JSON.stringify(score.getRange())} (должно быть 0)\n`;
+
+  // Тест 3: Reset
+  score.increment(); score.increment();
+  score.reset();
+  html += `После reset: ${JSON.stringify(score.getRange())} (должно быть 0)\n`;
+
+  out.innerHTML = html;
+}
+</script>
+</body>
+</html>
