@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>ПР22 • Классы</title>
+<style>body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;padding:24px}.container{max-width:700px;margin:0 auto}.card{background:#fff;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}.book-item{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between}.book-item:last-child{border:none}.btn{background:#28a745;color:#fff;border:none;padding:10px 15px;border-radius:6px;cursor:pointer;margin-top:10px}</style>
+</head><body>
+<div class="container">
+  <div class="card">
+    <h2>Библиотека</h2>
+    <div id="books"></div>
+    <button class="btn" onclick="runTasks()">Выполнить задания (sort, average, range)</button>
+    <pre id="out" style="background:#1a1a2e;color:#fff;padding:15px;border-radius:8px;margin-top:15px;display:none"></pre>
+  </div>
+</div>
+<script>
+class Book {
+    constructor(title, author, year, genre, rating = 0) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.genre = genre;
+        this.rating = rating;
+    }
+    // Задание 1: isOld
+    isOld() {
+        return (new Date().getFullYear() - this.year) > 100;
+    }
+}
+
+class LibraryManager {
+    constructor() { this.books = []; }
+    addBook(b) { this.books.push(b); render(); }
+    
+    // Задание 2: Диапазон лет
+    getBooksByYearRange(from, to) {
+        return this.books.filter(b => b.year >= from && b.year <= to);
+    }
+    
+    // Задание 3: Средний рейтинг
+    getAverageRating() {
+        if (this.books.length === 0) return 0;
+        const sum = this.books.reduce((acc, b) => acc + b.rating, 0);
+        return Number((sum / this.books.length).toFixed(2));
+    }
+}
+
+const lib = new LibraryManager();
+
+// Задание 4: 5 книг разных жанров с рейтингами
+lib.addBook(new Book('Война и мир', 'Толстой', 1869, 'Роман', 4.8));
+lib.addBook(new Book('1984', 'Оруэлл', 1949, 'Антиутопия', 4.9));
+lib.addBook(new Book('Гарри Поттер', 'Роулинг', 1997, 'Фэнтези', 4.5));
+lib.addBook(new Book('Дюна', 'Герберт', 1965, 'Фантастика', 4.7));
+lib.addBook(new Book('Шерлок Холмс', 'Дойл', 1892, 'Детектив', 4.6));
+
+function render() {
+    document.getElementById('books').innerHTML = lib.books.map(b => `
+        <div class="book-item">
+            <div><b>${b.title}</b> (${b.year}) - ${b.genre}</div>
+            <div>Рейтинг: ${b.rating} ${b.isOld() ? '<span style="color:red;font-size:12px">(Старая)</span>' : ''}</div>
+        </div>
+    `).join('');
+}
+
+function runTasks() {
+    const out = document.getElementById('out');
+    out.style.display = 'block';
+    
+    // Сортировка от новых к старым
+    const sorted = [...lib.books].sort((a, b) => b.year - a.year);
+    let text = "=== Сортировка по году (новые сначала) ===\n";
+    sorted.forEach(b => text += `${b.year}: ${b.title}\n`);
+    
+    text += `\n=== Средний рейтинг ===\n${lib.getAverageRating()}\n`;
+    
+    text += `\n=== Книги 1900-1990 ===\n`;
+    lib.getBooksByYearRange(1900, 1990).forEach(b => text += `- ${b.title} (${b.year})\n`);
+    
+    out.textContent = text;
+}
+</script>
+</body></html>
