@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПР20 • Зад.1 • Поддержка UnionPay</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0e5ec 0%, #c9d0df 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1a1a2e;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-link { color: #4a6cf7; text-decoration: none; font-size: 14px; }
+  .top-link:hover { text-decoration: underline; }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 14px 0 20px; padding: 10px 16px;
+    background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .nav a {
+    color: #4a6cf7; text-decoration: none; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  .nav a:hover { background: #e8edf9; }
+  .badge {
+    display: inline-block; background: #4a6cf7; color: white;
+    padding: 4px 12px; border-radius: 12px; font-size: 13px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 24px; margin-bottom: 18px; font-weight: 600; }
+  .card {
+    background: white; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px;
+  }
+  .task { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .task code {
+    background: #f0f2f5; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Courier New', monospace; color: #d63384;
+  }
+  .code-block {
+    background: #1a1a2e; color: #e0e0e0;
+    padding: 16px; border-radius: 8px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .comment { color: #676e95; font-style: italic; }
+  .code-block .func { color: #82aaff; }
+  .preview {
+    background: #f8f9fc; border-radius: 8px; padding: 16px;
+    margin: 12px 0;
+  }
+  .card-display {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: 12px; padding: 20px;
+    color: white; min-height: 180px;
+    margin-bottom: 12px;
+    transition: background 0.3s;
+  }
+  .card-display.unionpay {
+    background: linear-gradient(135deg, #d52b1e 0%, #b71c1c 100%);
+  }
+  .card-brand {
+    display: flex; justify-content: space-between;
+    margin-bottom: 16px; font-size: 14px;
+  }
+  .card-number {
+    font-size: 20px; letter-spacing: 2px;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 16px;
+  }
+  .input-group {
+    margin-bottom: 12px;
+  }
+  .input-group label {
+    display: block; font-size: 13px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .input-group input {
+    width: 100%; padding: 10px 14px;
+    border: 2px solid #e0e5ec; border-radius: 8px;
+    font-size: 15px; font-family: 'Courier New', monospace;
+  }
+  .input-group input:focus {
+    outline: none; border-color: #4a6cf7;
+  }
+  .status {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; background: #f0f2f5; min-height: 40px;
+  }
+  .status.ok { background: #d4edda; color: #155724; }
+  .footer {
+    text-align: center; font-size: 12px; color: #888;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid #e0e5ec;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" class="top-link">« Хаб самостоятельных работ</a>
+
+  <div class="nav">
+    <a href="пр19_зад7_выбор_языка.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">ПР20 • Зад.1</span>
+    <a href="пр20_зад2_маска_cvv.html">След. →</a>
+  </div>
+
+  <span class="badge">ПР20</span>
+  <h1>ПР20 • Зад.1 • Поддержка UnionPay</h1>
+
+  <div class="card">
+    <div class="task">
+      Добавьте поддержку карты <code>UnionPay</code> (китайская платежная система, начинается с <code>62</code>).
+    </div>
+
+    <div class="code-block">
+<span class="comment">// В getCardType:</span>
+<span class="keyword">if</span> (firstTwo === <span class="string">'62'</span>) <span class="keyword">return</span> <span class="string">'unionpay'</span>;
+
+<span class="comment">// В getCardInfo:</span>
+unionpay: { icon: <span class="string">'💳'</span>, name: <span class="string">'UnionPay'</span> }
+
+<span class="comment">// В CSS:</span>
+.card.unionpay {
+  background: linear-gradient(135deg, #d52b1e 0%, #b71c1c 100%);
+}
+    </div>
+
+    <div class="preview">
+      <div class="card-display" id="card-display">
+        <div class="card-brand">
+          <span>💳</span>
+          <span id="brand-name">Банковская карта</span>
+        </div>
+        <div class="card-number" id="card-number">•••• •••• •••• ••••</div>
+      </div>
+
+      <div class="input-group">
+        <label>Номер карты (начните с 62 для UnionPay):</label>
+        <input type="text" id="card-input" placeholder="6200 0000 0000 0000" maxlength="19">
+      </div>
+    </div>
+
+    <div class="status" id="status">Введите номер карты, начинающийся с 62</div>
+  </div>
+
+  <div class="nav">
+    <a href="пр19_зад7_выбор_языка.html">← Пред.</a>
+    <span style="font-size:13px;color:#888;">стр. 69 из 82</span>
+    <a href="пр20_зад2_маска_cvv.html">След. →</a>
+  </div>
+
+  <div class="footer">Хаб самостоятельных работ JavaScript · ПР20 · страница 69 из 82</div>
+</div>
+
+<script>
+function getCardType(number) {
+  const clean = number.replace(/\s/g, '');
+  if (!clean) return 'unknown';
+  const first = clean[0];
+  const firstTwo = clean.slice(0, 2);
+  
+  if (firstTwo === '62') return 'unionpay';
+  if (first === '4') return 'visa';
+  if (firstTwo >= '51' && firstTwo <= '55') return 'mastercard';
+  return 'unknown';
+}
+
+function getCardInfo(type) {
+  const info = {
+    visa: { icon: '💳', name: 'Visa' },
+    mastercard: { icon: '💳', name: 'MasterCard' },
+    unionpay: { icon: '💳', name: 'UnionPay' },
+    unknown: { icon: '💳', name: 'Банковская карта' }
+  };
+  return info[type] || info.unknown;
+}
+
+function formatCardNumber(value) {
+  const cleaned = value.replace(/\D/g, '');
+  const groups = [];
+  for (let i = 0; i < cleaned.length; i += 4) {
+    groups.push(cleaned.slice(i, i + 4));
+  }
+  return groups.join(' ').slice(0, 19);
+}
+
+const cardInput = document.getElementById('card-input');
+const cardDisplay = document.getElementById('card-display');
+const cardNumber = document.getElementById('card-number');
+const brandName = document.getElementById('brand-name');
+
+cardInput.addEventListener('input', function() {
+  const formatted = formatCardNumber(this.value);
+  this.value = formatted;
+  
+  const cardType = getCardType(formatted);
+  const info = getCardInfo(cardType);
+  
+  cardDisplay.className = 'card-display';
+  if (cardType !== 'unknown') {
+    cardDisplay.classList.add(cardType);
+  }
+  
+  brandName.textContent = info.name;
+  cardNumber.textContent = formatted || '•••• •••• •••• ••••';
+  
+  if (cardType === 'unionpay') {
+    document.getElementById('status').textContent = '✅ Определена карта UnionPay (китайская платежная система)';
+    document.getElementById('status').className = 'status ok';
+  } else if (cardType !== 'unknown') {
+    document.getElementById('status').textContent = `Определена карта: ${info.name}`;
+  }
+});
+</script>
+</body>
+</html>
