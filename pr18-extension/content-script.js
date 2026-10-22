@@ -12,21 +12,32 @@
 
   const pageKey = () => location.origin + location.pathname + location.search;
 
+  let fontLevel = 16;
+
   function currentFontSize() {
-    if (!document.body) return 16;
-    return Math.round(parseFloat(getComputedStyle(document.body).fontSize) || 16);
+    return fontLevel;
+  }
+
+  function applyFont() {
+    const scale = fontLevel / 16;
+    if (typeof CSS !== 'undefined' && CSS.supports && CSS.supports('zoom', '1.25')) {
+      document.documentElement.style.zoom = scale === 1 ? '' : String(scale);
+    } else if (document.body) {
+      document.body.style.setProperty('font-size', fontLevel + 'px', 'important');
+    }
   }
 
   function changeFont(delta) {
-    if (!document.body) return 16;
-    const next = Math.min(32, Math.max(8, currentFontSize() + Number(delta || 0)));
-    document.body.style.setProperty('font-size', next + 'px', 'important');
-    return next;
+    fontLevel = Math.min(32, Math.max(8, fontLevel + Number(delta || 0)));
+    applyFont();
+    return fontLevel;
   }
 
   function resetFont() {
+    fontLevel = 16;
+    document.documentElement.style.zoom = '';
     if (document.body) document.body.style.removeProperty('font-size');
-    return currentFontSize();
+    return fontLevel;
   }
 
   function setBackground(color) {

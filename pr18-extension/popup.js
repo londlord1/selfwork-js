@@ -27,6 +27,14 @@ function shortUrl(url) {
   }
 }
 
+function humanError(error) {
+  if (!error) return 'страница недоступна';
+  if (/Receiving end does not exist|Could not establish connection/i.test(error)) {
+    return 'обновите страницу (F5) — контент-скрипт ещё не загружен';
+  }
+  return error;
+}
+
 function sendToTab(message) {
   return new Promise((resolve) => {
     if (!activeTab || !activeTab.id) {
@@ -135,15 +143,17 @@ async function showHello() {
   const name = $('name').value.trim() || 'студент';
   await writeStorage({ greetingName: name });
 
+  const data = await readStorage();
+  const next = data.clickCount + 1;
+  await updateCount(next);
+
   const result = await sendToTab({ type: 'toast', text: 'Привет, ' + name + '! 👋' });
   if (!result.ok) {
-    setStatus('Не удалось показать приветствие: ' + (result.error || 'страница недоступна'), 'err');
+    setStatus('Нажатий: ' + next + '. Приветствие не показано: ' + (humanError(result.error) || 'обновите вкладку'), 'err');
     return;
   }
 
-  const data = await readStorage();
-  await updateCount(data.clickCount + 1);
-  setStatus('Приветствие показано. Нажатий: ' + (data.clickCount + 1), 'ok');
+  setStatus('Приветствие показано. Нажатий: ' + next, 'ok');
 }
 
 function bindColorButtons() {
@@ -151,7 +161,7 @@ function bindColorButtons() {
     button.addEventListener('click', async () => {
       const color = button.dataset.color;
       const result = await sendToTab({ type: 'setBg', color });
-      setStatus(result.ok ? 'Фон страницы изменён: ' + color : 'Ошибка: ' + result.error, result.ok ? 'ok' : 'err');
+      setStatus(result.ok ? 'Фон страницы изменён: ' + color : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
     });
   });
 }
@@ -162,7 +172,7 @@ async function changeFont(delta) {
     $('font-size').textContent = result.size + ' px';
     setStatus('Размер шрифта: ' + result.size + ' px', 'ok');
   } else {
-    setStatus('Ошибка: ' + result.error, 'err');
+    setStatus('Ошибка: ' + humanError(result.error), 'err');
   }
 }
 
@@ -172,7 +182,7 @@ async function setDark(on) {
     $('dark-label').textContent = on ? 'включён' : 'выключен';
     setStatus('Тёмный режим ' + (on ? 'включён' : 'выключен'), 'ok');
   } else {
-    setStatus('Ошибка: ' + result.error, 'err');
+    setStatus('Ошибка: ' + humanError(result.error), 'err');
   }
 }
 
@@ -214,7 +224,7 @@ async function init() {
 
   $('bg-reset').addEventListener('click', async () => {
     const result = await sendToTab({ type: 'resetBg' });
-    setStatus(result.ok ? 'Фон страницы сброшен' : 'Ошибка: ' + result.error, result.ok ? 'ok' : 'err');
+    setStatus(result.ok ? 'Фон страницы сброшен' : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
   });
 
   $('font-inc').addEventListener('click', () => changeFont(2));
@@ -236,23 +246,23 @@ async function init() {
 
   $('highlight').addEventListener('click', async () => {
     const result = await sendToTab({ type: 'highlight' });
-    setStatus(result.ok ? 'Выделено заголовков: ' + result.count : 'Ошибка: ' + result.error, result.ok ? 'ok' : 'err');
+    setStatus(result.ok ? 'Выделено заголовков: ' + result.count : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
   });
 
   $('banner').addEventListener('click', async () => {
     const result = await sendToTab({ type: 'banner', text: '📢 ПР18: контент-скрипт работает' });
-    setStatus(result.ok ? 'Баннер добавлен' : 'Ошибка: ' + result.error, result.ok ? 'ok' : 'err');
+    setStatus(result.ok ? 'Баннер добавлен' : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
   });
 
   $('clear').addEventListener('click', async () => {
     const result = await sendToTab({ type: 'clearEffects' });
-    setStatus(result.ok ? 'Эффекты убраны' : 'Ошибка: ' + result.error, result.ok ? 'ok' : 'err');
+    setStatus(result.ok ? 'Эффекты убраны' : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
   });
 
   $('note-save').addEventListener('click', saveNote);
   $('notes-toggle').addEventListener('click', async () => {
     const result = await sendToTab({ type: 'toggleNotes' });
-    setStatus(result.ok ? 'Панель заметок переключена' : 'Ошибка: ' + result.error, result.ok ? 'ok' : 'err');
+    setStatus(result.ok ? 'Панель заметок переключена' : 'Ошибка: ' + humanError(result.error), result.ok ? 'ok' : 'err');
   });
 
 }
